@@ -1,7 +1,5 @@
-#from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render
 
-from django.http import HttpResponse # for recieve http response
-
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+def home_page_view(*args, **kwargs):
+    return HttpResponse("<h1>Hello World</h1>")
