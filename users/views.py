@@ -24,4 +24,4 @@ def candidateRegPage(request):
         if form.is_valid():
             form.save()
     context={'form':form}
-    return render(request,'candidatreg.html',context)
+    return render(request,'candidatereg.html',context)
