@@ -4,7 +4,16 @@
         <title>Sumbit a ticket</title>
     </head>
     <body>
-        <h1>This is support team</h1>
+     <h1>This is supports team tickets</h1>
+     <div class="tickets">
+          {%for ticket in tickets%}
+              <div class='ticket'>
+                <h2><a href="#">{{ticket.title}}</a></h2>
+                <p>{{ticket.body}}</p>
+                <p>{{ticket.date}}</p>
+              </div>
+          {%endfor%}
+     </div>
         <p>Thank you for choosing JHS</p>
-    </body>
+    </body>
 </html>

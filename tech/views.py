@@ -1,8 +1,8 @@
-from django.http import HttpResponse
+
 from django.shortcuts import render
-def reg22(request):
-    return HttpResponse("This is a register page.")
+from .models import ticket
 
 def ticket(request):
-    return render(request,'ticket.html')
+    tickets=ticket.objects
+    return render(request,'tech/ticket.html',{'tickets':tickets})
 
