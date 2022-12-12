@@ -6,8 +6,9 @@ from django.contrib.auth.forms import UserCreationForm #user create from django 
 from .forms import CreateEmployerForm,CreateCandidateForm
 from django.contrib import messages
 from django.views.generic import View
+from django.shortcuts import  redirect
 from django.shortcuts import get_object_or_404
-
+from django.template import RequestContext
 
 def candidateRegPage(request):
     form = CreateCandidateForm()
@@ -20,9 +21,7 @@ def candidateRegPage(request):
             return redirect('login')
         
     context={'form':form}
-    context['detail'] = CreateCandidateForm.objects.filter(id=1).name
     return render(request, 'candidatereg.html',context)
-
 
 def employerRegPage(request):
     form=CreateEmployerForm()
