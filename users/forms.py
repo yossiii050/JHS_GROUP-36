@@ -13,8 +13,8 @@ class CreateEmployerForm(UserCreationForm):
         model=User
         fields=['username','first_name','last_name','email','age','gender','password1','password2']        
 #
-class CreateCandidateForm(UserCreationForm):   
+class CreateCandidateForm(forms.ModelForm):   
     class Meta:
         model=Candidate
-        fields=['username','first_name','last_name','email','password1','password2']
+        fields=('username','email','password','first_name','last_name')
     
