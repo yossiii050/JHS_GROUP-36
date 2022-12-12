@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+class Ticket(models.Model):
+    title = models.models.CharField(("Sumbit your ticket"), max_length=50)
+    body = models.TextField()
+    
+    
