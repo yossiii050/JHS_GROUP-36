@@ -7,12 +7,14 @@ from django.contrib.auth.models import User #impor user databased
 
 
 class CreateEmployerForm(UserCreationForm):
+    age = forms.IntegerField()
+    gender = forms.CharField()
     class Meta:
         model=User
-        fields=['username','first_name','last_name','email','password1','password2']        
-
+        fields=['username','first_name','last_name','email','age','gender','password1','password2']        
+#
 class CreateCandidateForm(UserCreationForm):   
     class Meta:
-        model=User
+        model=Candidate
         fields=['username','first_name','last_name','email','password1','password2']
     

@@ -20,7 +20,7 @@ def candidateRegPage(request):
     form=CreateCandidateForm()
 
     if request.method == 'POST':
-        form=CreateCandidateForm(request.POST)
+        form = CreateCandidateForm(request.POST)
         if form.is_valid():
             form.save()
     context={'form':form}

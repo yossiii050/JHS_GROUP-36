@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser,User,BaseUserManager, AbstractBaseUser
 import os
+from phonenumber_field.modelfields import PhoneNumberField
 
     
 class Candidate(models.Model):
@@ -14,12 +15,13 @@ class Candidate(models.Model):
         max_length=255,
         unique=True,
     )
+    website = models.URLField(blank=True)
     #date_of_birth = models.DateField()
+    phone_number = PhoneNumberField(blank=True)
 
-    #is_active = models.BooleanField(default=True)
-
-    #USERNAME_FIELD = 'email'
-    #REQUIRED_FIELDS = ['date_of_birth']
+    is_active = models.BooleanField(default=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['date_of_birth']
 
     def __str__(self):
         return self.name
