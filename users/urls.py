@@ -1,5 +1,6 @@
 from django.urls import path
 from users import views
+from django.views.generic import View
 
 urlpatterns = [
     path('employer/', views.employerRegPage,name='employer register'), 
