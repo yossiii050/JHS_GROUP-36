@@ -20,4 +20,5 @@ urlpatterns = [
     path('register/',include('users.urls')),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
+    path('tech/',include('tech.urls')),
 ]
