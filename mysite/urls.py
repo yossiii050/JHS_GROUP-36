@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 from polls.views import home_page_view
 from users.views import loginPage
+from mysite.mysite.views import maintenance
+
 urlpatterns = [
     path('register/',include('users.urls')),
     path('polls/', include('polls.urls')),
@@ -24,4 +26,6 @@ urlpatterns = [
     path('', home_page_view),
     path('tech/',include('tech.urls')),
     path('login/',loginPage,name="login"),
+    path('maintenance/', maintenance),
+
 ]
