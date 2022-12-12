@@ -25,3 +25,7 @@ def candidateRegPage(request):
             form.save()
     context={'form':form}
     return render(request,'candidatereg.html',context)
+
+def loginPage(request):
+    context={}
+    return render(request,'login.html',context)
