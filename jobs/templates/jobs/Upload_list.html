@@ -2,15 +2,16 @@
     <head>
         <meta charset="utf-8"
         <title>Upload list</title>
+        <link rel="stylsheet" href="/static/admin/css/">
     </head>
     <body>
         <h1>This is Upload list page</h1>
         <div class="uploads">
             {% for upload in uploads %}
             
-                <div class="uploads">
-                    <h2><a href="#">{{upload.title} </a></h2>
-                    <p>{{upload.body}}</p>
+                <div class="upload">
+                    <h2><a href="#">{{upload.title}}</a></h2>
+                    <p>{{upload.snippet}}</p>
                     <p>{{upload.date}}</p>
 
                 </div>

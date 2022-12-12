@@ -12,6 +12,10 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     def __str__(self):
         return self.title
 
+    def snippet(self):
+        return self.body[:50]+'...' #take from 0 to 50 characters
+
+
 
 
 # Create your models here.
