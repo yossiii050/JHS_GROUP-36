@@ -1,8 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User,BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import AbstractUser,User,BaseUserManager, AbstractBaseUser
 import os
 
+    
 class Candidate(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     username = models.CharField(max_length=100)
