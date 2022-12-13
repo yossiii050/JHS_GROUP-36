@@ -23,7 +23,7 @@ class Candidate(User):
     User.first_name = models.CharField(max_length=30)
     User.last_name = models.CharField(max_length=30)
     User.password = models.CharField(max_length=50)
-
+    #password1=User.set_password(max_length=50)
     #UserCreationForm.password1=models.CharField(max_length=50)
     #UserCreationForm.password2=models.CharField(max_length=50)
     #website = models.URLField(blank=True)
