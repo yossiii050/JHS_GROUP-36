@@ -42,9 +42,9 @@ def employerRegPage(request):
     form=CreateEmployerForm()
 
     if request.method == 'POST':
-        form=CreateEmployerForm(request.POST)
         if form.is_valid():
-            form.save()
+            is_active=False
+            form.save() 
             return redirect('login')
 
     context={'form':form}
@@ -59,7 +59,6 @@ def candidateRegPage(request):
         if form.is_valid():
             form.save()
             #request.Post.
-            
             return redirect('login')
     
     context={'form':form}

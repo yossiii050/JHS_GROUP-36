@@ -9,6 +9,7 @@ from django.contrib.auth.models import User #impor user databased
 class CreateEmployerForm(UserCreationForm):
     age = forms.IntegerField()
     gender = forms.CharField()
+    is_active = forms.BooleanField()    
     class Meta:
         model=User
         fields=['username','first_name','last_name','email','age','gender','password1','password2']        
