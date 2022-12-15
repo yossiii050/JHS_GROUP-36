@@ -11,18 +11,18 @@ from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 
-def candidateRegPage(request):
-    form = CreateCandidateForm()
+# def candidateRegPage(request):
+#     form = CreateCandidateForm()
 
-    if request.method == 'POST':
-        form = CreateCandidateForm(request.POST)
+#     if request.method == 'POST':
+#         form = CreateCandidateForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return redirect('login')
+#         if form.is_valid():
+#             form.save()
+#             return redirect('login')
         
-    context={'form':form}
-    return render(request, 'candidatereg.html',context)
+#     context={'form':form}
+#     return render(request, 'candidatereg.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()
@@ -36,17 +36,17 @@ def employerRegPage(request):
     context={'form':form}
     return render(request,'employerreg.html',context)
 
-# def candidateRegPage(request):
-#     form=CreateCandidateForm()
+def candidateRegPage(request):
+    form=CreateCandidateForm()
 
-#     if request.method == 'POST':
-#         form = CreateCandidateForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             #return redirect('login')
+    if request.method == 'POST':
+        form = CreateCandidateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            #return redirect('login')
     
-#     context={'form':form}
-#     return render(request,'candidatereg.html',context)
+    context={'form':form}
+    return render(request,'candidatereg.html',context)
 
 def loginPage(request):
 
