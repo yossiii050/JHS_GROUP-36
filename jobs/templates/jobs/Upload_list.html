@@ -15,10 +15,12 @@
                     <p>{{upload.subtitle}}</p>
                     <p>{{upload.snippet}}</p>
                     <p>{{upload.date}}</p>
-
                 </div>
-
             {% endfor %}
+            <a href="{% url 'upload' %}">
+            <!--<input type="submit" value="Upload job" href="/jobs/templates/jobs/uploadJob.html">-->
+            <button>Upload job</button>
+        </a>
         </div>
     </body>
 </html>
