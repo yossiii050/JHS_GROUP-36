@@ -27,7 +27,6 @@ urlpatterns = [
     path('',home_page_view),
     path('tech/',include('tech.urls')),
     path('', home_template,name="home page"),
-    path('tech/',include('tech.urls')),
     path('login/',loginPage,name="login"),
     path('logout/',logoutUser,name="logout"),
     path('maintenance/', maintenance),
