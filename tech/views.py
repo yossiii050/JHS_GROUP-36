@@ -25,3 +25,6 @@ def ticket(request):
 
 def tech_main (request):
   return render(request,'tech_main.html')
+
+def tech_approve_employer(request):
+  return render(request,'tech_approve_employer.html')
