@@ -22,9 +22,10 @@ class Candidate(AbstractBaseUser):
     )
     password1 = models.CharField(max_length=50)
     password2 = models.CharField(max_length=50)
+    #is_active = models.BooleanField()#default=False)
     #User.first_name = models.CharField(max_length=30)
     #User.last_name = models.CharField(max_length=30)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=100)
     objects=UserManager()
     #password1=User.set_password(max_length=50)
     #UserCreationForm.password1=models.CharField(max_length=50)
@@ -33,7 +34,7 @@ class Candidate(AbstractBaseUser):
     #date_of_birth = models.DateField()
     #phone_number = PhoneNumberField(blank=True)
 
-    #is_active = models.BooleanField(default=True)
+    
     USERNAME_FIELD = 'email'
     #REQUIRED_FIELDS = ['date_of_birth']
 

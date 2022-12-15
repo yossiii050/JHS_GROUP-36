@@ -25,25 +25,14 @@ from django.contrib.auth.hashers import make_password
 #     context={'form':form}
 #     return render(request, 'candidatereg.html',context)
 
-def employerRegPage2(request):
-    if (request.method == 'POST'):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-    user = User.objects.create_user(
-            email=email,
-            name=username,  
-            password=password,
-        )      
-    user.set_password(password)
-    user.save()
-    return redirect('login')  
+
 
 def employerRegPage(request):
     form=CreateEmployerForm()
 
     if request.method == 'POST':
+        form=CreateEmployerForm(request.POST)
         if form.is_valid():
-            is_active=False
             form.save() 
             return redirect('login')
 
@@ -58,6 +47,7 @@ def candidateRegPage(request):
         form = CreateCandidateForm(request.POST)
         if form.is_valid():
             form.save()
+            #form.is_active = False
             #request.Post.
             return redirect('login')
     
