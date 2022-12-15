@@ -23,5 +23,5 @@ def ticket(request):
      #   return render(request,"index.html",{'form':student})  
 
 
-def tech_main(request):
+def tech_main (request):
   return render(request,'tech_main.html')
