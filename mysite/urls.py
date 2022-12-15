@@ -20,9 +20,11 @@ from users.views import loginPage,logoutUser
 from mysite.mysite.views import maintenance
 
 urlpatterns = [
+    path('jobs/',include('jobs.urls'),name="jobs"),
     path('register/',include('users.urls')),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
+    path('',home_page_view),
     path('tech/',include('tech.urls')),
     path('', home_template,name="home page"),
     path('login/',loginPage,name="login"),

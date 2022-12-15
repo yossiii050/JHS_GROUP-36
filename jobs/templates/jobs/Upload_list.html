@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Upload list</title>
+        <link rel="stylsheet" href="/static/admin/css/style2.css">
+    </head>
+    <body>
+        <h1>This is Upload list page</h1>
+        <div class="uploads">
+            {% for upload in uploads %}
+            
+                <div class="upload">
+                    <li><a href="{% url 'detail' upload.pk  %}">{{upload.title}}</a></li>
+                    <!--<p>{{upload.autor}}</p>-->
+                    <p>{{upload.subtitle}}</p>
+                    <p>{{upload.snippet}}</p>
+                    <p>{{upload.date}}</p>
+
+                </div>
+
+            {% endfor %}
+        </div>
+    </body>
+</html>
