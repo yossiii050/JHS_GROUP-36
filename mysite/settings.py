@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
     "tech.apps.TechConfig",
     "phonenumber_field",
     'users.apps.UsersConfig',
