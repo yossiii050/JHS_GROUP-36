@@ -10,6 +10,7 @@ from django.shortcuts import  redirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.hashers import make_password
 
 # def candidateRegPage(request):
 #     form = CreateCandidateForm()
@@ -24,6 +25,19 @@ from django.contrib.auth import authenticate,login,logout
 #     context={'form':form}
 #     return render(request, 'candidatereg.html',context)
 
+def employerRegPage2(request):
+    if (request.method == 'POST'):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+    user = User.objects.create_user(
+            email=email,
+            name=username,  
+            password=password,
+        )      
+    user.set_password(password)
+    user.save()
+    return redirect('login')  
+
 def employerRegPage(request):
     form=CreateEmployerForm()
 
@@ -36,6 +50,7 @@ def employerRegPage(request):
     context={'form':form}
     return render(request,'employerreg.html',context)
 
+
 def candidateRegPage(request):
     form=CreateCandidateForm()
 
@@ -43,7 +58,9 @@ def candidateRegPage(request):
         form = CreateCandidateForm(request.POST)
         if form.is_valid():
             form.save()
-            #return redirect('login')
+            #request.Post.
+            
+            return redirect('login')
     
     context={'form':form}
     return render(request,'candidatereg.html',context)
