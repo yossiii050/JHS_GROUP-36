@@ -94,7 +94,7 @@
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
-							{{form.password1}}
+							{{form.password}}
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
@@ -119,7 +119,14 @@
 				   		</div>
 					</form>
 				</div>
-		
+
+				{{form.errors}}
+
+				<div class="mt-4">
+					<div class="d-flex justify-content-center links">
+						Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
+					</div>
+				</div>
 				</div>
 			</div>
 		</div>
