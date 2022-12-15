@@ -47,8 +47,6 @@ def candidateRegPage(request):
         form = CreateCandidateForm(request.POST)
         if form.is_valid():
             form.save()
-            #form.is_active = False
-            #request.Post.
             return redirect('login')
     
     context={'form':form}
