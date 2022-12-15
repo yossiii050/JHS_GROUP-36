@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "tech.apps.TechConfig",
     "phonenumber_field",
     'users.apps.UsersConfig',
     'polls.apps.PollsConfig',
