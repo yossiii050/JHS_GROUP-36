@@ -12,19 +12,6 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.hashers import make_password
 
-# def candidateRegPage(request):
-#     form = CreateCandidateForm()
-
-#     if request.method == 'POST':
-#         form = CreateCandidateForm(request.POST)
-
-#         if form.is_valid():
-#             form.save()
-#             return redirect('login')
-        
-#     context={'form':form}
-#     return render(request, 'candidatereg.html',context)
-
 
 
 def employerRegPage(request):
@@ -46,6 +33,7 @@ def candidateRegPage(request):
     if request.method == 'POST':
         form = CreateCandidateForm(request.POST)
         if form.is_valid():
+            password = make_password(form['password1'])
             form.save()
             return redirect('login')
     

@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import ticket
 #from .functions import handle_uploaded_file  
 from django.core.files import File
+from django.template import loader
 
 
 def ticket(request):
@@ -22,4 +23,5 @@ def ticket(request):
      #   return render(request,"index.html",{'form':student})  
 
 
+from sqlite3 import SQLITE_READ
 
