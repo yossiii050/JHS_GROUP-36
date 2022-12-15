@@ -1,0 +1,15 @@
+{% load static %}
+
+<style>
+    .hello-msg
+    {
+        font-size: 18px;
+        morgin-right: 20px;
+    }
+</style>
+
+<h1>Hello World</h1>
+<h1>Hello Worlds</h1>
+<span class="hello-msg">Hello, {{request.user}}</span>
+<span><a class="hello-msg" href="{% url 'login' %}">Login</a></span>
+<span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>

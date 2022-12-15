@@ -13,8 +13,10 @@ class CreateEmployerForm(UserCreationForm):
         model=User
         fields=['username','first_name','last_name','email','age','gender','password1','password2']        
 #
-class CreateCandidateForm(UserCreationForm):   
+class CreateCandidateForm(UserCreationForm):
     class Meta:
         model=Candidate
-        fields=['username','first_name','last_name','email','password1','password2']
+        fields=['username','email','password1','password2']#,'first_name','last_name')
+        #verbose_name = 'Candidate'
+        #verbose_name_plural = 'Candidates''password1','password2'
     

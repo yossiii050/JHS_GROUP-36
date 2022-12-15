@@ -1,7 +1,8 @@
 from django.urls import path
-
+from django.contrib import admin  
 from tech import views
 
 urlpatterns = [
-    path('reg22/', views.reg22,name='tech job'),
+    path('ticket/',views.ticket),
+   # path('index/', views.index),  
 ]
