@@ -11,6 +11,7 @@ def ticket(request):
     return render(request,'ticket.html')#,{'tickets':tickets})
 
 
-
+def techhome(request):
+    return render(request,'tech.html')
 
 

@@ -4,4 +4,5 @@ from tech import views
 
 urlpatterns = [
     path('ticket/',views.ticket),
+    path('',views.techhome,name="home"),
 ]
