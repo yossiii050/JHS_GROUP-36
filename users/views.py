@@ -10,6 +10,8 @@ from django.shortcuts import  redirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
+from .functions import handle_uploaded_file  
+
 
 # def candidateRegPage(request):
 #     form = CreateCandidateForm()
@@ -68,3 +70,16 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+
+from .forms import StudentForm  
+def index(request):  
+    if request.method == 'POST':  
+        
+        student = StudentForm(request.POST, request.FILES)  
+    #if student.is_valid():  
+     #       handle_uploaded_file(request.FILES['file'])  
+        return HttpResponse("File uploaded successfuly")  
+    else:  
+        student = StudentForm()  
+        return render(request,"cv.html",{'form':student})  

@@ -4,5 +4,4 @@ from tech import views
 
 urlpatterns = [
     path('ticket/',views.ticket),
-   # path('index/', views.index),  
 ]

@@ -20,3 +20,9 @@ class CreateCandidateForm(UserCreationForm):
         #verbose_name = 'Candidate'
         #verbose_name_plural = 'Candidates''password1','password2'
     
+  
+class StudentForm(forms.Form):  
+    field = forms.CharField(label="Enter field of job",max_length=50)
+    lastname  = forms.CharField(label="Years of experience", max_length = 10)  
+    email     = forms.EmailField(label="Enter Email")  
+    file      = forms.FileField() # for creating file input  
