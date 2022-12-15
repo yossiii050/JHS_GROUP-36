@@ -6,6 +6,7 @@ from .models import ticket
 from django.core.files import File
 
 
+
 def ticket(request):
     #tickets=ticket.objects
     return render(request,'ticket.html')#,{'tickets':tickets})
@@ -22,4 +23,5 @@ def ticket(request):
      #   return render(request,"index.html",{'form':student})  
 
 
-
+def tech_main(request):
+  return render(request,'tech_main.html')
