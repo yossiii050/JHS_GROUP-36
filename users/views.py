@@ -12,10 +12,15 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.hashers import make_password
 
-def stud(request):
+def ReportEmployer(request):
     form=User.objects.all()
     context={'form':form}
-    return render(request,'v.html',context)
+    return render(request,'reportEmployer.html',context)
+
+def ReportCandidate(request):
+    form=Candidate.objects.all()
+    context={'form':form}
+    return render(request,'reportCandidate.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()

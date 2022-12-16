@@ -1,0 +1,145 @@
+
+
+{% block title %}
+All Students
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Employer Users </h1>
+            <style type="text/css">
+                table.blueTable {
+                    border: 0px solid #1C6EA4;
+                    background-color: #EEEEEE;
+                    width: 100%;
+                    text-align: center;
+                    border-collapse: collapse;
+                  }
+                  table.blueTable td, table.blueTable th {
+                    border: 1px solid #AAAAAA;
+                    padding: 4px 2px;
+                  }
+                  table.blueTable tbody td {
+                    font-size: 19px;
+                    font-weight: bold;
+                  }
+                  table.blueTable tr:nth-child(even) {
+                    background: #D0E4F5;
+                  }
+                  table.blueTable thead {
+                    background: #1C6EA4;
+                    background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+                    background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+                    background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+                    border-bottom: 2px solid #444444;
+                  }
+                  table.blueTable thead th {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #FFFFFF;
+                    text-align: center;
+                    border-left: 2px solid #D0E4F5;
+                  }
+                  table.blueTable thead th:first-child {
+                    border-left: none;
+                  }
+                  
+                  table.blueTable tfoot {
+                    font-size: 12px;
+                    font-weight: bold;
+                    color: #FFFFFF;
+                    background: #D0E4F5;
+                    background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+                    background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+                    background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+                    border-top: 2px solid #444444;
+                  }
+                  table.blueTable tfoot td {
+                    font-size: 12px;
+                  }
+                  table.blueTable tfoot .links {
+                    text-align: right;
+                  }
+                  table.blueTable tfoot .links a{
+                    display: inline-block;
+                    background: #1C6EA4;
+                    color: #FFFFFF;
+                    padding: 2px 8px;
+                    border-radius: 5px;
+                  }
+                </style>
+                <table class="tg" style="undefined;table-layout: fixed; width: 790px">
+                <colgroup>
+                <col style="width: 171px">
+                <col style="width: 196px">
+                <col style="width: 196px">
+                <col style="width: 207px">
+                <col style="width: 20px">
+                </colgroup>
+
+
+                
+                <table class="blueTable">
+                    <thead>
+                    <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    </tr>
+                    </thead>
+            {% for data in form %}
+            <tbody>
+                <tr>
+                <td>{{data.username}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.first_name}}</td>
+                <td> {{data.last_name}}</td>
+                </tr>
+            </tbody>                    
+            
+            {% endfor %}
+                    </table>
+                
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<button id="button">Print me</button>   
+                        
+    <table id="printTable" class="display responsive-table " style=" margin-bottom:50px; border-radius: 4px;"  >
+    <thead>
+    <tr >
+    <th>Sl.No.</th>
+    <th>Description</th>
+    <th>Balance</th>
+    
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+    
+    <script>
+    function printData()
+    {
+      
+        var divToPrint=document.getElementById("printTable");
+        newWin= window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.document.close();
+        newWin.print();
+        //newWin.close();
+    }
+
+    document.querySelector("#button").addEventListener("click", function(){
+      printData();
+    });
+    
+    </script>
+
+    {{data.username}}
