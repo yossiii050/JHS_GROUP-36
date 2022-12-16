@@ -6,6 +6,20 @@
     <body>
         <h1>This is UploadJob page</h1>
         <p>Welcome to JHS</p>
+      
+        <form method="POST" class="post-form" enctype="multipart/form-data">
+            {%csrf_token%}   
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+            
+        </form>
+          
+    
+
+       <!-- <a href="{% url 'list' %}">
+            <button>Back to JobList</button>
+            </a>-->
+
     </body>
 </html>
 

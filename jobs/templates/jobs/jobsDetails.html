@@ -4,16 +4,19 @@
         <title>Upload list</title>
         <link rel="stylsheet" href="/static/admin/css/style2.css">
     </head>
-    <body>
-            
-                <div class="upload">
-                    <li><a href="/jobs/templates/jobs/jobsDetails.html">{{upload.title}}</a></li>
-                    <p>{{upload.autor}}</p>
-                    <p>{{upload.subtitle}}</p>
-                   <!-- <p>{{upload.snippet}}</p> -->
-                    <p>{{upload.date}}</p>
-                    
-                </div>
-
+    <body> 
+        <div class="jobs-details">
+            <div class="job">
+                <h2>{{job.title}}</h2>
+                <p>{{job.body}}</p>
+                
+                <p>{{job.date}}</p>
+            </div>
+        </div>
+        <a href="{% url 'list' %}">
+            <!--<input type="submit" value="Upload job" href="/jobs/templates/jobs/uploadJob.html">-->
+            <button>Back to JobList</button>
+            </a>
+        
     </body>
 </html>

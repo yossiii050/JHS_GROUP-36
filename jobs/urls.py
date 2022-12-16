@@ -8,10 +8,7 @@ urlpatterns = [
     path('upload/',views.uploadJob,name='upload'),
     path('update/',views.upldateJob),
     path('',views.Upload_list,name='list'),
-    path('<str:pk>',views.job_details,name='detail'),
-    #path('job/<int:pk>',job_details,name='job'),
-    #path('id/',name='jobIndex'), 
-    #path(r'^(?P<abc>[\w-]+/$')
+    path('<str:slug>',views.job_details,name='detail'),
+    path('uploadJob/',views.index)
 ]
 
-#urlpatterns += staticfiles_urlpatterns()

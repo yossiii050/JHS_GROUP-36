@@ -10,7 +10,7 @@
             {% for upload in uploads %}
             
                 <div class="upload">
-                    <li><a href="{% url 'detail' upload.pk  %}">{{upload.title}}</a></li>
+                  <h2>  <li><a href="{% url 'detail' upload.slug  %}">{{upload.title}}</a></li></h2>
                     <!--<p>{{upload.autor}}</p>-->
                     <p>{{upload.subtitle}}</p>
                     <p>{{upload.snippet}}</p>
@@ -20,7 +20,7 @@
             <a href="{% url 'upload' %}">
             <!--<input type="submit" value="Upload job" href="/jobs/templates/jobs/uploadJob.html">-->
             <button>Upload job</button>
-        </a>
+            </a>
         </div>
     </body>
 </html>

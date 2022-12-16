@@ -1,15 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.db import models
+from django.contrib.auth.models import AbstractUser,User,BaseUserManager, AbstractBaseUser
+import os
+from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.forms import UserCreationForm #user create from django firms
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 
 class Upload(models.Model): #The dataBase knows to create a table for this model
-    title=models.CharField(max_length=50,null=True)
+    title=models.CharField(max_length=60,null=True)
     #author=models.ForeignKey(User,on_delete=models.CASCADE)
     subTitle=models.CharField(max_length=100)
     slug=models.SlugField()
-    body=models.TextField()
+    body=models.TextField(max_length=200)
     date=models.DateTimeField(auto_now_add=True) #automaticly applied
+
 
     def __str__(self):
         return self.title
@@ -21,4 +28,12 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
         return reverse("upload_detail", kwargs={"slug": self.slug})
 
 
-# Create your models here.
+from .choices import * 
+
+class StudentForm(models.Model):
+    
+    #user = models.OneToOneField(User)    
+    field = models.IntegerField(choices=FIELD_CHOICES, default=1)   
+    yearsexp = models.IntegerField(choices=YEARS_CHOICES, default=1)
+    education = models.IntegerField(choices=EDUCATION_CHOICES, default=1)
+    GitUrl = models.URLField(max_length=25)
