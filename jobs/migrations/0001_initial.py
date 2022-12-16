@@ -15,10 +15,10 @@ class Migration(migrations.Migration):
             name='Upload',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=50, null=True)),
+                ('title', models.CharField(max_length=60, null=True)),
                 ('subTitle', models.CharField(max_length=100)),
                 ('slug', models.SlugField()),
-                ('body', models.TextField()),
+                ('body', models.TextField(max_length=200)),
                 ('date', models.DateTimeField(auto_now_add=True)),
             ],
         ),
