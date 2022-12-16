@@ -10,19 +10,29 @@ from django.shortcuts import  redirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
+from .functions import handle_uploaded_file  
 
-# def candidateRegPage(request):
-#     form = CreateCandidateForm()
+from django.contrib.auth.hashers import make_password
 
-#     if request.method == 'POST':
-#         form = CreateCandidateForm(request.POST)
+def changestatus(request):
+    user = User.objects.get()
+    user.is_active = True
+    user.save()
 
-#         if form.is_valid():
-#             form.save()
-#             return redirect('login')
-        
-#     context={'form':form}
-#     return render(request, 'candidatereg.html',context)
+def approveEmp(request):
+    form=User.objects.filter(is_active=False)
+    context={'form':form}
+    return render(request,'appr.html',context)
+
+def ReportEmployer(request):
+    form=User.objects.all()
+    context={'form':form}
+    return render(request,'reportEmployer.html',context)
+
+def ReportCandidate(request):
+    form=Candidate.objects.all()
+    context={'form':form}
+    return render(request,'reportCandidate.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()
@@ -30,11 +40,12 @@ def employerRegPage(request):
     if request.method == 'POST':
         form=CreateEmployerForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save() 
             return redirect('login')
 
     context={'form':form}
     return render(request,'employerreg.html',context)
+
 
 def candidateRegPage(request):
     form=CreateCandidateForm()
@@ -43,7 +54,7 @@ def candidateRegPage(request):
         form = CreateCandidateForm(request.POST)
         if form.is_valid():
             form.save()
-            #return redirect('login')
+            return redirect('login')
     
     context={'form':form}
     return render(request,'candidatereg.html',context)
@@ -68,3 +79,19 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+from .models import CVForm
+from .forms import CVForm  
+def index(request):  
+    if request.method == 'POST':  
+        
+        student = CVForm(request.POST, request.FILES)  
+        if student.is_valid():  
+            handle_uploaded_file(request.FILES['file'])  
+            return HttpResponse("File uploaded successfuly",usershome)  
+    else:  
+        student = CVForm()  
+        return render(request,"cv.html",{'form':student})  
+
+def usershome(request):
+    return render(request,'users.html')
