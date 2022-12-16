@@ -9,14 +9,12 @@ from django.contrib.auth.models import User #impor user databased
 class CreateEmployerForm(UserCreationForm):
     age = forms.IntegerField()
     gender = forms.CharField()
+    is_active=False
     class Meta:
         model=User
-        fields=['username','first_name','last_name','email','age','gender','password1','password2']        
+        fields=['username','first_name','last_name','email','age','gender','password1','password2','is_active']        
 #
 class CreateCandidateForm(UserCreationForm):
     class Meta:
         model=Candidate
-        fields=['username','email','password1','password2']#,'first_name','last_name')
-        #verbose_name = 'Candidate'
-        #verbose_name_plural = 'Candidates''password1','password2'
-    
+        fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth','phone_number')      
