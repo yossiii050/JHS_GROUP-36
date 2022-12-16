@@ -30,5 +30,6 @@ urlpatterns = [
     path('login/',loginPage,name="login"),
     path('logout/',logoutUser,name="logout"),
     path('maintenance/', maintenance),
+    path('users/', include('users.urls')),
 
 ]

@@ -36,4 +36,15 @@ class Candidate(models.Model):
 
     
        
+from .choices import * 
 
+class CVForm(models.Model):
+    #user = models.OneToOneField(User)    
+    field = models.IntegerField(choices=FIELD_CHOICES, default=1)   
+    yearsexp = models.IntegerField(choices=YEARS_CHOICES, default=1)
+    education = models.IntegerField(choices=EDUCATION_CHOICES, default=1)
+    GitUrl = models.URLField(max_length=25)  
+    
+
+    def __str__(self):
+           return self.GitUrl
