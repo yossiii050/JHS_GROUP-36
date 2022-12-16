@@ -1,0 +1,51 @@
+
+
+{% block title %}
+All Students
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>All users </h1>
+            {% for data in form %}
+                {{data.username}}
+                {{data.email}}
+                {{data.first_name}}
+                {{data.last_name}}
+            
+
+                <style type="text/css">
+                    .tg  {border-collapse:collapse;border-spacing:0;}
+                    .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                      overflow:hidden;padding:10px 5px;word-break:normal;}
+                    .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                      font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                    .tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
+                    .tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
+                    </style>
+                    <table class="tg" style="undefined;table-layout: fixed; width: 790px">
+                    <colgroup>
+                    <col style="width: 171px">
+                    <col style="width: 196px">
+                    <col style="width: 196px">
+                    <col style="width: 207px">
+                    <col style="width: 20px">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <td class="tg-7btt">username</td>
+                        <td class="tg-7btt">email</td>
+                        <td class="tg-amwm">first name</td>
+                        <td class="tg-amwm">last name</td>
+                        <td class="tg-amwm"></td>
+                      </tr>
+                    </thead>
+                    </table>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
