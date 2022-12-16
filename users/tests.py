@@ -5,6 +5,30 @@ import datetime
 from datetime import date,timedelta
 from collections import OrderedDict
 from asyncio import Task
+from users.models import Candidate,User
+from django.urls import reverse
+
+
+class ReportViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Create 13 authors for pagination tests
+        number_of_Candidate = 7
+        number_of_User = 7
+
+        for user_id in range(number_of_User):
+                User.objects.create(
+                    first_name=f'Dominique {user_id}',
+                    last_name=f'Surname {user_id}',
+                )
+        for user_id in range(number_of_Candidate):
+                Candidate.objects.create(
+                    first_name=f'Dominique {user_id}',
+                    last_name=f'Surname {user_id}',
+                )        
+    
+
+
 
 class SigninTestEmployer(TestCase):
 
