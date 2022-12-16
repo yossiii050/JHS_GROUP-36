@@ -79,8 +79,17 @@ All Students
                 <col style="width: 20px">
                 </colgroup>
 
-
-                
+                <button id="button">Print me</button>   
+                        
+                <table id="printTable" class="display responsive-table " style=" margin-bottom:50px; border-radius: 4px;"  >
+                <thead>
+                  <script>
+                    function printData()
+                    {
+                      
+                        var divToPrint=document.getElementById("printTable");
+                        newWin= window.open("");
+                        newWin.document.write(divToPrint.outerHTML);
                 <table class="blueTable">
                     <thead>
                     <tr>
@@ -103,6 +112,10 @@ All Students
             {% endfor %}
                     </table>
                 
+        newWin.document.close();
+        newWin.print();
+        //newWin.close();
+    }
         </div>
     </div>
 </div>
@@ -124,17 +137,7 @@ All Students
     </tbody>
   </table>
     
-    <script>
-    function printData()
-    {
-      
-        var divToPrint=document.getElementById("printTable");
-        newWin= window.open("");
-        newWin.document.write(divToPrint.outerHTML);
-        newWin.document.close();
-        newWin.print();
-        //newWin.close();
-    }
+    
 
     document.querySelector("#button").addEventListener("click", function(){
       printData();

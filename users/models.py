@@ -17,47 +17,15 @@ class Candidate(User):
     )
     User.first_name = models.CharField(max_length=30)
     User.last_name = models.CharField(max_length=30)
-    #User.password = models.CharField(max_length=50)
     User.password = models.CharField(('password'), max_length=128)
-    User.id=models.CharField(max_length=9)
+    Id=models.CharField(max_length=9)
     USERNAME_FIELD = 'email'
+    date_of_birth = models.DateField()
+    phone_number = PhoneNumberField(blank=True)
+    
     objects = UserManager()
         
 
-class Candidate1(AbstractBaseUser):
 
-
-    verbose_name = 'Candidate'
-    last_login = models.DateTimeField(("last login"), blank=True, null=True)
-
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    #name = models.CharField(max_length=128)
-    #User.username=models.CharField(max_length=100)
-    USERNAME_FIELD = 'username'
-    username=models.CharField(max_length=100)
-    email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
-        unique=True,
-    )
-    password1 = models.CharField(max_length=50)
-    password2 = models.CharField(max_length=50)
-    #is_active = models.BooleanField()#default=False)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    password = models.CharField(max_length=150)
-    password = models.CharField(('password'), max_length=128)
-    #UserCreationForm.password1=models.CharField(max_length=50)
-    #UserCreationForm.password2=models.CharField(max_length=50)
-    #website = models.URLField(blank=True)
-    #date_of_birth = models.DateField()
-    #phone_number = PhoneNumberField(blank=True)
-    #hashed_password = make_password(raw_password)
-    
-    USERNAME_FIELD = 'email'
-    #REQUIRED_FIELDS = ['date_of_birth']
-    #password = make_password(password)
-    
-    objects = UserManager()
 
     

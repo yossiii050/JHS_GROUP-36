@@ -39,7 +39,7 @@ def employerRegPage(request):
         form=CreateEmployerForm(request.POST)
         if form.is_valid():
             form.save() 
-            return redirect('ogin')
+            return redirect('login')
 
     context={'form':form}
     return render(request,'employerreg.html',context)
