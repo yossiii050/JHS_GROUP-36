@@ -1,25 +1,41 @@
 <html>
-    <head>
+    <head> <center>
         <meta charset="utf-8">
         <title>UploadJob</title>
     </head>
     <body>
-        <h1>This is UploadJob page</h1>
-        <p>Welcome to JHS</p>
-      
-        <form method="POST" class="post-form" enctype="multipart/form-data">
-            {%csrf_token%}   
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Save</button>
+        <div><b><textarea:justify>
+
+       
+                <h1>This is UploadJob page</h1>
+                <br/><br/>
+                <p>Welcome to JHS</p>
             
-        </form>
+                    <h1>Add Uploads To Database</h1>
+                    <br/><br/>
+                    {% if submitted %}
+                        your Upload was submitted successfuly!!
+                    {% else }
+
+                    {% endif %}
+                        <form action="" method=POST>
+                            {% csrf_token %}
+                            {{ form.as_p }}
+
+                            <br/><br/>
+                            <input type="submit" value="Submit" class="btn btn-secondary">
+
+
+                        </form>
+       
           
-    
-
-       <!-- <a href="{% url 'list' %}">
-            <button>Back to JobList</button>
-            </a>-->
-
-    </body>
+                <br/><br/>
+                <br/><br/>
+            <a href="{% url 'list' %}">
+                    <button>Back to JobList</button>
+                    </a>
+                 </textarea:justify>
+       </b> </div>
+    </body></center>
 </html>
 

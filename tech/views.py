@@ -10,15 +10,15 @@ def ticket(request):
     #tickets=ticket.objects
     return render(request,'ticket.html')#,{'tickets':tickets})
 
-#from .forms import StudentForm  
+#from .forms import Upload  
 #def index(request):  
  #   if request.method == 'POST':  
-  #      student = StudentForm(request.POST, request.FILES)
+  #      student = Upload(request.POST, request.FILES)
    # if student.is_valid():  
     #        handle_uploaded_file(request.FILES['file'])  
      #       return HttpResponse("File uploaded successfuly")  
    # else:  
-    #    student = StudentForm()  
+    #    student = Upload()  
      #   return render(request,"index.html",{'form':student})  
 
 

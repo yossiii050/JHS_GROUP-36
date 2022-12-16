@@ -7,6 +7,7 @@ import os
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from .choices import * 
 
 
 class Upload(models.Model): #The dataBase knows to create a table for this model
@@ -16,7 +17,12 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     slug=models.SlugField()
     body=models.TextField(max_length=200)
     date=models.DateTimeField(auto_now_add=True) #automaticly applied
-
+    category = models.IntegerField(choices=FIELD_CHOICES, default=1)  
+    salaryRange = models.IntegerField(choices=SALARY_CHOICES, default=1)   
+    yearsexp = models.IntegerField(choices=YEARS_CHOICES, default=1)
+    education=models.CharField(max_length=60,null=True)
+    time=models.IntegerField(choices=TIME_CHOICES, default=1)
+    hybrid=models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
@@ -26,14 +32,3 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
 
     def get_absolute_url(self):
         return reverse("upload_detail", kwargs={"slug": self.slug})
-
-
-from .choices import * 
-
-class StudentForm(models.Model):
-    
-    #user = models.OneToOneField(User)    
-    field = models.IntegerField(choices=FIELD_CHOICES, default=1)   
-    yearsexp = models.IntegerField(choices=YEARS_CHOICES, default=1)
-    education = models.IntegerField(choices=EDUCATION_CHOICES, default=1)
-    GitUrl = models.URLField(max_length=25)

@@ -1,8 +1,6 @@
 from django.contrib import admin
-from .models import Upload,StudentForm
-
+from .models import Upload
 
 admin.site.register(Upload)
-admin.site.register(StudentForm)
 
 # Register your models here.

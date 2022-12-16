@@ -22,3 +22,16 @@ EDUCATION_CHOICES = (
     (3, ("Diploma")),
     (4, ("Practical engineer")),
 )
+
+SALARY_CHOICES = (
+    (1, ("0-10000")),
+    (2, ("10000-15000")),
+    (3, ("15000-30000")),
+    (4, ("30000+")),
+)
+
+TIME_CHOICES = (
+    (1, ("full time")),
+    (2, ("part time")),
+    (3, ("shifts")),
+)
