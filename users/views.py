@@ -12,6 +12,16 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.hashers import make_password
 
+def changestatus(request):
+    user = User.objects.get()
+    user.is_active = True
+    user.save()
+
+def approveEmp(request):
+    form=User.objects.filter(is_active=False)
+    context={'form':form}
+    return render(request,'appr.html',context)
+
 def ReportEmployer(request):
     form=User.objects.all()
     context={'form':form}

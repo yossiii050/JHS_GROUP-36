@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from polls.views import home_page_view,home_template
-from users.views import loginPage,logoutUser,ReportEmployer,ReportCandidate
+from users.views import loginPage,logoutUser,ReportEmployer,ReportCandidate,approveEmp,changestatus
 from mysite.mysite.views import maintenance
 
 urlpatterns = [
@@ -32,4 +32,7 @@ urlpatterns = [
     path('maintenance/', maintenance),
     path('ReportEmployer/',ReportEmployer),
     path('ReportCandidate/',ReportCandidate),
+    path('appr/',approveEmp),
+    path('<str:pk>',changestatus,name='changeact'),
+
 ]
