@@ -7,4 +7,5 @@ urlpatterns = [
     path('employer/', views.employerRegPage,name='employer register'), 
     path('candidate/', views.candidateRegPage,name='candidate register'),
     path('cv/', views.index),  
+    path('',views.usershome,name="home"),
 ]

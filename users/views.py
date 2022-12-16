@@ -71,16 +71,18 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-from .models import StudentForm
-from .forms import StudentForm  
+from .models import CVForm
+from .forms import CVForm  
 def index(request):  
     if request.method == 'POST':  
         
-        student = StudentForm(request.POST, request.FILES)  
-    #if student.is_valid():  
-     #       handle_uploaded_file(request.FILES['file'])  
-        return HttpResponse("File uploaded successfuly")  
+        student = CVForm(request.POST, request.FILES)  
+        if student.is_valid():  
+            handle_uploaded_file(request.FILES['file'])  
+            return HttpResponse("File uploaded successfuly",usershome)  
     else:  
-        student = StudentForm()  
+        student = CVForm()  
         return render(request,"cv.html",{'form':student})  
 
+def usershome(request):
+    return render(request,'users.html')
