@@ -17,7 +17,6 @@ class CreateEmployerForm(UserCreationForm):
 class CreateCandidateForm(UserCreationForm):
     class Meta:
         model=Candidate
-        fields=['username','email','password1','password2']#,'first_name','last_name')
-        #verbose_name = 'Candidate'
+        fields=('username','email','password1','password2','first_name','last_name','id')        #verbose_name = 'Candidate'
         #verbose_name_plural = 'Candidates''password1','password2'
     

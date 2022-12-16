@@ -6,8 +6,25 @@ from django.contrib.auth.forms import UserCreationForm #user create from django 
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.hashers import make_password
 from datetime import timezone
-    
-class Candidate(AbstractBaseUser):
+
+class Candidate(User):
+    verbose_name = 'Candidate'
+    User.username=models.CharField(max_length=100)
+    User.email = models.EmailField(
+        verbose_name='email address',
+        max_length=255,
+        unique=True,
+    )
+    User.first_name = models.CharField(max_length=30)
+    User.last_name = models.CharField(max_length=30)
+    #User.password = models.CharField(max_length=50)
+    User.password = models.CharField(('password'), max_length=128)
+    User.id=models.CharField(max_length=9)
+    USERNAME_FIELD = 'email'
+    objects = UserManager()
+        
+
+class Candidate1(AbstractBaseUser):
 
 
     verbose_name = 'Candidate'
@@ -26,8 +43,8 @@ class Candidate(AbstractBaseUser):
     password1 = models.CharField(max_length=50)
     password2 = models.CharField(max_length=50)
     #is_active = models.BooleanField()#default=False)
-    #User.first_name = models.CharField(max_length=30)
-    #User.last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     password = models.CharField(max_length=150)
     password = models.CharField(('password'), max_length=128)
     #UserCreationForm.password1=models.CharField(max_length=50)
