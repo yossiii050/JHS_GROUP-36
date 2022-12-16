@@ -39,7 +39,7 @@ def employerRegPage(request):
         form=CreateEmployerForm(request.POST)
         if form.is_valid():
             form.save() 
-            return redirect('login')
+            return redirect('ogin')
 
     context={'form':form}
     return render(request,'employerreg.html',context)
@@ -51,7 +51,6 @@ def candidateRegPage(request):
     if request.method == 'POST':
         form = CreateCandidateForm(request.POST)
         if form.is_valid():
-            password = make_password(form['password1'])
             form.save()
             return redirect('login')
     

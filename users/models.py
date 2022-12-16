@@ -5,10 +5,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.hashers import make_password
-
+from datetime import timezone
     
 class Candidate(AbstractBaseUser):
+
+
     verbose_name = 'Candidate'
+    last_login = models.DateTimeField(("last login"), blank=True, null=True)
 
     #user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     #name = models.CharField(max_length=128)
@@ -26,15 +29,18 @@ class Candidate(AbstractBaseUser):
     #User.first_name = models.CharField(max_length=30)
     #User.last_name = models.CharField(max_length=30)
     password = models.CharField(max_length=150)
-
+    password = models.CharField(('password'), max_length=128)
     #UserCreationForm.password1=models.CharField(max_length=50)
     #UserCreationForm.password2=models.CharField(max_length=50)
     #website = models.URLField(blank=True)
     #date_of_birth = models.DateField()
     #phone_number = PhoneNumberField(blank=True)
-
+    #hashed_password = make_password(raw_password)
     
     USERNAME_FIELD = 'email'
     #REQUIRED_FIELDS = ['date_of_birth']
+    #password = make_password(password)
+    
+    objects = UserManager()
 
     
