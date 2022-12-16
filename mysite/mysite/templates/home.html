@@ -8,8 +8,19 @@
     }
 </style>
 
-<h1>Hello World</h1>
-<h1>Hello Worlds</h1>
+
+<html>
+<body>
+<button onclick="window.open(profilePage, '_blank'); return false;"
+                    class="btn btn-default" data-dismiss="modal">Go To The Profile Page</button>
+</body>
+
+<script>
+    let profilePage = "{% url 'profile' %}";
+</script>
+</html>
+
 <span class="hello-msg">Hello, {{request.user}}</span>
 <span><a class="hello-msg" href="{% url 'login' %}">Login</a></span>
-<span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+<span><a class="hello-msg" href="{% url 'ReportEmployer' %}">Report for Employer</a></span>
+<span><a class="hello-msg" href="{% url 'ReportCandidate' %}">Report for Candidate</a></span>

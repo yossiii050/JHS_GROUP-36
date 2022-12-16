@@ -30,9 +30,11 @@ urlpatterns = [
     path('login/',loginPage,name="login"),
     path('logout/',logoutUser,name="logout"),
     path('maintenance/', maintenance),
-    path('ReportEmployer/',ReportEmployer),
-    path('ReportCandidate/',ReportCandidate),
+    path('ReportEmployer/',ReportEmployer,name="ReportEmployer"),
+    path('ReportCandidate/',ReportCandidate,name="ReportCandidate"),
     path('appr/',approveEmp),
     path('<str:pk>',changestatus,name='changeact'),
+    path('Reports/',approveEmp),
+    
 
 ]
