@@ -71,7 +71,7 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-
+from .models import StudentForm
 from .forms import StudentForm  
 def index(request):  
     if request.method == 'POST':  
@@ -83,3 +83,4 @@ def index(request):
     else:  
         student = StudentForm()  
         return render(request,"cv.html",{'form':student})  
+

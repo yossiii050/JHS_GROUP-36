@@ -20,9 +20,11 @@ class CreateCandidateForm(UserCreationForm):
         #verbose_name = 'Candidate'
         #verbose_name_plural = 'Candidates''password1','password2'
     
-  
+
+from .choices import * 
 class StudentForm(forms.Form):  
-    field = forms.CharField(label="Enter field of job",max_length=50)
-    lastname  = forms.CharField(label="Years of experience", max_length = 10)  
-    email     = forms.EmailField(label="Enter Email")  
+    field = forms.ChoiceField(choices = FIELD_CHOICES, label="Field of work", initial='', widget=forms.Select(), required=True)
+    yearsexp  = forms.ChoiceField(choices = YEARS_CHOICES,label="Years of experience",required=True)  
+    education = forms.ChoiceField(choices = EDUCATION_CHOICES, label="Education", widget=forms.Select(), required=True)
+    GitUrl = forms.URLField(max_length=25,label= "Git-URL")  
     file      = forms.FileField() # for creating file input  
