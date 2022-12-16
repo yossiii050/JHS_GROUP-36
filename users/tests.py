@@ -6,6 +6,7 @@ from datetime import date,timedelta
 from collections import OrderedDict
 from asyncio import Task
 from users.models import Candidate,User
+from django.urls import reverse
 
 
 class ReportViewTest(TestCase):
@@ -19,14 +20,15 @@ class ReportViewTest(TestCase):
                 User.objects.create(
                     first_name=f'Dominique {user_id}',
                     last_name=f'Surname {user_id}',
-                    username=f'Surname {user_id}',
                 )
         for user_id in range(number_of_Candidate):
                 Candidate.objects.create(
                     first_name=f'Dominique {user_id}',
                     last_name=f'Surname {user_id}',
-                    username=f'Surname {user_id}',
                 )        
+    
+
+
 
 class SigninTestEmployer(TestCase):
 
