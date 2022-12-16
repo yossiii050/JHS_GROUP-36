@@ -1,9 +1,4 @@
 
-
-{% block title %}
-All Students
-{% endblock title %}
-
 {% block content %}
 <div class="container">
     <div class="row">
@@ -85,7 +80,7 @@ All Students
                   <thead>
                   <tr>
                   <th>Username</th>
-                  <th>Email</th>
+                  <th>approved</th>
                   
                   </tr>
                   </thead>
@@ -93,7 +88,7 @@ All Students
           <tbody>
               <tr>
               <td>{{data.username}}</td>
-              <td><span><a class="hello-msg" href="{% url 'changestatus' %}">Report for Employe</a></span></td>
+              <td> <button type="submit" class ="save btn btn-default">approved</button></td>
               
               </tr>
           </tbody>                    
