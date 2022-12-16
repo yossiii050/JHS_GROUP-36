@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from .models import ticket
 #from .functions import handle_uploaded_file  
 from django.core.files import File
+from django.contrib.auth.models import Group
+
 
 
 
@@ -26,6 +28,14 @@ def ticket(request):
 def tech_main (request):
   return render(request,'tech_main.html')
 
+
 def tech_approve_employer(request):
-  context = {} 
-  return render(request,'tech_approve_employer.html')
+ # my_group=Group.objects.get(name="pending")
+  form=Group.name()
+  context={'form':form}
+  return render(request,'tech_approve_employer.html',context)
+
+
+#def tech_approve_employer1(request):
+ # context = {} 
+  #return render(request,'tech_approve_employer.html')
