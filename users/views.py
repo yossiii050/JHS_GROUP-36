@@ -12,19 +12,27 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 from .functions import handle_uploaded_file  
 
+from django.contrib.auth.hashers import make_password
 
-# def candidateRegPage(request):
-#     form = CreateCandidateForm()
+def changestatus(request):
+    user = User.objects.get()
+    user.is_active = True
+    user.save()
 
-#     if request.method == 'POST':
-#         form = CreateCandidateForm(request.POST)
+def approveEmp(request):
+    form=User.objects.filter(is_active=False)
+    context={'form':form}
+    return render(request,'appr.html',context)
 
-#         if form.is_valid():
-#             form.save()
-#             return redirect('login')
-        
-#     context={'form':form}
-#     return render(request, 'candidatereg.html',context)
+def ReportEmployer(request):
+    form=User.objects.all()
+    context={'form':form}
+    return render(request,'reportEmployer.html',context)
+
+def ReportCandidate(request):
+    form=Candidate.objects.all()
+    context={'form':form}
+    return render(request,'reportCandidate.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()
@@ -32,11 +40,12 @@ def employerRegPage(request):
     if request.method == 'POST':
         form=CreateEmployerForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save() 
             return redirect('login')
 
     context={'form':form}
     return render(request,'employerreg.html',context)
+
 
 def candidateRegPage(request):
     form=CreateCandidateForm()
@@ -45,7 +54,7 @@ def candidateRegPage(request):
         form = CreateCandidateForm(request.POST)
         if form.is_valid():
             form.save()
-            #return redirect('login')
+            return redirect('login')
     
     context={'form':form}
     return render(request,'candidatereg.html',context)
