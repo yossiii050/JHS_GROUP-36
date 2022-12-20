@@ -73,4 +73,3 @@ class SigninTestCandidate(TestCase):
         self.assertFalse(CreateCandidateForm is not None and CreateCandidateForm.is_authenticated)        
 
 
-
