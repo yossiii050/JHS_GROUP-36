@@ -7,7 +7,7 @@ set_maintenance_mode(True)
 
 if get_maintenance_mode():
     set_maintenance_mode(False)
-    
+
 def index(request):
     return HttpResponse('Index page')
 
