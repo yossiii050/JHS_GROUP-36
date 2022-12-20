@@ -1,5 +1,6 @@
 <html>
     <head>
+        <center>
         <meta charset="utf-8">
         <title>Upload list</title>
         <link rel="stylsheet" href="/static/admin/css/style2.css">
@@ -10,15 +11,16 @@
             {% for upload in uploads %}
             
                 <div class="upload">
-                    <li><a href="{% url 'detail' upload.pk  %}">{{upload.title}}</a></li>
-                    <!--<p>{{upload.autor}}</p>-->
+                  <h2>  <li><a href="{% url 'detail' upload.slug  %}">{{upload.title}}</a></li></h2>
                     <p>{{upload.subtitle}}</p>
                     <p>{{upload.snippet}}</p>
                     <p>{{upload.date}}</p>
-
                 </div>
-
             {% endfor %}
+            <a href="{% url 'upload' %}">
+            <button>Upload job</button>
+            </a>
         </div>
     </body>
+</center>
 </html>

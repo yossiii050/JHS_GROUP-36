@@ -5,13 +5,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 #from jobs import views
 
 urlpatterns = [
-    path('upload/',views.uploadJob),
-    path('update/',views.upldateJob),
+    path('upload/',views.uploadJob,name='upload'),
+    path('update/',views.updateJob),
     path('',views.Upload_list,name='list'),
-    path('<str:pk>',views.job_details,name='detail'),
-    #path('job/<int:pk>',job_details,name='job'),
-    #path('id/',name='jobIndex'), 
-    #path(r'^(?P<abc>[\w-]+/$')
+    path('<str:slug>',views.job_details,name='detail'),
 ]
 
-#urlpatterns += staticfiles_urlpatterns()
