@@ -15,12 +15,16 @@
 </head>
 <body>
 <article>
-    {% if COMING_SOON %}
+    {% if maintenance_mode  %}
+    
         <h1>We&rsquo;ll be back soon!</h1>
         <div>
-            <p>Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. If you need to you can always <a href="mailto:mymail@domain.com">contact us</a>, otherwise we&rsquo;ll be back online shortly!</p>
+            <pSorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. If you need to you can always <a href="mailto:mymail@domain.com">contact us</a>, otherwise we&rsquo;ll be back online shortly!</p>
             <p>&mdash; The Team</p>
         </div>
+    {% else %}  
+    <h1>all work!</h1>
+    {% endif %}   
     </article>
 
 </body>
