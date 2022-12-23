@@ -95,3 +95,12 @@ def index(request):
 
 def usershome(request):
     return render(request,'users.html')
+
+from users.reports import registered_users_report
+
+def registered_users(request):
+    # Generate the report data
+    data = registered_users_report()
+
+    # Render the template with the report data
+    return render(request, 'reports.html', data)
