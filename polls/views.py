@@ -28,7 +28,6 @@ def maintenance(request):
     # Render the maintenance page template
     return render(request, 'maintenance.html', {'error_message': error_message})
     
-@user_passes_test(maintenance_mode_active, login_url='home page site')
 def home(request):
     if MaintenanceMiddleware.maintenance_mode:
         # Return the maintenance page template
@@ -42,3 +41,23 @@ def toggle_maintenance_mode(request):
     MaintenanceMiddleware.maintenance_mode = True
     # Redirect the user to the home page
     return redirect('maintenance')
+
+@user_passes_test(maintenance_mode_active, login_url='home page')
+def stop_maintenance_mode(request):
+    if request.method == 'POST':
+        # Get the password from the POST data
+        password = request.POST.get('password')
+        user = authenticate(request, username='admin', password=password)
+        if user is not None:
+            login(request, user)
+            # Set the maintenance_mode flag to False
+            MaintenanceMiddleware.maintenance_mode = False
+            # Redirect the user to the home page
+            return redirect('home')
+        else:
+            # Return an error message if the password is incorrect
+            error_message = 'Incorrect password'
+    else:
+        error_message = None
+    # Render the stop_maintenance_mode template
+    return render(request, 'stop_maintenance_mode.html', {'error_message': error_message})

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-04r1)oq^0b4lfz0chg^va(bbx1g=!c4%n(=p@rt_o=0ik39j0h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 MAINTENANCE_MODE_STATE_BACKEND = "maintenance_mode.backends.LocalFileBackend"
-#maintenance_mode=False
+maintenance_mode=None
 MAINTENANCE_MODE = None
 MAINTENANCE_MODE_TEMPLATE = "maintenance.html"
 
