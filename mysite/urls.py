@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from polls.views import home_page_view,home_template
+from polls.views import home_page_view,home_template,home
 from users.views import loginPage,logoutUser,ReportEmployer,ReportCandidate,approveEmp,changestatus
 from mysite.mysite.views import maintenance
 from payments.views import paymentpage
@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('payments/',paymentpage),
     path('tech/',include('tech.urls')),
-    path('', home_template,name="home page"),
+    path('', home,name="home page"),
     path('login/',loginPage,name="login"),
     path('logout/',logoutUser,name="logout"),
     path('maintenance/', maintenance),
