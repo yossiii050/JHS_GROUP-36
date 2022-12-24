@@ -15,18 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from polls.views import home_page_view,home_template
-from users.views import loginPage,logoutUser,ReportEmployer,ReportCandidate,approveEmp,changestatus
+from polls.views import home_page_view,home_template,home
+from users.views import loginPage,logoutUser,ReportEmployer,ReportCandidate,approveEmp,changestatus,registered_users
 from mysite.mysite.views import maintenance
+from payments.views import paymentpage
 
 urlpatterns = [
     path('jobs/',include('jobs.urls'),name="jobs"),
     path('register/',include('users.urls')),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
-    #path('',home_page_view),
+    path('payments/',paymentpage),
     path('tech/',include('tech.urls')),
-    path('', home_template,name="home page"),
+    path('', home,name="home page"),
     path('login/',loginPage,name="login"),
     path('logout/',logoutUser,name="logout"),
     path('maintenance/', maintenance),
@@ -35,6 +36,8 @@ urlpatterns = [
     path('ReportCandidate/',ReportCandidate,name="ReportCandidate"),
     path('appr/',approveEmp),
     path('Reports/',approveEmp),
+    path('registered-users/', registered_users, name='registered_users'),
+
     
 
 ]

@@ -8,7 +8,6 @@ from asyncio import Task
 from users.models import Candidate,User
 from django.urls import reverse
 
-
 class ReportViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -71,7 +70,6 @@ class SigninTestCandidate(TestCase):
     def test_wrong_pssword(self):
         CreateCandidateForm = authenticate(username='test', password='wrong')
         self.assertFalse(CreateCandidateForm is not None and CreateCandidateForm.is_authenticated)        
-
 
 
 class CandidateTestCase(TestCase):

@@ -1,14 +1,9 @@
 
-
-{% block title %}
-All Students
-{% endblock title %}
-
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Employer Users </h1>
+            <h1>Employer Waiting for Confirmation </h1>
             <style type="text/css">
                 table.blueTable {
                     border: 0px solid #1C6EA4;
@@ -80,54 +75,29 @@ All Students
                 </colgroup>
 
 
-            {% for data in form %}
-            <tbody>
-                <tr>
-                <td></td>
-                <a href="{% url 'changeact' %}">{{data.username}}</a>
-                </tr>
-            </tbody>                    
-            
-            {% endfor %}
-                    </table>
+               
+                <table class="blueTable">
+                  <thead>
+                  <tr>
+                  <th>Username</th>
+                  <th>approved</th>
+                  
+                  </tr>
+                  </thead>
+          {% for data in form %}
+          <tbody>
+              <tr>
+              <td>{{data.username}}</td>
+              <td> <button type="submit" class ="save btn btn-default">approved</button></td>
+              
+              </tr>
+          </tbody>                    
+          
+          {% endfor %}
+                  </table>
                 
         </div>
     </div>
 </div>
 
 {% endblock content %}
-
-<button id="button">Print me</button>   
-                        
-    <table id="printTable" class="display responsive-table " style=" margin-bottom:50px; border-radius: 4px;"  >
-    <thead>
-    <tr >
-    <th>Sl.No.</th>
-    <th>Description</th>
-    <th>Balance</th>
-    
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-    
-    <script>
-    function printData()
-    {
-      
-        var divToPrint=document.getElementById("printTable");
-        newWin= window.open("");
-        newWin.document.write(divToPrint.outerHTML);
-        newWin.document.close();
-        newWin.print();
-        //newWin.close();
-    }
-
-    document.querySelector("#button").addEventListener("click", function(){
-      printData();
-    });
-    
-    </script>
-
-    {{data.username}}

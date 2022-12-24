@@ -10,7 +10,7 @@ class ticket(models.Model):
     def __str__(self):
            return self.title
 
-
 #def numofUser()
  #   users = User.objects.all()
   #  return Response(len(users))
+
