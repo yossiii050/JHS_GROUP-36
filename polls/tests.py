@@ -3,28 +3,38 @@ from django.urls import reverse
 from polls.maintenance_middleware import MaintenanceMiddleware
 
 
-class MaintenanceModeTestCase(TestCase):
-    def test_maintenance_mode(self):
-        # Set the maintenance_mode flag to True
-        MaintenanceMiddleware.maintenance_mode = True
-
-        # Send a request to the home page
-        response = self.client.get(reverse('home page site'))
-
-        # Verify that the response redirects to the maintenance page
+class MaintenanceViewTests(TestCase):
+    def test_toggle_maintenance_mode(self):
+        response = self.client.get(reverse('toggle_maintenance_mode'))
         self.assertRedirects(response, reverse('maintenance'))
 
-        # Send a request to the maintenance page
+    def test_maintenance_view(self):
+        response = self.client.post(reverse('maintenance'), {'password': 'wrongpassword'})
+        self.assertContains(response, 'Incorrect password')
         response = self.client.get(reverse('maintenance'))
+        self.assertContains(response, 'Enter password')
 
-        # Verify that the response status code is 200
+
+    def test_maintenance_view_with_maintenance_mode_on(self):
+        MaintenanceMiddleware.maintenance_mode = True
+        response = self.client.post(reverse('maintenance'), {'password': 'wrongpassword'})
+        self.assertContains(response, 'Incorrect password')
+        response = self.client.get(reverse('maintenance'))
+        self.assertContains(response, 'Enter password')
+
+    def test_toggle_maintenance_mode_with_maintenance_mode_off(self):
+        response = self.client.get(reverse('toggle_maintenance_mode'))
+        self.assertRedirects(response, reverse('maintenance'))
+        self.assertTrue(MaintenanceMiddleware.maintenance_mode)
+
+    def test_toggle_maintenance_mode_with_maintenance_mode_on(self):
+        MaintenanceMiddleware.maintenance_mode = True
+        response = self.client.get(reverse('toggle_maintenance_mode'))
+        self.assertRedirects(response, reverse('maintenance'))
+        self.assertTrue(MaintenanceMiddleware.maintenance_mode)
+
+    def test_maintenance_view_with_maintenance_mode_off_direct_access(self):
+        response = self.client.get(reverse('maintenance'))
         self.assertEqual(response.status_code, 200)
 
-        # Set the maintenance_mode flag to False
-        MaintenanceMiddleware.maintenance_mode = False
-
-        # Send a request to the home page
-        response = self.client.get(reverse('home'))
-
-        # Verify that the response status code is 200
-        self.assertEqual(response.status_code, 200)
+    

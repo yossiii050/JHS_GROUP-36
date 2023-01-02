@@ -102,7 +102,11 @@
         <h1>Job Search Website</h1>
         {% if request.user.is_authenticated %}
         <p>Welcome, {{ request.user.username }}!</p>
-        <a href="{% url 'toggle_maintenance_mode' %}">Toggle maintenance mode</a>
+
+        {% if user.is_authenticated and user.is_staff and user.is_superuser %}
+          <a href="{% url 'toggle_maintenance_mode' %}">Toggle maintenance mode</a>
+        {% endif %}
+
         <a href="logout" class="login" id="logout-button">Logout</a>
         {% else %}
         <a href="login" class="login" id="login-button">Login/Signup</a>
