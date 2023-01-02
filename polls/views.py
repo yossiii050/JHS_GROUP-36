@@ -11,12 +11,15 @@ def home_template(request):
     context={}
     return render(request,'home.html',context)
 
+
 def maintenance(request):
     if request.method == 'POST':
         # Get the password from the POST data
+        username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username='admin', password=password)
-        if user is not None:
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None and (user.is_staff or user.is_superuser):
             login(request, user)
             # Redirect the user to the home page
             MaintenanceMiddleware.maintenance_mode = False

@@ -21,6 +21,8 @@
             <p>&mdash; The Team</p>
             <form method="post">
                 {% csrf_token %}
+                <label for="username">Enter username:</label><br>
+                <input type="username" id="username" name="username"><br>
                 <label for="password">Enter password:</label><br>
                 <input type="password" id="password" name="password"><br>
                 <input type="submit" value="Stop maintenance mode">
