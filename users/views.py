@@ -16,7 +16,22 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from functools import wraps
 
+def role_required(allowed_roles=[]):
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapper(request, *args, **kwargs):
+            # Check if the user's role is in the allowed list
+            if request.user.role in allowed_roles:
+                return view_func(request, *args, **kwargs)
+            else:
+                # Redirect the user to the home page if they don't have the correct role
+                return redirect('home')
+        return wrapper
+    return decorator
+
+@user_passes_test(lambda u: u.is_staff)
 def update_user_status(request):
     if request.method == 'POST':
         user_id = request.POST['user_id']
@@ -25,7 +40,8 @@ def update_user_status(request):
         user.save()
         return JsonResponse({'message': 'User approved successfully'})
     return JsonResponse({'message': 'An error occurred while approving the user'}, status=400)
-    
+
+@user_passes_test(lambda u: u.is_staff)    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
     context={'form':form}

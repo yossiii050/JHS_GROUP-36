@@ -7,6 +7,8 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.hashers import make_password
 from datetime import timezone
 
+
+
 class Candidate(User):
     verbose_name = 'Candidate'
     User.username=models.CharField(max_length=100)
