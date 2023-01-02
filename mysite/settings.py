@@ -25,6 +25,11 @@ SECRET_KEY = 'django-insecure-04r1)oq^0b4lfz0chg^va(bbx1g=!c4%n(=p@rt_o=0ik39j0h
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+MAINTENANCE_MODE_STATE_BACKEND = "maintenance_mode.backends.LocalFileBackend"
+maintenance_mode=None
+MAINTENANCE_MODE = None
+MAINTENANCE_MODE_TEMPLATE = "maintenance.html"
+
 
 ALLOWED_HOSTS = []
 
@@ -53,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'polls.maintenance_middleware.MaintenanceMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -69,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'maintenance_mode.context_processors.maintenance_mode',
             ],
         },
     },
