@@ -85,7 +85,6 @@ def loginPage(request):
         password=request.POST.get('password')
 
         user=authenticate(request,username=username,password=password)
-
         if(user is not None):
             login(request,user)
             return redirect('home page')
@@ -123,3 +122,9 @@ def registered_users(request):
 
     # Render the template with the report data
     return render(request, 'reports.html', data)
+
+from django.contrib.auth.models import Group
+
+def view_groups(request):
+    groups = Group.objects.filter(user=request.user)
+    return render(request, 'template.html', {'groups': groups})

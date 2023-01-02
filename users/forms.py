@@ -4,6 +4,7 @@ from .models import Candidate
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.models import User #impor user databased
+from django.contrib.auth.models import Group
 
 
 class CreateEmployerForm(UserCreationForm):
@@ -11,12 +12,32 @@ class CreateEmployerForm(UserCreationForm):
     is_active=False
     class Meta:
         model=User
-        fields=['username','email','CompanyName','password1','password2','is_active']        
+        fields=['username','email','CompanyName','password1','password2','is_active']
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_active = False
+        if commit:
+            user.save()
+            group = Group.objects.get(name='Employers')
+            user.groups.add(group)
+        return user            
 #
 class CreateCandidateForm(UserCreationForm):
     class Meta:
         model=Candidate
-        fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth','phone_number') 
+        fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth','phone_number')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_active = False
+        if commit:
+            user.save()
+            group = Group.objects.get(name='Employers')
+            user.groups.add(group)
+        return user
+        
+             
 from .choices import *
 class CVForm(forms.Form):
     file      = forms.FileField() # for creating file input

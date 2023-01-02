@@ -111,7 +111,13 @@
         {% else %}
         <a href="login" class="login" id="login-button">Login/Signup</a>
         {% endif %}
-        <a href="{% url 'uplodelist' %}">Post a job</a>
+        
+        {% for group in request.user.groups.all %}
+          {% if group.name == 'Employers' %}
+            <a href="{% url 'uplodelist' %}">Post a job</a>
+          {% endif %}
+        {% endfor %}
+
       </div>
       <form class="search-form" action="/search" method="get">
         <input type="text" name="q" placeholder="Search jobs">

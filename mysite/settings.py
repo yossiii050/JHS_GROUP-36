@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jobs',
+    'rules',
+
     
 ]
 MIDDLEWARE = [
@@ -143,3 +145,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     #'/var/www/static/',
 ]
+AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
