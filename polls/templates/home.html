@@ -111,7 +111,7 @@
         {% else %}
         <a href="login" class="login" id="login-button">Login/Signup</a>
         {% endif %}
-        <a href="#">Post a job</a>
+        <a href="{% url 'uplodelist' %}">Post a job</a>
       </div>
       <form class="search-form" action="/search" method="get">
         <input type="text" name="q" placeholder="Search jobs">

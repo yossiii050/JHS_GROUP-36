@@ -17,7 +17,6 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 
-@user_passes_test(lambda u: u.is_staff)
 def update_user_status(request):
     if request.method == 'POST':
         user_id = request.POST['user_id']
