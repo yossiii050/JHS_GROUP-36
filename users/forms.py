@@ -1,5 +1,5 @@
 from django import forms
-from .models import Candidate
+from .models import Candidate,EmployerProfile
 
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
@@ -30,14 +30,18 @@ class CreateCandidateForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.is_active = False
         if commit:
             user.save()
-            group = Group.objects.get(name='Employers')
+            group = Group.objects.get(name='Candidate')
             user.groups.add(group)
         return user
-        
-             
+
+class EmployerProfileForm(forms.ModelForm):
+    
+    class Meta:
+        model = EmployerProfile
+        fields = ['bio', 'avatar', 'contact_methods', 'location', ]
+
 from .choices import *
 class CVForm(forms.Form):
     file      = forms.FileField() # for creating file input

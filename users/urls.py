@@ -8,4 +8,5 @@ urlpatterns = [
     path('candidate/', views.candidateRegPage,name='candidate register'),
     path('cv/', views.index),  
     path('',views.usershome,name="home"),
+    path('profile/', views.profile, name='users-employer_profile'),
 ]

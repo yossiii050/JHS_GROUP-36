@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import CreateEmployerForm,CreateCandidateForm
+from .forms import CreateEmployerForm,CreateCandidateForm,EmployerProfileForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -128,3 +128,18 @@ from django.contrib.auth.models import Group
 def view_groups(request):
     groups = Group.objects.filter(user=request.user)
     return render(request, 'template.html', {'groups': groups})
+
+def employer_profile(request):
+    profile = request.user.employerprofile
+    if request.method == 'POST':
+        form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('Profile_employer')
+    else:
+        form = EmployerProfileForm(instance=profile)
+    return render(request, 'Profile_employer.html', {'form': form})    
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')    
