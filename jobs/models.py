@@ -14,7 +14,7 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     title=models.CharField(max_length=60,null=True)
     #author=models.ForeignKey(User,on_delete=models.CASCADE)
     subTitle=models.CharField(max_length=100)
-    slug=models.SlugField()
+    slug=models.SlugField(unique=True)
     body=models.TextField(max_length=200)
     date=models.DateTimeField(auto_now_add=True) #automaticly applied
     category = models.IntegerField(choices=FIELD_CHOICES, default=1)  
@@ -23,6 +23,8 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     education=models.CharField(max_length=60,null=True)
     time=models.IntegerField(choices=TIME_CHOICES, default=1)
     hybrid=models.BooleanField(default=True)
+
+    
 
     def __str__(self):
         return self.title
