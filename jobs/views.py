@@ -13,8 +13,10 @@ def uploadJob(request):
     if request.method=="POST":
         form=UploadForm(request.POST)
         if form.is_valid():
+            form.instance.slug = form.cleaned_data['title']
             form.save()
-            return HttpResponseRedirect('/uploadJob?submittad=True')
+            submitted=True
+            return render(request,'jobs/success.html')
     else:
         form=UploadForm
         if 'submitted' in request.GET:
@@ -29,5 +31,8 @@ def updateJob(request):
 
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
+    #job=Upload.objects.filter(slug=slug.values())
     return render (request,'jobs/jobsDetails.html',{'job':job})
 
+def success(request):
+    return render(request,'jobs/success.html')
