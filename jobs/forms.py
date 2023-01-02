@@ -12,7 +12,9 @@ from .choices import *
 class UploadForm(ModelForm):
     class Meta:
         model=Upload
-        fields=('title','body','category','salaryRange','yearsexp','education','time','hybrid')
+        #fields="__all__"
+        fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid')
+        
         # labels={ 'title':forms.TextInput(attrs={'class':'form-control'}),
         # 'body':forms.TextInput(attrs={'class':'form-control'}),
         # 'category':forms.TextInput(attrs={'class':'form-control'}),
