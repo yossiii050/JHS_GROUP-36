@@ -80,7 +80,7 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-from .models import CVForm
+from users.models import CVForm
 from users.forms import CVForm  
 def index(request):  
     if request.method == 'POST':  

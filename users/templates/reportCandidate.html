@@ -112,36 +112,3 @@
 {% endblock content %}
 
 <button id="button">Print me</button>   
-                        
-    <table id="printTable" class="display responsive-table " style=" margin-bottom:50px; border-radius: 4px;"  >
-    <thead>
-    <tr >
-    <th>Sl.No.</th>
-    <th>Description</th>
-    <th>Balance</th>
-    
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-    
-    <script>
-    function printData()
-    {
-      
-        var divToPrint=document.getElementById("printTable");
-        newWin= window.open("");
-        newWin.document.write(divToPrint.outerHTML);
-        newWin.document.close();
-        newWin.print();
-        //newWin.close();
-    }
-
-    document.querySelector("#button").addEventListener("click", function(){
-      printData();
-    });
-    
-    </script>
-
-    {{data.username}}
