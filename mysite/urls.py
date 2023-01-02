@@ -19,6 +19,8 @@ from polls.views import home_page_view,home_template,home
 from users.views import loginPage,logoutUser,approveEmp,registered_users,ReportUsers,update_user_status
 from mysite.mysite.views import maintenance
 from payments.views import paymentpage
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('jobs/',include('jobs.urls'),name="jobs"),
@@ -40,7 +42,4 @@ urlpatterns = [
     path('update_user_status/',update_user_status,name="update_user_status"),
 
 
-
-    
-
-]
+]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
