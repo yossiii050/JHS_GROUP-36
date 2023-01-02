@@ -98,7 +98,7 @@
                     </tr>
                   </thead>
                   {% for data in form %}
-                  <form action="/appr/update_user_status/" method="post">
+                  <form action="update_user_status" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="user_id" value="{{ data.id }}">
                     <tbody>
@@ -111,32 +111,31 @@
                   {% endfor %}
                 </table>
                 <div class="message"></div>
-              </div>
-            </div>
-          </div>
           
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
           <script>
+            {% csrf_token %}
+
             $('.save').click(function(event) {
               event.preventDefault();
-            
+          
               var form = $(this).closest('form');
               var url = form.attr('action');
               var data = form.serialize();
-            
+          
               $.ajax({
+                url: '/appr/',
                 type: 'POST',
-                url: url,
-                data: data,
+                headers: {
+                  'X-CSRFToken': getCookie('csrftoken')
+                },
                 success: function(response) {
-                  // Display a success message
-                  $('.message').html('<p class="success">User approved successfully</p>');
+                  // Handle the success response
                 },
                 error: function(response) {
-                  // Display an error message
-                  $('.message').html('<p class="error">An error occurred while approving the user</p>');
+                  // Handle the error response
                 },
               });
-            });
+              
           </script>
           {% endblock content %}

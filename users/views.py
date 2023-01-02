@@ -13,16 +13,20 @@ from django.contrib.auth import authenticate,login,logout
 from .functions import handle_uploaded_file  
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
-def changestatus(request):
-    user = User.objects.get()
-    user.is_active = True
-    user.save()
-
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+@permission_required('users.can_update_user_status')
 def update_user_status(request):
     if request.method == 'POST':
         user_id = request.POST['user_id']
         user = User.objects.get(id=user_id)
+        user.is_active = True
+        user.save()
+        return JsonResponse({'message': 'User approved successfully'})
+    return JsonResponse({'message': 'An error occurred while approving the user'}, status=400)
     
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
