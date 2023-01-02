@@ -16,9 +16,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required, user_passes_test
 
-@login_required
+
 @user_passes_test(lambda u: u.is_staff)
-@permission_required('users.can_update_user_status')
 def update_user_status(request):
     if request.method == 'POST':
         user_id = request.POST['user_id']
