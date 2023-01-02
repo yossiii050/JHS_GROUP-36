@@ -24,15 +24,11 @@ def approveEmp(request):
     context={'form':form}
     return render(request,'appr.html',context)
 
-def ReportEmployer(request):
+def ReportUsers(request):
     form=User.objects.all()
     context={'form':form}
-    return render(request,'reportEmployer.html',context)
+    return render(request,'reportUser.html',context)
 
-def ReportCandidate(request):
-    form=Candidate.objects.all()
-    context={'form':form}
-    return render(request,'reportCandidate.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()

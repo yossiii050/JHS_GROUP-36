@@ -7,6 +7,8 @@ from collections import OrderedDict
 from asyncio import Task
 from users.models import Candidate,User
 from django.urls import reverse
+from users.views import ReportUsers
+from django.http import HttpRequest
 
 class ReportViewTest(TestCase):
     @classmethod
@@ -27,6 +29,11 @@ class ReportViewTest(TestCase):
                 )        
     
 
+class ReportUsersTestCase(TestCase):
+    def test_report_users_template(self):
+        request = HttpRequest()
+        request.method = 'GET'
+        response = ReportUsers(request)
 
 
 class SigninTestEmployer(TestCase):
