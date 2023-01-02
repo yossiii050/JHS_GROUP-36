@@ -10,7 +10,6 @@ from django.contrib.auth.models import User #impor user databased
 from .choices import * 
 
 class UploadForm(ModelForm):
-    slug=Upload.title
     class Meta:
         model=Upload
         #fields="__all__"
