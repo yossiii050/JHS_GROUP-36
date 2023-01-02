@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 from .functions import handle_uploaded_file  
-
+from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
 
 def changestatus(request):
@@ -19,6 +19,11 @@ def changestatus(request):
     user.is_active = True
     user.save()
 
+def update_user_status(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        user = User.objects.get(id=user_id)
+    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
     context={'form':form}

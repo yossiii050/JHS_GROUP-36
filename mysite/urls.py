@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from polls.views import home_page_view,home_template,home
-from users.views import loginPage,logoutUser,approveEmp,changestatus,registered_users,ReportUsers
+from users.views import loginPage,logoutUser,approveEmp,changestatus,registered_users,ReportUsers,update_user_status
 from mysite.mysite.views import maintenance
 from payments.views import paymentpage
 
@@ -36,6 +36,10 @@ urlpatterns = [
     path('appr/',approveEmp),
     path('Reports/',approveEmp),
     path('registered-users/', registered_users, name='registered_users'),
+    #path('appr/update_user_status',update_user_status,name="update_user_status"),
+    path('update_user_status/',update_user_status,name="update_user_status2"),
+
+
 
     
 
