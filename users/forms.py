@@ -42,6 +42,14 @@ class EmployerProfileForm(forms.ModelForm):
         model = EmployerProfile
         fields = ['bio', 'avatar', 'contact_methods', 'location', ]
 
+class UpdateProfileForm(forms.ModelForm):
+    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
+    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+    #contact_methods = forms.TextField()
+    #location = forms.CharField(max_length=255)
+    class Meta:
+        model = EmployerProfile
+        fields = ['bio', 'avatar' ]
 from .choices import *
 class CVForm(forms.Form):
     file      = forms.FileField() # for creating file input

@@ -1,69 +1,43 @@
-<html>
-  <head>
-    <style>
-        body {
-            background-color: #333;
-          }
-          
-          /* Center the form on the page */
-          form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 60%;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-          }
-          
-          /* Style the form elements */
-          form label,
-          form input,
-          form textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-top: 6px;
-            margin-bottom: 16px;
-            resize: vertical;
-          }
-          
-          /* Style the submit button */
-          form button[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-          }
-          
-          form button[type="submit"]:hover {
-            background-color: #45a049;
-          }
-          
-          /* Add some responsive styles for small screens */
-          @media screen and (max-width: 600px) {
-            form {
-              width: 100%;
-            }
-          }
-    </style>
-  </head>
-  <body>
-      {% if user.is_authenticated %}
+{% block title %}Profile Page{% endblock title %}
+{% block content %}
+    <div class="row my-3 p-3">
+        <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;"/>
+    </div>
+    {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    <div class="form-content">
         <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Save</button>
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">Username:</label>
+                            {{ form.username }}
+                        <label class="small mb-1">Email:</label>
+                            {{ form.email }}
+                    </div>
+                    <div class="form-group">
+                        <a href="#">Change Password</a>
+                        <hr>
+                        <label class="small mb-1">Change Avatar:</label>
+                        {{ profile_form.avatar }}
+                    </div>
+                    <label class="small mb-1">Bio:</label> {{ profile_form.bio }}
+                </div>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
+            <button type="reset" class="btn btn-dark btn-lg">Reset</button>
         </form>
-      {% else %}
-        <p>User is not authenticated</p>
-      {% endif %}
-  </body>
-</html>
+    </div>
+{% endblock content %}

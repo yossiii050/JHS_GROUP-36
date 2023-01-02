@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import CreateEmployerForm,CreateCandidateForm,EmployerProfileForm
+from .forms import CreateEmployerForm,CreateCandidateForm,EmployerProfileForm,UpdateProfileForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -130,15 +130,22 @@ def view_groups(request):
     return render(request, 'template.html', {'groups': groups})
 
 def employer_profile(request):
-    profile = request.user.employerprofile
+    #profile = request.user.employerprofile
     if request.method == 'POST':
         form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
+
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if form.is_valid() and profile_form.is_valid():
             form.save()
-            return redirect('Profile_employer')
+            profile_form.save()
+            messages.success(request, 'Your profile is updated successfully')
+            return redirect(to='Profile_employer')
     else:
         form = EmployerProfileForm(instance=profile)
-    return render(request, 'Profile_employer.html', {'form': form})    
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(request, 'Profile_employer.html',{'form': form, 'profile_form': profile_form})    
 
 @login_required
 def profile(request):
