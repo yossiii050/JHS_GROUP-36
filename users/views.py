@@ -11,28 +11,31 @@ from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 from .functions import handle_uploaded_file  
-
+from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
-def changestatus(request):
-    user = User.objects.get()
-    user.is_active = True
-    user.save()
 
+def update_user_status(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        user = User.objects.get(id=user_id)
+        user.is_active = True
+        user.save()
+        return JsonResponse({'message': 'User approved successfully'})
+    return JsonResponse({'message': 'An error occurred while approving the user'}, status=400)
+    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
     context={'form':form}
     return render(request,'appr.html',context)
 
-def ReportEmployer(request):
+def ReportUsers(request):
     form=User.objects.all()
     context={'form':form}
-    return render(request,'reportEmployer.html',context)
+    return render(request,'reportUser.html',context)
 
-def ReportCandidate(request):
-    form=Candidate.objects.all()
-    context={'form':form}
-    return render(request,'reportCandidate.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()
@@ -95,3 +98,12 @@ def index(request):
 
 def usershome(request):
     return render(request,'users.html')
+
+from users.reports import registered_users_report
+
+def registered_users(request):
+    # Generate the report data
+    data = registered_users_report()
+
+    # Render the template with the report data
+    return render(request, 'reports.html', data)

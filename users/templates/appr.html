@@ -64,6 +64,20 @@
                     padding: 2px 8px;
                     border-radius: 5px;
                   }
+                  .message p {
+                    padding: 10px;
+                    border-radius: 5px;
+                  }
+                  .success {
+                    background-color: #dff0d8;
+                    color: #3c763d;
+                    border: 1px solid #d6e9c6;
+                  }
+                  .error {
+                    background-color: #f2dede;
+                    color: #a94442;
+                    border: 1px solid #ebccd1;
+                  }
                 </style>
                 <table class="tg" style="undefined;table-layout: fixed; width: 790px">
                 <colgroup>
@@ -78,26 +92,50 @@
                
                 <table class="blueTable">
                   <thead>
-                  <tr>
-                  <th>Username</th>
-                  <th>approved</th>
-                  
-                  </tr>
+                    <tr>
+                      <th>Username</th>
+                      <th>approved</th>
+                    </tr>
                   </thead>
-          {% for data in form %}
-          <tbody>
-              <tr>
-              <td>{{data.username}}</td>
-              <td> <button type="submit" class ="save btn btn-default">approved</button></td>
-              
-              </tr>
-          </tbody>                    
+                  {% for data in form %}
+                  <form action="update_user_status" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ data.id }}">
+                    <tbody>
+                      <tr>
+                        <td>{{data.username}}</td>
+                        <td> <button type="submit" class="save btn btn-default">approved</button></td>
+                      </tr>
+                    </tbody>                    
+                  </form>
+                  {% endfor %}
+                </table>
+                <div class="message"></div>
           
-          {% endfor %}
-                  </table>
-                
-        </div>
-    </div>
-</div>
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <script>
+            {% csrf_token %}
 
-{% endblock content %}
+            $('.save').click(function(event) {
+              event.preventDefault();
+          
+              var form = $(this).closest('form');
+              var url = form.attr('action');
+              var data = form.serialize();
+          
+              $.ajax({
+                url: '/appr/',
+                type: 'POST',
+                headers: {
+                  'X-CSRFToken': getCookie('csrftoken')
+                },
+                success: function(response) {
+                  // Handle the success response
+                },
+                error: function(response) {
+                  // Handle the error response
+                },
+              });
+              
+          </script>
+          {% endblock content %}
