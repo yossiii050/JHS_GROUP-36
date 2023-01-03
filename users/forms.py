@@ -1,20 +1,13 @@
 from django import forms
-<<<<<<< HEAD
 from .models import Candidate,EmployerProfile
-=======
 from .models import Candidate,CVFormModel
 from django.contrib.auth import get_user_model
->>>>>>> e590062d5ed2e64d838c14de65861287b204cf23
-from django.forms import ModelForm
+#from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.models import User #impor user databased
 from django.contrib.auth.models import Group
-<<<<<<< HEAD
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
-=======
-#User=get_user_model()
->>>>>>> e590062d5ed2e64d838c14de65861287b204cf23
 
 class UserUpdateForm(forms.ModelForm):
     description=forms.CharField(max_length=100)
@@ -31,12 +24,7 @@ class CreateEmployerForm(UserCreationForm):
     class Meta:
         captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
         model=User
-<<<<<<< HEAD
         fields=['username','email','CompanyName','password1','password2','is_active']
-=======
-        fields=['username','email','password1','password2','CompanyName','description','is_active']
-    
->>>>>>> e590062d5ed2e64d838c14de65861287b204cf23
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_active = False
@@ -57,15 +45,12 @@ class CreateCandidateForm(UserCreationForm):
             user.groups.add(group)
         return user
 
-<<<<<<< HEAD
 
 class EmployerProfileForm(forms.ModelForm):
     
     class Meta:
         model = EmployerProfile
         fields = ['bio', 'avatar', 'contact_methods', 'location', ]
-=======
->>>>>>> e590062d5ed2e64d838c14de65861287b204cf23
 
 from .choices import *
 class CVForm(forms.Form):
