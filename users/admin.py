@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Candidate , CVFormModel,EmployerProfile
+from .models import Candidate , CVFormModel
 from .forms import CreateEmployerForm,CreateCandidateForm
 from django.contrib.auth.models import User 
 admin.site.register(Candidate)

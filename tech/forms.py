@@ -6,3 +6,5 @@ class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ['title', 'body']
+        exclude = ['date','user','handler']
+        
