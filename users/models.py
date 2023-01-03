@@ -1,14 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser,User,BaseUserManager, AbstractBaseUser,UserManager
 import os
-from phonenumber_field.modelfields import PhoneNumberField
+#from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.hashers import make_password
 from datetime import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-
 
 class Candidate(User):
     verbose_name = 'Candidate'
@@ -24,7 +23,7 @@ class Candidate(User):
     Id=models.CharField(max_length=9)
     USERNAME_FIELD = 'email'
     date_of_birth = models.DateField()
-    phone_number = PhoneNumberField(blank=True)
+    #phone_number = PhoneNumberField(blank=True)
     
     objects = UserManager()
         

@@ -15,7 +15,8 @@ from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 from functools import wraps
 
 def role_required(allowed_roles=[]):
@@ -55,14 +56,12 @@ def ReportUsers(request):
 
 def employerRegPage(request):
     form=CreateEmployerForm()
-
     if request.method == 'POST':
         form=CreateEmployerForm(request.POST)
         if form.is_valid():
             form.save() 
             return redirect('login')
-
-    context={'form':form}
+    context={'form':form,}
     return render(request,'employerreg.html',context)
 
 
@@ -89,8 +88,7 @@ def loginPage(request):
             login(request,user)
             return redirect('home page')
         else:
-            messages.info(request,'Username OR Password is incorrect')
-            
+            messages.info(request,'Username OR Password is incorrect')         
     context={}
     return render(request,'login.html',context)
 

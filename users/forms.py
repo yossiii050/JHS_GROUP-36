@@ -1,19 +1,20 @@
 from django import forms
 from .models import Candidate,EmployerProfile
-
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.models import User #impor user databased
 from django.contrib.auth.models import Group
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 
 
 class CreateEmployerForm(UserCreationForm):
     CompanyName=forms.CharField(max_length=100)    
     is_active=False
     class Meta:
+        captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
         model=User
         fields=['username','email','CompanyName','password1','password2','is_active']
-    
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_active = False
@@ -21,13 +22,11 @@ class CreateEmployerForm(UserCreationForm):
             user.save()
             group = Group.objects.get(name='Employers')
             user.groups.add(group)
-        return user            
-#
+        return user 
 class CreateCandidateForm(UserCreationForm):
     class Meta:
         model=Candidate
-        fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth','phone_number')
-
+        fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth') 
     def save(self, commit=True):
         user = super().save(commit=False)
         if commit:
@@ -35,6 +34,7 @@ class CreateCandidateForm(UserCreationForm):
             group = Group.objects.get(name='Candidate')
             user.groups.add(group)
         return user
+
 
 class EmployerProfileForm(forms.ModelForm):
     
