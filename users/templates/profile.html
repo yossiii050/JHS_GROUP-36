@@ -1,7 +1,38 @@
-{% block title %}Profile Page{% endblock title %}
-{% block content %}
-    <div class="row my-3 p-3">
-        <h1>This is the profile page for {{user.username}}</h1>
-    </div>
 
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
+    <h1><legend class="border-bottom mb-4">Profile Information:</legend></h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="media">
+            <div class="media-body">
+                <h2 class="account-heading">Username: {{ form.instance.username }}
+                </h2    >
+                <p class="text-secondary">Email: {{ form.instance.email }}</p>
+                <p class="text-secondary">description:{{ form.instance.CompanyName }}</p>
+                <p class="text-secondary">bio:{{ form.instance.bio }}</p>
+            </div>
+        </div>
+
+        {% if user.username == form.instance.username %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Edit Profile Information</legend>
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        <h0>description{{ form.description}}</h0>
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        <h0>bio{{ form.bio }}</h0>
+                        
+                    </div>
+                </div> 
+                
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Update</button>
+            </div>
+        {% endif %}
+    </form>
+</div>
 {% endblock content %}
