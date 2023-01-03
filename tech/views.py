@@ -9,7 +9,7 @@ from django.template import loader
 from django.contrib.auth.models import Group
 from django.http import FileResponse
 from django.contrib.auth.models import Group,User
-
+from django.contrib.auth.models import User
 
 
 def create_ticket(request):
@@ -17,11 +17,10 @@ def create_ticket(request):
       form = TicketForm(request.POST)
       if form.is_valid():
             new_ticket = Ticket(
-            title=form.cleaned_data['title'],body=form.cleaned_data['body'])
+            title=form.cleaned_data['title'],body=form.cleaned_data['body'],user=request.user,handler=request.user)
             new_ticket.save()
             messages.success(request, 'Ticket saved successfully!')
-            return redirect('home')
-
+            return render(request, 'tech.html', {'form': form, 'date':new_ticket.date})
     else:
         form = TicketForm()
     return render(request, 'ticket.html', {'form': form})
