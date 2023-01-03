@@ -42,17 +42,3 @@ class CVForm(models.Model):
     def __str__(self):
            return self.GitUrl
 
-User=get_user_model()
-
-class EmployerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='EmployerProfile')
-    avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
-    #photo = models.ImageField(upload_to='employer_photos', blank=True)
-    #company_name = models.CharField(max_length=255)
-    bio = models.TextField()
-    contact_methods = models.TextField()
-    location = models.CharField(max_length=255)
-    #jobs = models.ManyToManyField('Job', blank=True)    
-
-    def __str__(self):
-        return self.user.username  

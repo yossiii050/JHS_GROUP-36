@@ -4,13 +4,9 @@ from django.http import HttpResponse, HttpRequest
 from .models import ticket
 from django.core.files import File
 from django.template import loader
-<<<<<<< HEAD
 from django.contrib.auth.models import Group
 from django.http import FileResponse
-from reportlab.pdfgen
-=======
 from django.contrib.auth.models import Group,User
->>>>>>> 01f7052e93ab944547aa1f0a16b3960395de1cf1
 
 
 
