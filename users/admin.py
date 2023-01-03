@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Candidate , CVForm,EmployerProfile
-from .forms import CreateEmployerForm,CreateCandidateForm
+from .models import Candidate , CVForm,EmployerProfile,CVFormModel
+from .forms import CreateEmployerForm,CreateCandidateFormModel
 from django.contrib.auth.models import User 
 admin.site.register(Candidate)
-admin.site.register(CVForm)
+admin.site.register(CVFormModel)
 #admin.site.register(CreateCandidateForm)
 
 from django.contrib.auth.models import Permission
