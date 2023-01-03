@@ -1,14 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
 <body>  
     <center>
     <a href="http://127.0.0.1:8000/users/"><img src="https://i.ibb.co/54PLw9C/jhs-logo.png" alt="jhs-logo" border="0"></a>
-    <form method="POST" class="post-form" enctype="multipart/form-data">  
-            {% csrf_token %}  
-            {{ form.as_p }}  
-            <button type="submit" class="save btn btn-default">Save</button>  
+    <form method="post" class="post-form" enctype="multipart/form-data" action="{% url 'cv' %}">  
+        {% csrf_token %} 
+        <p>{{ form.field.label_tag }} {{ form.field }}</p>
+        <br>
+        <p>{{ form.yearsexp.label_tag }} {{ form.yearsexp }}</p>
+        <br>
+        <p>{{ form.education.label_tag }} {{ form.education }}</p>
+        <br>
+        <p>{{ form.GitUrl.label_tag }} {{ form.GitUrl }}</p>
+        <br>
+        <button type="submit" class="save btn btn-default">Save</button>  
     </form>  
     <h2>On tips on how to write down CV, click down below!<h2>
     <a href="https://www.gotfriends.co.il/%D7%91%D7%9C%D7%95%D7%92%D7%99%D7%9D/17-%D7%98%D7%99%D7%A4%D7%99%D7%9D-%D7%9C%D7%9B%D7%AA%D7%99%D7%91%D7%AA-%D7%A7%D7%95%D7%A8%D7%95%D7%AA-%D7%97%D7%99%D7%99%D7%9D/"><img src="https://cdn.enhancv.com/CV_Design_Tips_1f709a164c.jpeg" alt="jhs-logo" length="400", height="200"></a>
     </center>
-  
+ 
+       
 </body> 
 
+</html>

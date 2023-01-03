@@ -60,9 +60,16 @@
   </style>
 </head>
 <body>
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+{% endfor %}
+</ul>
+{% endif %}
   <h1>This is supports team tickets</h1>
-  <div class="ticket">
-    <form method="post" action="{% url '' %}">
+  <div class="Ticket">
+    <form method="post" action="{% url 'ticket' %}">
         {% csrf_token %}
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title"><br>
