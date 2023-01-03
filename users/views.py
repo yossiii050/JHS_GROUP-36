@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import CreateEmployerForm,CreateCandidateForm
+from .forms import CreateEmployerForm,CreateCandidateForm,CandidateProfileForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -61,12 +61,28 @@ def employerRegPage(request):
         if form.is_valid():
             form.save() 
             return redirect('login')
-
+    else:
+        form=CreateEmployerForm()
     context={'form':form}
     return render(request,'employerreg.html',context)
 
-
 def candidateRegPage(request):
+    if request.method == 'POST':
+        candidate_form = CreateCandidateForm(request.POST)
+        profile_form = CandidateProfileForm(request.POST)
+        if candidate_form.is_valid() and profile_form.is_valid():
+            user = candidate_form.save()
+            profile = CandidateProfile(user=user, **profile_form.cleaned_data)
+            profile.save()
+            return redirect('login')
+    else:
+        candidate_form = CreateCandidateForm()
+        profile_form = CandidateProfileForm()
+    context = {'candidate_form': candidate_form, 'profile_form': profile_form}
+    return render(request, 'candidatereg.html', context)
+
+
+def candidateRegPage_old(request):
     form=CreateCandidateForm()
 
     if request.method == 'POST':
@@ -133,7 +149,7 @@ def view_groups(request):
     return render(request, 'template.html', {'groups': groups})
 
 def Profile(request, username):
-    """ if request.method == 'POST':
+    if request.method == 'POST':
         user = request.user
         form = UserUpdateForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -143,12 +159,35 @@ def Profile(request, username):
             return redirect('Profile', user_form.username)
 
         for error in list(form.errors.values()):
-            messages.error(request, error) """
+            messages.error(request, error) 
+    user = get_user_model().objects.filter(username=username).first()
+    if user:
+        form = UserUpdateForm(instance=user)
+        bio = user.userprofile.bio
+        company_name=user.userprofile.company_name
+ 
+        return render(request, 'profile.html', context={'form': form, 'user': user, 'bio': bio,'company_name':company_name})
+
+    return redirect("home page")
+
+def Profile_old(request, username):
+    if request.method == 'POST':
+        user = request.user
+        form = UserUpdateForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            user_form = form.save()
+
+            messages.success(request, f'{user_form}, Your profile has been updated!')
+            return redirect('Profile', user_form.username)
+
+        for error in list(form.errors.values()):
+            messages.error(request, error) 
 
     user = get_user_model().objects.filter(username=username).first()
     if user:
         form = UserUpdateForm(instance=user)
-        form.fields['description'].widget.attrs = {'rows': 1}
-        return render(request, 'profile.html', context={'form': form})
+        bio = user.bio.bio
+        form.fields['bio'].widget.attrs = {'rows': 1}
+        return render(request, 'profile.html', context={'form': form, 'bio': bio})
 
     return redirect("home page")
