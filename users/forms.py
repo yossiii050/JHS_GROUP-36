@@ -48,8 +48,11 @@ class CreateCandidateForm(UserCreationForm):
 
 from .choices import *
 class CVForm(forms.Form):
-    file      = forms.FileField() # for creating file input
+    #file      = forms.FileField() # for creating file input    
     field = forms.ChoiceField(choices = FIELD_CHOICES, label="Field of work", initial='', widget=forms.Select(), required=True)
     yearsexp  = forms.ChoiceField(choices = YEARS_CHOICES,label="Years of experience",required=True)
     education = forms.ChoiceField(choices = EDUCATION_CHOICES, label="Education", widget=forms.Select(), required=True)
-    GitUrl = forms.URLField(max_length=25,label= "Git-URL")     
+    GitUrl = forms.URLField(max_length=25,label= "Git-URL")  
+    class Meta:
+       model = CVFormModel
+       fields = ['field', 'yearsexp', 'education', 'GitUrl']        
