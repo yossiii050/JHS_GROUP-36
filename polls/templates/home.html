@@ -116,8 +116,13 @@
           {% if group.name == 'Employers' %}
             <a href="{% url 'uplodelist' %}">Post a job</a>
           {% endif %}
+          {% if group.name == 'Candidate' %}
+            <a href="{% url 'cv' %}">Upload CV</a>
+          {% endif %}
         {% endfor %}
-
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'ticket' %}">Contact us</a>
+        {% endif %}
       </div>
       <form class="search-form" action="/search" method="get">
         <input type="text" name="q" placeholder="Search jobs">

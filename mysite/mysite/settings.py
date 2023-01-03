@@ -42,7 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rules',
+<<<<<<< HEAD
     'recaptcha',
+=======
+    'crispy_forms',
+>>>>>>> e590062d5ed2e64d838c14de65861287b204cf23
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -30,28 +30,14 @@ class Candidate(User):
 
 from .choices import * 
 
-class CVForm(models.Model):
+class CVFormModel(models.Model):
     #user = models.OneToOneField(User)    
     field = models.IntegerField(choices=FIELD_CHOICES, default=1)   
     yearsexp = models.IntegerField(choices=YEARS_CHOICES, default=1)
     education = models.IntegerField(choices=EDUCATION_CHOICES, default=1)
     GitUrl = models.URLField(max_length=25)  
-    
+    file = models.FileField(upload_to='files/',default='files/default.pdf')
 
     def __str__(self):
            return self.GitUrl
 
-User=get_user_model()
-
-class EmployerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='EmployerProfile')
-    avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
-    #photo = models.ImageField(upload_to='employer_photos', blank=True)
-    #company_name = models.CharField(max_length=255)
-    bio = models.TextField()
-    contact_methods = models.TextField()
-    location = models.CharField(max_length=255)
-    #jobs = models.ManyToManyField('Job', blank=True)    
-
-    def __str__(self):
-        return self.user.username  

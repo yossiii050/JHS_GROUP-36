@@ -52,7 +52,13 @@ INSTALLED_APPS = [
     'captcha',
     'jobs',
     'rules',
+<<<<<<< HEAD
     'reportlab',
+=======
+    'crispy_forms',
+
+    
+>>>>>>> e590062d5ed2e64d838c14de65861287b204cf23
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

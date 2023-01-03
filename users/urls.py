@@ -6,7 +6,7 @@ from django.views.generic import View
 urlpatterns = [
     path('employer/', views.employerRegPage,name='employer register'), 
     path('candidate/', views.candidateRegPage,name='candidate register'),
-    path('cv/', views.index),  
+    path('cv/', views.cv,name="cv"),  
     path('',views.usershome,name="home"),
-    path('profile/', views.employer_profile, name='users-employer_profile'),
+    path('Profile/<username>',views.Profile,name="Profile"),
 ]
