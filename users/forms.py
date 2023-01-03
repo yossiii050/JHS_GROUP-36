@@ -1,5 +1,5 @@
 from django import forms
-from .models import Candidate,EmployerProfile
+from .models import Candidate,EmployerProfile,CVFormModel
 
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
