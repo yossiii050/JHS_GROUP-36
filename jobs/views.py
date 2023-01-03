@@ -1,26 +1,38 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from .models import Upload
-from django.views.generic import DetailView
+from .forms import UploadForm
+from django.views.generic import CreateView
 
 def Upload_list(request):
     uploads=Upload.objects.all().order_by('date')
     return render(request,'jobs/Upload_list.html',{'uploads':uploads})
 
 def uploadJob(request):
-    return render(request,'jobs/uploadJob.html')
+    submitted=False
+    if request.method=="POST":
+        form=UploadForm(request.POST)
+        if form.is_valid():
+            form.instance.slug = form.cleaned_data['title']
+            form.save()
+            submitted=True
+            return render(request,'jobs/success.html')
+    else:
+        form=UploadForm
+        if 'submitted' in request.GET:
+            submitted=True
+    return render(request,'jobs/uploadJob.html',{'form':form,'submitted':submitted})
     #return HttpResponse('uploadJob')
 
-def upldateJob(request):
+
+def updateJob(request):
     return render(request,'jobs/updateJob.html')
     #return HttpResponse('updateJob')
 
-def job_details(request,pk):
-    return render (request,'jobs/jobsDetails.html')
+def job_details(request,slug):
+    job=Upload.objects.get(slug=slug)
+    #job=Upload.objects.filter(slug=slug.values())
+    return render (request,'jobs/jobsDetails.html',{'job':job})
 
-#class job_details(DetailView):
- #   model=Upload
-  #  template_name='jobsDetails.html'
-
-# Create your views here.
-
+def success(request):
+    return render(request,'jobs/success.html')

@@ -10,4 +10,7 @@ class Ticket(models.Model):
         return self.title
 
 
+#def numofUser()
+ #   users = User.objects.all()
+  #  return Response(len(users))
 

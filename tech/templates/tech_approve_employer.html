@@ -1,0 +1,25 @@
+<html>
+    <head>
+    </head>
+    <body>
+        {% for data in form %}
+        <table class="blueTable">
+            <thead>
+            <tbody>
+                <tr>
+                <td>{{data.username}}</td>
+                
+                </tr>
+            </tbody>                    
+            
+            {% endfor %}
+        </table>
+        <form method="post" action="{% url 'update-status' %}">
+            {% csrf_token %}
+            <input type="submit" value="Update status">
+            <button type="submit" class ="save btn btn-default">approved</button>
+
+          </form>
+
+    </body>
+</html>

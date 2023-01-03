@@ -1,19 +1,25 @@
 <html>
     <head>
+        <center>
         <meta charset="utf-8">
         <title>Upload list</title>
         <link rel="stylsheet" href="/static/admin/css/style2.css">
     </head>
-    <body>
-            
-                <div class="upload">
-                    <li><a href="/jobs/templates/jobs/jobsDetails.html">{{upload.title}}</a></li>
-                    <p>{{upload.autor}}</p>
-                    <p>{{upload.subtitle}}</p>
-                   <!-- <p>{{upload.snippet}}</p> -->
-                    <p>{{upload.date}}</p>
+    <body> 
+        <div class="jobs-details">
+            <div class="job">
+                <h2>{{job.subTitle}}</h2>
+                <p><h3>job description: </h3>{{job.body}}</p>
+                <p>category: {{job.category}}</p>
 
-                </div>
+                <p>Salary range: {{job.salaryRange}}</p>
 
-    </body>
+                <p>date of publish: {{job.date}}</p>
+            </div>
+        </div>
+        <a href="{% url 'list' %}">
+            <button>Back to JobList</button>
+            </a>
+        
+    </body></center>
 </html>

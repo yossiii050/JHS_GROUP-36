@@ -15,21 +15,31 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from polls.views import home_page_view,home_template
-from users.views import loginPage,logoutUser
+from polls.views import home_page_view,home_template,home
+from users.views import loginPage,logoutUser,approveEmp,registered_users,ReportUsers,update_user_status
 from mysite.mysite.views import maintenance
+from payments.views import paymentpage
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('jobs/',include('jobs.urls'),name="jobs"),
     path('register/',include('users.urls')),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
-    path('',home_page_view),
+    path('payments/',paymentpage),
     path('tech/',include('tech.urls')),
-    path('', home_template,name="home page"),
+    path('', home,name="home page"),
     path('login/',loginPage,name="login"),
     path('logout/',logoutUser,name="logout"),
     path('maintenance/', maintenance),
     path('users/', include('users.urls')),
+    path('ReportUsers/',ReportUsers,name="ReportUsers"),
+    path('appr/',approveEmp),
+    path('Reports/',approveEmp),
+    path('registered-users/', registered_users, name='registered_users'),
+    path('appr/update_user_status',update_user_status,name="update_user_status"),
+    path('update_user_status/',update_user_status,name="update_user_status"),
 
-]
+
+]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
