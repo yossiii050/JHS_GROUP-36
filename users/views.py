@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import CreateEmployerForm,CreateCandidateForm
+from .forms import CreateEmployerForm,CreateCandidateForm,EmployerProfileForm,UpdateProfileForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -11,28 +11,47 @@ from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login,logout
 from .functions import handle_uploaded_file  
-
+from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
-def changestatus(request):
-    user = User.objects.get()
-    user.is_active = True
-    user.save()
+from functools import wraps
 
+def role_required(allowed_roles=[]):
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapper(request, *args, **kwargs):
+            # Check if the user's role is in the allowed list
+            if request.user.role in allowed_roles:
+                return view_func(request, *args, **kwargs)
+            else:
+                # Redirect the user to the home page if they don't have the correct role
+                return redirect('home')
+        return wrapper
+    return decorator
+
+@user_passes_test(lambda u: u.is_staff)
+def update_user_status(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        user = User.objects.get(id=user_id)
+        user.is_active = True
+        user.save()
+        return JsonResponse({'message': 'User approved successfully'})
+    return JsonResponse({'message': 'An error occurred while approving the user'}, status=400)
+
+@user_passes_test(lambda u: u.is_staff)    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
     context={'form':form}
     return render(request,'appr.html',context)
 
-def ReportEmployer(request):
+def ReportUsers(request):
     form=User.objects.all()
     context={'form':form}
-    return render(request,'reportEmployer.html',context)
+    return render(request,'reportUser.html',context)
 
-def ReportCandidate(request):
-    form=Candidate.objects.all()
-    context={'form':form}
-    return render(request,'reportCandidate.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()
@@ -66,7 +85,6 @@ def loginPage(request):
         password=request.POST.get('password')
 
         user=authenticate(request,username=username,password=password)
-
         if(user is not None):
             login(request,user)
             return redirect('home page')
@@ -95,3 +113,40 @@ def index(request):
 
 def usershome(request):
     return render(request,'users.html')
+
+from users.reports import registered_users_report
+
+def registered_users(request):
+    # Generate the report data
+    data = registered_users_report()
+
+    # Render the template with the report data
+    return render(request, 'reports.html', data)
+
+from django.contrib.auth.models import Group
+
+def view_groups(request):
+    groups = Group.objects.filter(user=request.user)
+    return render(request, 'template.html', {'groups': groups})
+
+def employer_profile(request):
+    #profile = request.user.employerprofile
+    if request.method == 'POST':
+        form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
+
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if form.is_valid() and profile_form.is_valid():
+            form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile is updated successfully')
+            return redirect(to='Profile_employer')
+    else:
+        form = EmployerProfileForm(instance=profile)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(request, 'Profile_employer.html',{'form': form, 'profile_form': profile_form})    
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')    

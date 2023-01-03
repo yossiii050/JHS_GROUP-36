@@ -11,7 +11,7 @@
             {% for upload in uploads %}
             
                 <div class="upload">
-                  <h2>  <li><a href="{% url 'detail' upload.slug  %}">{{upload.title}}</a></li></h2>
+                  <h2>  <li><a href="{% url 'detail' upload  %}">{{upload.title}}</a></li></h2>
                     <p>{{upload.subtitle}}</p>
                     <p>{{upload.snippet}}</p>
                     <p>{{upload.date}}</p>

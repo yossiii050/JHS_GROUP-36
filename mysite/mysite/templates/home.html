@@ -1,26 +1,136 @@
 {% load static %}
 
-<style>
-    .hello-msg
-    {
-        font-size: 18px;
-        morgin-right: 20px;
-    }
-</style>
-
-
+<!DOCTYPE html>
 <html>
+<head>
+  <title>Job Search Website</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://example.com/bg.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 2em;
+      margin: 0;
+    }
+    .header a {
+      color: #333;
+      text-decoration: none;
+    }
+    .header a:hover {
+      text-decoration: underline;
+    }
+    .header a.login {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+    .header a.login:hover {
+      background-color: #45a049;
+    }
+    .search-form {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .search-form input[type="text"] {
+      width: 60%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-form input[type="submit"] {
+      width: 20%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .search-form input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .job-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .job-list .job {
+      width: 30%;
+      margin: 0 10px 20px 0;
+      padding: 20px;
+      background-color: #f1f1f1;
+      border-radius: 4px;
+    }
+    .job h2 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+    .job p {
+      margin: 0;
+      font-size: 0.9em;
+      color: #333;
+    }
+  </style>
+</head>
+
 <body>
-<button onclick="window.open(profilePage, '_blank'); return false;"
-                    class="btn btn-default" data-dismiss="modal">Go To The Profile Page</button>
-</body>
+    <div class="container">
+      <div class="header">
+        <h1>Job Search Website</h1>
+        {% if request.user.is_authenticated %}
+        <p>Welcome, {{ request.user.username }}!</p>
+        <a href="{% url 'toggle_maintenance_mode' %}">Toggle maintenance mode</a>
+        <a href="logout" class="login" id="logout-button">Logout</a>
+        {% else %}
+        <a href="login" class="login" id="login-button">Login/Signup</a>
+        {% endif %}
+        <a href="#">Post a job</a>
+      </div>
+      <form class="search-form" action="/search" method="get">
+        <input type="text" name="q" placeholder="Search jobs">
+        <input type="submit" value="Search">
+      </form>
+      <div class="job-list">
+        <div class="job">
+          <h2>Software Engineer</h2>
+          <p>Company name</p>
+          <p>Location</p>
+        </div>
+        <div class="job">
+          <h2>Data Scientist</h2>
+          <p>Company name</p>
+          <p>Location</p>
+        </div>
+        <!-- Add more jobs here -->
+      </div>
+    </div>
+  </body>
+  </html>
 
-<script>
-    let profilePage = "{% url 'profile' %}";
-</script>
-</html>
-
-<span class="hello-msg">Hello, {{request.user}}</span>
+<!--<span class="hello-msg">Hello, {{request.user}}</span>
 <span><a class="hello-msg" href="{% url 'login' %}">Login</a></span>
 <span><a class="hello-msg" href="{% url 'ReportEmployer' %}">Report for Employer</a></span>
-<span><a class="hello-msg" href="{% url 'ReportCandidate' %}">Report for Candidate</a></span>
+<span><a class="hello-msg" href="{% url 'ReportCandidate' %}">Report for Candidate</a></span>!-->

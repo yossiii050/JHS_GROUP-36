@@ -9,5 +9,6 @@ urlpatterns = [
     path('update/',views.updateJob),
     path('',views.Upload_list,name='list'),
     path('<str:slug>',views.job_details,name='detail'),
+    path('success/',views.success,name='success'),
 ]
 

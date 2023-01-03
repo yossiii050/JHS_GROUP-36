@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Users </h1>
+            <h1>Users-Report </h1>
             <style type="text/css">
                 table.blueTable {
                     border: 0px solid #1C6EA4;
@@ -82,10 +82,8 @@
                     <tr>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Id</th>
-                    <th>Age</th>
+                    <th>Last Login</th>
+
                     </tr>
                     </thead>
             {% for data in form %}
@@ -93,10 +91,8 @@
                 <tr>
                 <td>{{data.username}}</td>
                 <td>{{data.email}}</td>
-                <td>{{data.first_name}}</td>
-                <td> {{data.last_name}}</td>
-                <td> {{data.Id}}</td>
-                <td> {{data.age}}</td>
+                <td> {{data.last_login}}</td>
+
                 </tr>
             </tbody>                    
             
@@ -109,37 +105,5 @@
 
 {% endblock content %}
 
-<button id="button">Print me</button>   
-                        
-    <table id="printTable" class="display responsive-table " style=" margin-bottom:50px; border-radius: 4px;"  >
-    <thead>
-    <tr >
-    <th>Sl.No.</th>
-    <th>Description</th>
-    <th>Balance</th>
-    
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-    
-    <script>
-    function printData()
-    {
-      
-        var divToPrint=document.getElementById("printTable");
-        newWin= window.open("");
-        newWin.document.write(divToPrint.outerHTML);
-        newWin.document.close();
-        newWin.print();
-        //newWin.close();
-    }
 
-    document.querySelector("#button").addEventListener("click", function(){
-      printData();
-    });
-    
-    </script>
 
-    {{data.username}}
