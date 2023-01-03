@@ -130,7 +130,7 @@ def view_groups(request):
     return render(request, 'template.html', {'groups': groups})
 
 def employer_profile(request):
-    #profile = request.user.employerprofile
+    profile = request.user.employerprofile
     if request.method == 'POST':
         form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
 
