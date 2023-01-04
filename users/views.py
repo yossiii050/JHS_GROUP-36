@@ -51,7 +51,8 @@ def ReportUsers(request):
     form=User.objects.all()
     context={'form':form}
     return render(request,'reportUser.html',context)
-
+    
+@user_passes_test(lambda u: u.is_staff)    
 def ReportVIPUsers(request):
     User = get_user_model()
     vip_group = Group.objects.get(name='VIP')

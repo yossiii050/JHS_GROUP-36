@@ -9,6 +9,37 @@ from users.models import Candidate,User
 from django.urls import reverse
 from users.views import ReportUsers
 from django.http import HttpRequest
+from django.contrib.auth.models import Group
+
+class ReportVIPUsersViewTests(TestCase):
+    def test_view_only_accessible_to_staff(self):
+        response = self.client.get(reverse('VipUsers'))
+        self.assertEqual(response.status_code, 302)
+
+        staff_user = User.objects.create_user(
+            username='staff', password='password', is_staff=True)
+        self.client.login(username='staff', password='password')
+
+        response = self.client.get(reverse('home page'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_vip_users_are_shown_in_template(self):
+        staff_user = User.objects.create_user(
+            username='staff', password='password', is_staff=True)
+        self.client.login(username='staff', password='password')
+
+        vip_group = Group.objects.create(name='VIP')
+        vip_user1 = User.objects.create_user(
+            username='vip1', password='password')
+        vip_user1.groups.add(vip_group)
+        vip_user2 = User.objects.create_user(
+            username='vip2', password='password')
+        vip_user2.groups.add(vip_group)
+
+        response = self.client.get(reverse('VipUsers'))
+        self.assertContains(response, 'vip1')
+        self.assertContains(response, 'vip2')
+
 
 class ReportViewTest(TestCase):
     @classmethod

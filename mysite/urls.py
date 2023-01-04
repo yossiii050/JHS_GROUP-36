@@ -21,6 +21,7 @@ from mysite.mysite.views import maintenance
 from payments.views import paymentpage
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
     path('jobs/',include('jobs.urls'),name="jobs"),
@@ -44,3 +45,5 @@ urlpatterns = [
 
 
 ]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'mysite.views.handler404'
