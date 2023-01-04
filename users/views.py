@@ -52,6 +52,12 @@ def ReportUsers(request):
     context={'form':form}
     return render(request,'reportUser.html',context)
 
+def ReportVIPUsers(request):
+    User = get_user_model()
+    vip_group = Group.objects.get(name='VIP')
+    form = User.objects.filter(groups=vip_group)
+    context={'form':form}
+    return render(request,'reportVIPUsers.html',context)
 
 def employerRegPage(request):
     form=CreateEmployerForm()
