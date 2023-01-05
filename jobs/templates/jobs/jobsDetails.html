@@ -23,7 +23,9 @@
                 <p>Years of expirience: {{job.yearsexp}}</p>
                 <p>Education: {{job.education}}</p>
                 <p>Time: {{job.time}}</p>
-                <p>Locetion: {{job.location}}</p>
+                <p>Location: {{job.location}}</p>
+                <p>Avaliable Amount: {{job.availableAmount }}</p>
+
             </div>
         </div>
 
@@ -33,7 +35,7 @@
                     <button>Edit job</button>
                     </a>
                
-                <a href="{% url 'success' %}">
+                <a href="{% url 'deleteJob' job  %}">
                     <button>Delete Job</button>
                     </a>
                 <br>

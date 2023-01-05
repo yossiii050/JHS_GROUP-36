@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import AbstractUser,User,BaseUserManager, AbstractBaseUser
-import os
+from decimal import Decimal
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
@@ -29,6 +29,8 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     owner=models.ForeignKey(User, on_delete=models.CASCADE, default=1, related_name='user')
     location=models.IntegerField(choices=CITIES, default=1)
     #available=models.DecimalField(max_digits=2,decimal_places=2,**options)
+    availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
+
 
     def __str__(self):
         return self.title

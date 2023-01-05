@@ -5,7 +5,7 @@ from .forms import UploadForm
 from django.views.generic import CreateView
 
 def Upload_list(request):
-    uploads=Upload.objects.all().order_by('date')
+    uploads=Upload.objects.all().order_by('?')
     return render(request,'jobs/Upload_list.html',{'uploads':uploads})
 
 def uploadJob(request):
@@ -43,3 +43,8 @@ def job_details(request,slug):
 
 def success(request):
     return render(request,'jobs/success.html')
+
+def deleteJob(request,upload_id):
+    job=Upload.objects.get(slug=upload_id)
+    job.delete()
+    return render(request,'jobs/success.html',{'job':job})
