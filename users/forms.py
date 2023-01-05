@@ -2,7 +2,7 @@ from django import forms
 from .models import Candidate,EmployerProfile
 from .models import Candidate,CVFormModel
 from django.contrib.auth import get_user_model
-#from django.forms import ModelForm
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.models import User #impor user databased
 from django.contrib.auth.models import Group
@@ -20,9 +20,8 @@ class UserUpdateForm(forms.ModelForm):
 class CreateEmployerForm(UserCreationForm):
     CompanyName=forms.CharField(max_length=100)    
     is_active=False
-    description=forms.CharField(max_length=100)
+   # description=forms.CharField(max_length=100)
     class Meta:
-        captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
         model=User
         fields=['username','email','CompanyName','password1','password2','is_active']
     def save(self, commit=True):

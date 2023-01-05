@@ -78,10 +78,10 @@ def candidateRegPage(request):
     return render(request,'candidatereg.html',context)
 
 def loginPage(request):
-
     if request.method == 'POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
+        captcha = ReCaptchaField()
 
         user=authenticate(request,username=username,password=password)
         if(user is not None):
@@ -95,6 +95,7 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
 from .models import CVFormModel
 from .forms import CVForm  
 def cv(request):  

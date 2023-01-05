@@ -6,20 +6,6 @@ from django.core.files import File
 from .forms import TicketForm
 from django.contrib import messages
 from django.template import loader
-<<<<<<< HEAD
-
-from django.contrib.auth.models import Group
-from django.http import FileResponse
-
-from django.contrib.auth.models import Group,User
-
-
-
-
-def ticket(request):    
-    #tickets=ticket.objects
-  return render(request,'ticket.html')#,{'tickets':tickets})
-=======
 from django.contrib.auth.models import Group
 from django.http import FileResponse
 from django.contrib.auth.models import Group,User
@@ -38,7 +24,6 @@ def create_ticket(request):
     else:
         form = TicketForm()
     return render(request, 'ticket.html', {'form': form})
->>>>>>> e590062d5ed2e64d838c14de65861287b204cf23
 
 
 def techhome(request):
