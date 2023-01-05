@@ -30,7 +30,7 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     location=models.IntegerField(choices=CITIES, default=1)
     #available=models.DecimalField(max_digits=2,decimal_places=2,**options)
     availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
-
+    notification=models.DecimalField(max_digits=3 ,decimal_places=0, default=Decimal('5'))
 
     def __str__(self):
         return self.title
