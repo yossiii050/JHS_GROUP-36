@@ -1,9 +1,9 @@
 from django import forms
-from .models import Candidate,CVFormModel,UserProfile,CandidateProfile,MyUser,User
+from .models import Candidate,CVFormModel,UserProfile,CandidateProfile
 from django.contrib.auth import get_user_model
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-#from django.contrib.auth.models import User #impor user databased
+from django.contrib.auth.models import User #impor user databased
 from django.contrib.auth.models import Group
 #User=get_user_model()
 
@@ -52,16 +52,16 @@ class CreateEmployerForm(UserCreationForm):
 #
 class CreateCandidateForm(UserCreationForm, ModelForm):
     class Meta:
-        model = MyUser
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name','user_id','date_of_birth','phone_number']
+        model = Candidate
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name','Id','date_of_birth','phone_number']
 
-    """def save(self, commit=True):
+    def save(self, commit=True):
         user = super().save(commit=False)
         if commit:
             user.save()
             group = Group.objects.get(name='Candidate')
             user.groups.add(group)
-        return user"""
+        return user
 
 class CandidateProfileForm(ModelForm):
     bio = forms.CharField(widget=forms.Textarea, required=False)

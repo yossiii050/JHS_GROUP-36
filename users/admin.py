@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .models import Candidate , CVFormModel,User,UserProfile,CandidateProfile
+from .models import Candidate , CVFormModel,User,UserProfile,CandidateProfile,MyUser
 from .forms import CreateEmployerForm,CreateCandidateForm
 # django.contrib.auth.models import User 
-admin.site.register(Candidate)
+admin.site.register(MyUser)
 admin.site.register(CVFormModel)
+admin.site.register(User)
 
 
 admin.site.register(UserProfile)

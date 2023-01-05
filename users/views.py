@@ -44,6 +44,7 @@ def update_user_status(request):
 @user_passes_test(lambda u: u.is_staff)    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
+    print(form)
     context={'form':form}
     return render(request,'appr.html',context)
 

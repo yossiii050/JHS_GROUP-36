@@ -8,40 +8,30 @@ from django.contrib.auth.hashers import make_password
 from datetime import timezone
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Group,Permission
-
-class User(AbstractUser):
-    class Meta:
-        verbose_name = "Employers-User"
-
-    groups = models.ManyToManyField(Group, related_name='user_groups')
-    user_permissions = models.ManyToManyField(Permission, related_name='user_perms')
-    def __str__(self):
-           return "Employer"
 
 class UserProfile(models.Model):
-    class Meta:
-        verbose_name = "Employers-profile"
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     company_name = models.CharField(max_length=255)
     def __str__(self):
            return self.user.username
 
-class MyUser(AbstractUser):
-    class Meta:
-        verbose_name = "Candidates-Users"
-    user_id = models.CharField(max_length=30,default='')
+
+
+class Candidate(User):
+    Id = models.CharField(max_length=30,default='')
     date_of_birth = models.DateField()
     phone_number = models.CharField(max_length=20)
-    groups = models.ManyToManyField(Group, related_name='myuser_groups')
-    user_permissions = models.ManyToManyField(Permission, related_name='myuser_perms')
-class Candidate(MyUser):
-    pass
+
+    def __str__(self):
+           return self.username
 
 class CandidateProfile(models.Model):
-    user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(Candidate, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
+
+    def __str__(self):
+           return self.user.username
 
 class Candidate_old(User):
     verbose_name = 'Candidate'
