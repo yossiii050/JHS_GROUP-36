@@ -8,5 +8,21 @@
     <body>
         <h1>This is UpdateJob page</h1>
         <p>Welcome to JHS</p>
+        <h2>{{job.subTitle}}</h2>
+        <form action="" method=POST>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br/>
+            <input type="submit" value="Submit" class="btn btn-secondary">
+
+
+        </form>
+       
+        
+        <br><br><br>
+        <a href="{% url 'list' %}">
+            <button>Back to JobList</button>
+            </a>
+
     </body></center>
 </html>

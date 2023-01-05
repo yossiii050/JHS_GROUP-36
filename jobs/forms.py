@@ -13,7 +13,8 @@ class UploadForm(ModelForm):
     class Meta:
         model=Upload
         #fields="__all__"
-        fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid')
+        fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid','priority','location')
+        exclude =['owner']
         
         # labels={ 'title':forms.TextInput(attrs={'class':'form-control'}),
         # 'body':forms.TextInput(attrs={'class':'form-control'}),

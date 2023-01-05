@@ -14,6 +14,7 @@ def uploadJob(request):
         form=UploadForm(request.POST)
         if form.is_valid():
             form.instance.slug = form.cleaned_data['title']
+            #form.instance.owner_id = request.user.id  # set the owner_id field to the id of the currently 
             form.save()
             submitted=True
             return render(request,'jobs/success.html')
@@ -25,8 +26,13 @@ def uploadJob(request):
     #return HttpResponse('uploadJob')
 
 
-def updateJob(request):
-    return render(request,'jobs/updateJob.html')
+def updateJob(request,upload_id):
+    job=Upload.objects.get(slug=upload_id)
+    form=UploadForm(request.POST or None,instance=job)
+    if form.is_valid():
+        form.save()
+        return render(request,'jobs/success.html')
+    return render(request,'jobs/updateJob.html',{'job':job,'form':form})
     #return HttpResponse('updateJob')
 
 def job_details(request,slug):
