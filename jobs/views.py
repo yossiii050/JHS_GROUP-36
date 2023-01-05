@@ -30,6 +30,7 @@ def updateJob(request,upload_id):
     job=Upload.objects.get(slug=upload_id)
     form=UploadForm(request.POST or None,instance=job)
     if form.is_valid():
+        form.instance.slug = form.cleaned_data['title']
         form.save()
         return render(request,'jobs/success.html')
     return render(request,'jobs/updateJob.html',{'job':job,'form':form})
