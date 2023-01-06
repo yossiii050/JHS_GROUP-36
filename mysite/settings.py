@@ -52,8 +52,8 @@ INSTALLED_APPS = [
     'jobs',
     'rules',
     'crispy_forms',
+    'usermodel',
 
-    
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,7 +99,8 @@ DATABASES = {
     }
 }
 
-
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -151,4 +152,10 @@ STATICFILES_DIRS = [
 AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'mysite.authentication.MyUserAuthBackend',
+    
+    
 )
+
+#AUTH_USER_MODEL = ('usermodel.CandidateUser','usermodel.EmployerUser',)
+AUTH_USER_MODEL='auth.User'

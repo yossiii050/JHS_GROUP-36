@@ -1,20 +1,19 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from django.forms import inlineformset_factory
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import CreateEmployerForm,CreateCandidateForm,CandidateProfileForm
+from .forms import EmployerSignUpForm,CandidateSignUpForm,EmployerProfileForm,CandidateProfileForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout,get_user_model
 from .functions import handle_uploaded_file  
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
 
 from functools import wraps
 
@@ -48,6 +47,7 @@ def approveEmp(request):
     context={'form':form}
     return render(request,'appr.html',context)
 
+@user_passes_test(lambda u: u.is_staff)    
 def ReportUsers(request):
     form=User.objects.all()
     context={'form':form}
@@ -62,65 +62,68 @@ def ReportVIPUsers(request):
     return render(request,'reportVIPUsers.html',context)
 
 def employerRegPage(request):
-    form=CreateEmployerForm()
-
     if request.method == 'POST':
-        form=CreateEmployerForm(request.POST)
+        form = EmployerSignUpForm(request.POST)
         if form.is_valid():
-            form.save() 
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            password=form.cleaned_data['password1'],
+                                            email=form.cleaned_data['email'],
+                                            is_active=False)
+
+            employer = Employer.objects.create(user=user,
+                                              email=form.cleaned_data['email'],
+                                              username=form.cleaned_data['username'],
+                                              CompanyName=form.cleaned_data['CompanyName'],
+                                              employer_id=form.cleaned_data['employer_id'],)
             return redirect('login')
     else:
-        form=CreateEmployerForm()
-    context={'form':form}
-    return render(request,'employerreg.html',context)
+        form = EmployerSignUpForm()
+    context = {'form': form}
+    return render(request, 'employerreg.html', context)
 
 def candidateRegPage(request):
     if request.method == 'POST':
-        candidate_form = CreateCandidateForm(request.POST)
-        profile_form = CandidateProfileForm(request.POST)
-        if candidate_form.is_valid() and profile_form.is_valid():
-            user = candidate_form.save()
-            profile = CandidateProfile(user=user, **profile_form.cleaned_data)
-            profile.save()
+        form = CandidateSignUpForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            password=form.cleaned_data['password1'],
+                                            email=form.cleaned_data['email'],
+                                            first_name=form.cleaned_data['first_name'],
+                                            last_name=form.cleaned_data['last_name'])
+
+            candidate = Candidate.objects.create(user=user,
+                                              email=form.cleaned_data['email'],
+                                              username=form.cleaned_data['username'],
+                                              first_name=form.cleaned_data['first_name'],
+                                              last_name=form.cleaned_data['last_name'],
+                                              candidate_id=form.cleaned_data['candidate_id'],
+                                              date_of_birth=form.cleaned_data['date_of_birth'],
+                                              phone_number=form.cleaned_data['phone_number'])
+
             return redirect('login')
     else:
-        candidate_form = CreateCandidateForm()
-        profile_form = CandidateProfileForm()
-    context = {'candidate_form': candidate_form, 'profile_form': profile_form}
-    return render(request, 'candidatereg.html', context)
-
-
-def candidateRegPage_old(request):
-    form=CreateCandidateForm()
-
-    if request.method == 'POST':
-        form = CreateCandidateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    
+        form=CandidateSignUpForm()
     context={'form':form}
     return render(request,'candidatereg.html',context)
 
+
 def loginPage(request):
-
     if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-
-        user=authenticate(request,username=username,password=password)
-        if(user is not None):
-            login(request,user)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
             return redirect('home page')
         else:
-            messages.info(request,'Username OR Password is incorrect')
-            
-    context={}
-    return render(request,'login.html',context)
+            messages.info(request, 'Username OR Password is incorrect')
+    context = {}
+    return render(request, 'login.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
 from .models import CVFormModel
 from .forms import CVForm  
 def cv(request):  
@@ -150,16 +153,40 @@ def registered_users(request):
     return render(request, 'reports.html', data)
 
 from django.contrib.auth.models import Group
-from .forms import UserUpdateForm
+
 
 def view_groups(request):
     groups = Group.objects.filter(user=request.user)
     return render(request, 'template.html', {'groups': groups})
 
+
+def view_profile(request):
+    employer = Employer.objects.get(username=request.username)
+    print(employer)
+    if request.method == 'POST':
+        form = EmployerProfileForm(request.POST, instance=employer.employerprofile)
+        if form.is_valid():
+            form.save()
+            return redirect('view_profile')
+    else:
+        form = EmployerProfileForm(instance=employer.employerprofile)
+    return render(request, 'employer_profile.html', {'employer': employer, 'form': form})
+
+"""def Profile(request, username):
+    user = get_user_model().objects.filter(username=username).first()
+    if user:
+        form = UserUpdateForm(instance=user)
+        bio = user.userprofile.bio
+        company_name=user.userprofile.company_name
+        context = {'form': form, 'user': user, 'bio': bio, 'company_name': company_name}
+        return render(request, 'profile.html', context)
+    else:
+        return redirect("home page")
+
 def Profile(request, username):
     if request.method == 'POST':
         user = request.user
-        form = UserUpdateForm(request.POST, request.FILES, instance=user)
+        form = #UserUpdateForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             user_form = form.save()
 
@@ -198,4 +225,4 @@ def Profile_old(request, username):
         form.fields['bio'].widget.attrs = {'rows': 1}
         return render(request, 'profile.html', context={'form': form, 'bio': bio})
 
-    return redirect("home page")
+    return redirect("home page")"""

@@ -1,89 +1,61 @@
 from django import forms
-from .models import Candidate,CVFormModel,UserProfile,CandidateProfile,MyUser,User
-from django.contrib.auth import get_user_model
-from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm #user create from django firms
-#from django.contrib.auth.models import User #impor user databased
-from django.contrib.auth.models import Group
-#User=get_user_model()
+from .models import CVFormModel
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from users.models import Employer, Candidate,EmployerProfile,CandidateProfile
+from django.contrib.auth.hashers import make_password
 
-class UserUpdateForm(forms.ModelForm):
-    bio = forms.CharField(widget=forms.Textarea, required=False)
-    company_name = forms.CharField(widget=forms.Textarea, required=False)
-    class Meta:
-        model = User
-        fields = ['bio','company_name']
+class EmployerSignUpForm(UserCreationForm):
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
-class CreateEmployerForm(UserCreationForm):
-    is_active=False
-    CompanyName=forms.CharField(max_length=100)
     class Meta:
-        model=User
-        fields=['username','email','password1','password2','CompanyName','is_active']
-    
+        model = Employer
+        fields = ['username', 'email', 'password1', 'password2', 'CompanyName', 'employer_id','is_employer']
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
+
     def save(self, commit=True):
-        user = super().save(commit=False)
-        user.is_active = False
-        user.description="test"
+        user = super(EmployerSignUpForm, self).save(commit=False)
         if commit:
             user.save()
-            group = Group.objects.get(name='Employers')
-            user.groups.add(group)
-        return user            
-#
+        return user
 
-""" class CreateEmployerForm_old(UserCreationForm):
-    #CompanyName=forms.CharField(max_length=100)    
-    is_active=False
-    description=forms.CharField(max_length=100)
+class CandidateSignUpForm(UserCreationForm):
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+
     class Meta:
-        model=UserProfile
-        fields=['username','email','password1','password2','CompanyName','description','is_active']
+        model = Candidate
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'candidate_id', 'date_of_birth', 'phone_number']
     
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
+
     def save(self, commit=True):
-        user = super().save(commit=False)
-        user.is_active = False
-        user.description="test"
+        user = super(CandidateSignUpForm, self).save(commit=False)
         if commit:
             user.save()
-            group = Group.objects.get(name='Employers')
-            user.groups.add(group)
-        return user  """           
-#
-class CreateCandidateForm(UserCreationForm, ModelForm):
+        return user
+
+class EmployerProfileForm(forms.ModelForm):
     class Meta:
-        model = MyUser
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name','user_id','date_of_birth','phone_number']
+        model = EmployerProfile
+        fields = ['bio']
 
-    """def save(self, commit=True):
-        user = super().save(commit=False)
-        if commit:
-            user.save()
-            group = Group.objects.get(name='Candidate')
-            user.groups.add(group)
-        return user"""
-
-class CandidateProfileForm(ModelForm):
-    bio = forms.CharField(widget=forms.Textarea, required=False)
+class CandidateProfileForm(forms.ModelForm):
     class Meta:
         model = CandidateProfile
         fields = ['bio']
-
-
-
-# class CreateCandidateForm_old(UserCreationForm):
-#     class Meta:
-#         model=Candidate
-#         fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth','phone_number')
-
-#     def save(self, commit=True):
-#         user = super().save(commit=False)
-#         if commit:
-#             user.save()
-#             group = Group.objects.get(name='Candidate')
-#             user.groups.add(group)
-#         return user
-
 
 from .choices import *
 class CVForm(forms.Form):

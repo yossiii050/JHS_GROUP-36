@@ -1,0 +1,12 @@
+<h1>Employer Profile</h1>
+
+<p>Username: {{ form.username }}</p>
+<p>Email: {{ employer.email }}</p>
+<p>Company Name: {{ employer.CompanyName }}</p>
+<p>Employer ID: {{ employer.employer_id }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
