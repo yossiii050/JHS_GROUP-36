@@ -1,31 +1,33 @@
 <html>
+    <center>
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    </head>
     <body>
         <h1>This is Upload list page</h1>
+        <a href="{% url 'jobscsvFile' %}"><button>jobs Text File</button></a>
+
         <div class="uploads">
+          <form method="post">
+              {% csrf_token %}
+              <label for="sort_field">Sort by:</label>
+              <select name="sort_field" id="sort_field">
+                <option value="title">Title</option>
+                <option value="date">Date</option>
+                <option value="salaryRange">Salary Range</option>
+                <option value="yearsexp">Years of expirience</option>
+                <option value="time">Job Type</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="location">Location</option>
+                
 
-            <form method="post">
-                {% csrf_token %}
-                <label for="sort_field">Sort by:</label>
-                <select name="sort_field" id="sort_field">
-                  <option value="title">Title</option>
-                  <option value="date">Date</option>
-                  <option value="salaryRange">Salary Range</option>
-                  <option value="yearsexp">Years of expirience</option>
-                  <option value="time">Job Type</option>
-                  <option value="hybrid">Hybrid</option>
-                  <option value="location">Location</option>
-                  
-
-                </select>
-                <label for="sort_order">Order:</label>
-                <select name="sort_order" id="sort_order">
-                  <option value="ascending">Ascending</option>
-                  <option value="descending">Descending</option>
-                </select>
-                <input type="submit" value="Sort">
-              </form>
+              </select>
+              <label for="sort_order">Order:</label>
+              <select name="sort_order" id="sort_order">
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+              </select>
+              <input type="submit" value="Sort">
+            </form>
 
              
                 <br/>
@@ -74,7 +76,7 @@
                 
 
             
-        </div>
-    </body>
-
+         </div>
+        </body>
+    </center>
 </html>

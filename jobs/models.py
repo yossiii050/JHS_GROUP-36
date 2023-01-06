@@ -9,7 +9,6 @@ from django.contrib.auth.forms import UserCreationForm #user create from django 
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .choices import * 
 from decimal import *
-from collections import Counter
 
 
 

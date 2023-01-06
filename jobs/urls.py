@@ -10,7 +10,7 @@ urlpatterns = [
     path('',views.Upload_list,name='list'),
     path('<str:slug>',views.job_details,name='detail'),
     path('success/',views.success,name='success'),
-    path('deleteJob/<str:upload_id>',views.deleteJob,name='deleteJob')
-    #comment
+    path('deleteJob/<str:upload_id>',views.deleteJob,name='deleteJob'),
+    path('jobsCsvFile/',views.jobscsvFile,name='jobscsvFile')
 ]
 

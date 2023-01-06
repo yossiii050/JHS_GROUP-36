@@ -1,9 +1,22 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from .models import Upload
 from .forms import UploadForm,SortForm
 from django.views.generic import CreateView
 from django.db.models.functions import Lower
+import csv
+
+#generate textFileUploadList
+def jobscsvFile(request):
+    response=HttpResponse(content_type='text/csv')
+    response['Content-Disposition']='attachment; filename=jobsList.csv'
+    writer=csv.writer(response)
+    
+    jobs=Upload.objects.all().order_by('location')
+    writer.writerow(['Job Title','subTitle','body','Category','Calary Range','Years Of Expirience','Education','Job Type','Hybrid ? ','Priority','Location','Available Amount'])
+    for job in jobs:
+        writer.writerow([job.title, job.subTitle, job.body, job.category, job.salaryRange, job.yearsexp, job.education, job.time, job.hybrid, job.priority, job.location, job.availableAmount])
+    return response
 
 
 def Upload_list(request):
@@ -25,22 +38,22 @@ def Upload_list(request):
                     uploads = uploads.order_by("-title")
             elif sort_field == "date":
                 if sort_order == "ascending":
-                    uploads = uploads.order_by("date")
+                    uploads = uploads.order_by(Lower("date"))
                 else:
                     uploads = uploads.order_by("-date")
             elif sort_field == "salaryRange":
                 if sort_order == "ascending":
-                    uploads = uploads.order_by("salaryRange")
+                    uploads = uploads.order_by(Lower("salaryRange"))
                 else:
                     uploads = uploads.order_by("-salaryRange")
             elif sort_field == "yearsexp":
                 if sort_order == "ascending":
-                    uploads = uploads.order_by("yearsexp")
+                    uploads = uploads.order_by(Lower("yearsexp"))
                 else:
                     uploads = uploads.order_by("-yearsexp")
             elif sort_field == "time":
                 if sort_order == "ascending":
-                    uploads = uploads.order_by("time")
+                    uploads = uploads.order_by(Lower("time"))
                 else:
                     uploads = uploads.order_by("-time")
 
