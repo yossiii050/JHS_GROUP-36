@@ -1,53 +1,9 @@
 <html>
     <head>
-        <center>
-        <meta charset="utf-8">
-        <title>Upload list</title>
-        <link rel="stylsheet" href="/static/admin/css/style2.css">
-    </head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    </head>
     <body>
         <h1>This is Upload list page</h1>
         <div class="uploads">
-
-           <!-- <div class="d-flex g4 gsx ai-center sm:fd-column sm:ai-start">
-                <div class="d-flex fd-column ai-end sm:ai-start">
-                    <label class="flex--item fs-caption" for="answer-sort-dropdown-select-menu">
-                        Sorted by:
-                    </label>
-                    <a 
-                        class="js-sort-preference-change s-link flex--item fs-fine d-none"
-                        data-value="ScoreDesc"
-                        href="/questions/10488158/django-how-to-sort-objects-based-on-attribute-of-a-related-model?answertab=scoredesc#tab-top"
-                    >
-                        Reset to default
-                    </a>
-                </div>
-                <div class="flex--item s-select">
-                    <select id="answer-sort-dropdown-select-menu">
-                                <option
-                                    value=scoredesc
-                                    selected=selected
-                                >
-                                    Highest score (default)
-                                </option>
-                                <option
-                                    value=trending
-                                >
-                                    Trending (recent votes count more)
-                                </option>
-                                <option
-                                    value=modifieddesc
-                                >
-                                    Date modified (newest first)
-                                </option>
-                                <option
-                                    value=createdasc
-                                >
-                                    Date created (oldest first)
-                                </option>
-                    </select>
-                </div>
-            </div>-->
 
             <form method="post">
                 {% csrf_token %}
@@ -74,13 +30,39 @@
 
             {% for upload in uploads %}
             
-                <div class="upload">
+            <div class="card bg-light" style="width: 30rem;">
+                <div class="card-body">
+                  <h5 class="card-title"><strong>{{upload.title}}</strong></h5>
+                  <p class="card-text"><strong>{{upload.snippet}}</strong></p>
+                  <p class="card-text"><strong>Date: </strong>{{upload.date}}</p>
+                  <p class="card-text"><strong>Salary Range: </strong>{{upload.salaryRange}}</p>
+                  <p class="card-text"><strong>Years of expirience:</strong>  {{upload.yearsexp}}</p>
+                  <p class="card-text"><strong>Job Type: </strong>{{upload.time}}</p>
+                  <p class="card-text"><strong>Hybrid: </strong>{{upload.hybrid}}</p>
+                  <p class="card-text"><strong>Location: </strong>{{upload.location}}</p>
+
+
+
+                  <a href="{% url 'detail' upload  %}" class="btn btn-primary">Show More..</a>
+                </div>
+              </div>
+
+
+             <!--   <div class="upload">
                   <h2>  <li><a href="{% url 'detail' upload  %}">{{upload.title}}</a></li></h2>
                     <p>{{upload.subtitle}}</p>
                     <p>{{upload.snippet}}</p>
-                    <p>{{upload.date}}</p>
+                    <p>Date: {{upload.date}}</p>
+                    <p>Salary Range: {{upload.salaryRange}}</p>
+                    <p>Years of expirience: {{upload.yearsexp}}</p>
+                    <p>Job Type: {{upload.time}}</p>
+                    <p>Hybrid: {{upload.hybrid}}</p>
+                    <p>Location: {{upload.location}}</p>
+
+
                    
-                </div>
+                </div>-->
+                <br/><br/>
             {% endfor %}
 
 
@@ -93,5 +75,5 @@
             </a>
         </div>
     </body>
-</center>
+
 </html>
