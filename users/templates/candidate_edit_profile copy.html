@@ -1,0 +1,42 @@
+<div class="form-container">
+    <form method="post" action="{% url 'candidate_edit_profile' candidate.candidate_id %}">
+        {% csrf_token %}
+        <h2>Change Password</h2>
+        <label for="id_current_password">Current Password:</label>
+        {{ form.current_password }}
+        {% if form.current_password.errors %}
+            <p class="error">{{ form.current_password.errors }}</p>
+        {% endif %}
+        <label for="id_new_password1">New Password:</label>
+        {{ form.new_password1 }}
+        {% if form.new_password1.errors %}
+            <p class="error">{{ form.new_password1.errors }}</p>
+        {% endif %}
+        <label for="id_new_password2">Confirm New Password:</label>
+        {{ form.new_password2 }}
+        {% if form.new_password2.errors %}
+            <p class="error">{{ form.new_password2.errors }}</p>
+        {% endif %}
+        <br>
+        <button type="submit" class="btn btn-primary">Change Password</button>
+    </form>
+</div>
+
+
+<div class="form-container">
+    <form method="post" action="{% url 'candidate_edit_profile' candidate.candidate_id %}">
+        {% csrf_token %}
+        <h2>Update Contact Information</h2>
+        <label for="id_email">Email:</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <p class="error">{{ form.email.errors }}</p>
+        {% endif %}
+        <label for="id_phone_number">Phone Number:</label>
+        {{ form.phone_number }}
+        {% if form.phone_number.errors %}
+            <p class="error">{{ form.phone_number.errors }}</p>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Update Contact Information</button>
+    </form>
+</div>

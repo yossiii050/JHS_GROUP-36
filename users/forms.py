@@ -47,7 +47,20 @@ class CandidateSignUpForm(UserCreationForm):
             user.save()
         return user
 
-class EmployerProfileForm(forms.ModelForm):
+class CandidateForm(forms.ModelForm):
+    class Meta:
+        model = Candidate
+        fields = ['email', 'phone_number']
+
+class CandidateProfileForm(forms.ModelForm):
+    class Meta:
+        model = CandidateProfile
+        fields = ['bio']
+
+class CandidateEditProfileForm(CandidateForm, CandidateProfileForm):
+    pass
+
+"""class EmployerProfileForm(forms.ModelForm):
     class Meta:
         model = EmployerProfile
         fields = ['bio']
@@ -57,6 +70,13 @@ class CandidateProfileForm(forms.ModelForm):
         model = CandidateProfile
         fields = ['bio']
 
+class CandidateEditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Candidate
+        fields = ['email', 'phone_number']
+
+class CandidateEditProfileForm(CandidateProfileForm,CandidateSignUpForm):
+    pass"""
 from .choices import *
 class CVForm(forms.Form):
     #file      = forms.FileField() # for creating file input    

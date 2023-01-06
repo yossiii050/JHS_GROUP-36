@@ -8,5 +8,7 @@ urlpatterns = [
     path('candidate/', views.candidateRegPage,name='candidate register'),
     path('cv/', views.cv,name="cv"),  
     path('',views.usershome,name="home"),
-    path('Profile/<username>',views.view_profile,name="Profile"),
-]
+    path('Profile/<str:username>/',views.user_profile,name="Profile"),
+    path('Profile/<str:username>/edit/', views.edit_profile, name='edit_profile'),
+    
+    ]
