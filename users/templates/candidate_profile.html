@@ -32,12 +32,12 @@
     }
 </style>
 
-<h1>{{ candidate.username }} Profile</h1>
+<h1>Hello {{ candidate.user.username }} :-)</h1>
 
 <div class="profile-info">
     <h2>Basic Information</h2>
-    <p>Username: {{ candidate.username }}</p>
-    <p>Email: {{ candidate.email }}</p>
+    <p>Username: {{ candidate.user.username }}</p>
+    <p>Email: {{ candidate.user.email }}</p>
     <p>Date of birth: {{ candidate.date_of_birth }}</p>
     <p>Phone number: {{ candidate.phone_number }}</p>
     <p>First name: {{ candidate.first_name }}</p>
@@ -45,14 +45,12 @@
 </div>
 
 <div class="profile-bio">
-    <h2>Bio</h2>
-    {% if candidate.candidateprofile.bio %}
-        <textarea readonly>{{ candidate.candidateprofile.bio }}</textarea>
-    {% else %}
-        <textarea readonly>No bio provided.</textarea>
-    {% endif %}
+    <h2>Bio</h2><textarea readonly>{{ candidate.bios }}</textarea>
+
 </div>
-<form action="{% url 'edit_profile' candidate.username %}">
+<form action="{% url 'edit_profile' candidate.user.username %}">
     <button type="submit" class="btn btn-primary">Edit Profile</button>
-</form>
+</form> 
+<form>
+    <a href="{% url 'delete_account' %}">Delete</a>
 </form>

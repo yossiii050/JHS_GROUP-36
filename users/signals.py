@@ -8,8 +8,11 @@ def create_profile(sender, instance, created, **kwargs):
     if created:
         if instance.is_employer:
             Employer.objects.create(user=instance)
-            EmployerProfile.objects.create(employer=instance.employer)
+            EmployerProfile.objects.create(employer=instance.employer,employer_bio="write your bio heres...")
+            
+            #EmployerProfile.objects.create(employer=instance.employer,employer_bio="write your bio here...")
         elif instance.is_candidate:
             Candidate.objects.create(user=instance)
-            CandidateProfile.objects.create(candidate=instance.candidate)
+            CandidateProfile.objects.create(candidate=instance.candidate, candidate_bio="write your bio heres...")
+            #CandidateProfile.objects.create(candidate=instance.candidate, candidate_bio="write your bio here...")
 

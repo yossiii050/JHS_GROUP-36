@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateEditProfileForm
+from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateEditProfileForm,EmployerEditProfileForm,CandidateProfileForm,CandidateForm,EmployerForm,EmployerProfile,EmployerProfileForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -160,45 +160,79 @@ def view_groups(request):
     groups = Group.objects.filter(user=request.user)
     return render(request, 'template.html', {'groups': groups})
 
-
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    # Check if user is an employer
-    if hasattr(user, 'employer'):
-        employer = user.employer
-        context = {'employer': employer}
-        return render(request, 'employer_profile.html', context)
+    print(user)
+    #print(user.employer.is_employer)
+    if request.user.username != user.username:
+        return redirect('/')
+    try:
+        if user.employer.is_employer==True:
+            employer = user.employer
+            context = {'employer': employer}
+            return render(request, 'employer_profile.html', context)
+    except:
+        if user.candidate.is_candidate==True:
+            candidate = user.candidate
+            print(candidate)
+            context = {'candidate': candidate}
+            return render(request, 'candidate_profile.html', context)
+   
 
-    # Check if user is a candidate
-    elif hasattr(user, 'candidate'):
-        candidate = user.candidate
-        context = {'candidate': candidate}
-        return render(request, 'candidate_profile.html', context)
 
 def edit_profile(request, username):
     user = get_object_or_404(User,username=username)
-    if hasattr(user, 'candidate'):
-        return candidate_edit_profile(request, user.candidate.candidate_id)
-    elif hasattr(user, 'employer'):
-        return employer_edit_profile(request, user.employer.employer_id)
-    else:
-        raise Http404
+    print(user)
+    try:
+        if user.candidate.is_candidate==True:
+            print("-----------"+user.candidate.candidate_id)
+            return candidate_edit_profile(request, user.candidate.candidate_id)
+    except:    
+        if user.employer.is_employer==True:
+            print("bababa")
+            print( user.employer.employer_id)
+            return employer_edit_profile(request, user.employer.employer_id)
+    raise Http404   
 
 def candidate_edit_profile(request, candidate_id):
     candidate = get_object_or_404(Candidate, candidate_id=candidate_id)
-    if request.method == 'POST':
-        # handle form submission
-        form = CandidateEditProfileForm(request.POST, instance=candidate)
-        if form.is_valid():
-            form.save()
-            print(candidate.username)
-            return redirect('Profile', username=candidate.username)
-    else:
-        form = CandidateEditProfileForm(instance=candidate)
-    return render(request, 'candidate_edit_profile.html', {'form': form, 'candidate': candidate})
+    #candidatebio = get_object_or_404(CandidateProfile, candidate=candidate)
+    print(candidate)
 
-def employer_edit_profile():
-    pass
+    print("candidate is "+str(candidate))
+    if request.method == 'POST':
+        form1 = CandidateForm(request.POST, instance=candidate)
+        print(form1.is_valid())
+
+        if form1.is_valid():
+            form1.save()
+            return redirect('Profile', username=candidate.username) 
+    else:
+        form1 = CandidateForm(instance=candidate)
+    return render(request, 'candidate_edit_profile.html', {'form1': form1, 'candidate': candidate})
+
+def employer_edit_profile(request, employer_id):
+    print("i get here")
+    employer = get_object_or_404(Employer, employer_id=employer_id)
+    print("here2")
+    if request.method == 'POST':
+        form1 = EmployerForm(request.POST, instance=employer)
+        print(form1.is_valid())
+
+        if form1.is_valid() :#and form2.is_valid():
+            form1.save()            
+            return redirect('Profile', username=employer.username) 
+    else:
+        form1 = EmployerForm( instance=employer)
+    return render(request, 'employer_edit_profile.html', {'form1': form1, 'employer': employer})
+
+
+def delete_account(request):
+    if request.method == 'POST':
+        request.user.delete()
+        return redirect('home page')
+    return render(request, 'delete_account_confirm.html')
+
 """def Profile(request, username):
     user = get_user_model().objects.filter(username=username).first()
     if user:

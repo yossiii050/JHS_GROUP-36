@@ -22,6 +22,7 @@ class Employer(models.Model):
     CompanyName = models.CharField(max_length=255)
     employer_id = models.CharField(max_length=200,unique=True)
     is_employer = models.BooleanField(default=True)
+    bios=models.TextField(blank=True,default="write you bio here...")
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
     USERNAME_FIELD='username'
@@ -39,6 +40,7 @@ class Candidate(models.Model):
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
     is_candidate = models.BooleanField(default=True)
+    bios=models.TextField(blank=True,default="write you bio here...")
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
     USERNAME_FIELD='username'
@@ -48,8 +50,8 @@ class Candidate(models.Model):
         
 class EmployerProfile(models.Model):
     employer = models.OneToOneField(Employer, on_delete=models.CASCADE)
-    bio = models.TextField(blank=True)
+    employer_bio = models.TextField(blank=True,default="write you bio here...")
 
 class CandidateProfile(models.Model):
     candidate = models.OneToOneField(Candidate, on_delete=models.CASCADE)
-    bio = models.TextField(blank=True)    
+    candidate_bio = models.TextField(blank=True,default="write you bio here...")

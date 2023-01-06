@@ -11,7 +11,7 @@ class EmployerSignUpForm(UserCreationForm):
 
     class Meta:
         model = Employer
-        fields = ['username', 'email', 'password1', 'password2', 'CompanyName', 'employer_id','is_employer']
+        fields = ['username', 'email', 'password1', 'password2', 'CompanyName', 'employer_id','is_employer','bios']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -32,7 +32,7 @@ class CandidateSignUpForm(UserCreationForm):
 
     class Meta:
         model = Candidate
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'candidate_id', 'date_of_birth', 'phone_number']
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'candidate_id', 'date_of_birth', 'phone_number','bios']
     
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -50,33 +50,31 @@ class CandidateSignUpForm(UserCreationForm):
 class CandidateForm(forms.ModelForm):
     class Meta:
         model = Candidate
-        fields = ['email', 'phone_number']
+        fields = ['first_name', 'last_name','date_of_birth', 'phone_number','bios']
+
+class EmployerForm(forms.ModelForm):
+    class Meta:
+        model = Employer
+        fields = ['CompanyName', 'employer_id','bios']
 
 class CandidateProfileForm(forms.ModelForm):
     class Meta:
         model = CandidateProfile
-        fields = ['bio']
+        fields = ['candidate_bio']
+
+class EmployerProfileForm(forms.ModelForm):
+    class Meta:
+        model = EmployerProfile
+        fields = ['employer_bio']
 
 class CandidateEditProfileForm(CandidateForm, CandidateProfileForm):
     pass
 
-"""class EmployerProfileForm(forms.ModelForm):
-    class Meta:
-        model = EmployerProfile
-        fields = ['bio']
+class EmployerEditProfileForm(EmployerForm, EmployerProfileForm):
+    pass
 
-class CandidateProfileForm(forms.ModelForm):
-    class Meta:
-        model = CandidateProfile
-        fields = ['bio']
 
-class CandidateEditProfileForm(forms.ModelForm):
-    class Meta:
-        model = Candidate
-        fields = ['email', 'phone_number']
 
-class CandidateEditProfileForm(CandidateProfileForm,CandidateSignUpForm):
-    pass"""
 from .choices import *
 class CVForm(forms.Form):
     #file      = forms.FileField() # for creating file input    
