@@ -26,13 +26,18 @@
                 </select>
                 <input type="submit" value="Sort">
               </form>
-              
 
+             
+                <br/>
+            <a href="{% url 'upload' %}">
+            <button>Upload job</button>
+            </a>
+            <br/><br/> 
             {% for upload in uploads %}
             
             <div class="card bg-light" style="width: 30rem;">
                 <div class="card-body">
-                  <h5 class="card-title"><strong>{{upload.title}}</strong></h5>
+                  <h5 class="card-title"><h2><strong>{{upload.title}}</strong></h2></h5>
                   <p class="card-text"><strong>{{upload.snippet}}</strong></p>
                   <p class="card-text"><strong>Date: </strong>{{upload.date}}</p>
                   <p class="card-text"><strong>Salary Range: </strong>{{upload.salaryRange}}</p>
@@ -68,11 +73,7 @@
 
                 
 
-            <br/><br/>
-                <br/><br/>
-            <a href="{% url 'upload' %}">
-            <button>Upload job</button>
-            </a>
+            
         </div>
     </body>
 
