@@ -52,8 +52,6 @@ INSTALLED_APPS = [
     'jobs',
     'rules',
     'crispy_forms',
-    'usermodel',
-
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
