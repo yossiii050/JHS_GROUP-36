@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm #user create from django 
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .choices import * 
 from decimal import *
+from collections import Counter
 
 
 
@@ -28,7 +29,6 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     priority=models.IntegerField(choices=PRIORITY_CHOICES,default=1)
     owner=models.ForeignKey(User, on_delete=models.CASCADE, default=1, related_name='user')
     location=models.IntegerField(choices=CITIES, default=1)
-    #available=models.DecimalField(max_digits=2,decimal_places=2,**options)
     availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
     notification=models.DecimalField(max_digits=3 ,decimal_places=0, default=Decimal('5'))
 
@@ -40,3 +40,4 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
 
     def get_absolute_url(self):
         return reverse("upload_detail", kwargs={"slug": self.slug})
+

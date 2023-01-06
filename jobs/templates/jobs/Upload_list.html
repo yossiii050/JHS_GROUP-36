@@ -8,6 +8,70 @@
     <body>
         <h1>This is Upload list page</h1>
         <div class="uploads">
+
+           <!-- <div class="d-flex g4 gsx ai-center sm:fd-column sm:ai-start">
+                <div class="d-flex fd-column ai-end sm:ai-start">
+                    <label class="flex--item fs-caption" for="answer-sort-dropdown-select-menu">
+                        Sorted by:
+                    </label>
+                    <a 
+                        class="js-sort-preference-change s-link flex--item fs-fine d-none"
+                        data-value="ScoreDesc"
+                        href="/questions/10488158/django-how-to-sort-objects-based-on-attribute-of-a-related-model?answertab=scoredesc#tab-top"
+                    >
+                        Reset to default
+                    </a>
+                </div>
+                <div class="flex--item s-select">
+                    <select id="answer-sort-dropdown-select-menu">
+                                <option
+                                    value=scoredesc
+                                    selected=selected
+                                >
+                                    Highest score (default)
+                                </option>
+                                <option
+                                    value=trending
+                                >
+                                    Trending (recent votes count more)
+                                </option>
+                                <option
+                                    value=modifieddesc
+                                >
+                                    Date modified (newest first)
+                                </option>
+                                <option
+                                    value=createdasc
+                                >
+                                    Date created (oldest first)
+                                </option>
+                    </select>
+                </div>
+            </div>-->
+
+            <form method="post">
+                {% csrf_token %}
+                <label for="sort_field">Sort by:</label>
+                <select name="sort_field" id="sort_field">
+                  <option value="title">Title</option>
+                  <option value="date">Date</option>
+                  <option value="salaryRange">Salary Range</option>
+                  <option value="yearsexp">Years of expirience</option>
+                  <option value="time">Job Type</option>
+                  <option value="hybrid">Hybrid</option>
+                  <option value="location">Location</option>
+                  
+
+                </select>
+                <label for="sort_order">Order:</label>
+                <select name="sort_order" id="sort_order">
+                  <option value="ascending">Ascending</option>
+                  <option value="descending">Descending</option>
+                </select>
+                <input type="submit" value="Sort">
+              </form>
+              
+
             {% for upload in uploads %}
             
                 <div class="upload">
@@ -17,8 +81,11 @@
                     <p>{{upload.date}}</p>
                    
                 </div>
-
             {% endfor %}
+
+
+                
+
             <br/><br/>
                 <br/><br/>
             <a href="{% url 'upload' %}">

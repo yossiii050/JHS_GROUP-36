@@ -37,9 +37,9 @@ TIME_CHOICES = (
 )
 
 PRIORITY_CHOICES = (
-    (1, ("low priority")),
+    (1, ("high priority")),
     (2, ("mid priority")),
-    (3, ("high priority")),
+    (3, ("low priority")),
 )
 CITIES = (
     (1, 'Jerusalem'),
