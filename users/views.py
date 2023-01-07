@@ -167,9 +167,6 @@ def view_groups(request):
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     print(user)
-    #print(user.employer.is_employer)
-    if request.user.username != user.username:
-        return redirect('/')
     try:
         if user.employer.is_employer==True:
             employer = user.employer
