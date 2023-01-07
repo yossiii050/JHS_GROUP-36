@@ -11,6 +11,8 @@ urlpatterns = [
     path('<str:slug>',views.job_details,name='detail'),
     path('success/',views.success,name='success'),
     path('deleteJob/<str:upload_id>',views.deleteJob,name='deleteJob'),
-    path('jobsCsvFile/',views.jobscsvFile,name='jobscsvFile')
+    path('jobsCsvFile/',views.jobscsvFile,name='jobscsvFile'),
+    path('jobsPdfFile/',views.jobsPdfFile,name='jobsPdfFile')
+
 ]
 

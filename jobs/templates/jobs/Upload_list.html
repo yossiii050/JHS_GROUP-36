@@ -5,6 +5,8 @@
     <body>
         <h1>This is Upload list page</h1>
         <a href="{% url 'jobscsvFile' %}"><button>jobs Text File</button></a>
+        <a href="{% url 'jobsPdfFile' %}"><button>jobs Pdf File</button></a>
+
 
         <div class="uploads">
           <form method="post">
@@ -42,11 +44,11 @@
                   <h5 class="card-title"><h2><strong>{{upload.title}}</strong></h2></h5>
                   <p class="card-text"><strong>{{upload.snippet}}</strong></p>
                   <p class="card-text"><strong>Date: </strong>{{upload.date}}</p>
-                  <p class="card-text"><strong>Salary Range: </strong>{{upload.salaryRange}}</p>
-                  <p class="card-text"><strong>Years of expirience:</strong>  {{upload.yearsexp}}</p>
-                  <p class="card-text"><strong>Job Type: </strong>{{upload.time}}</p>
-                  <p class="card-text"><strong>Hybrid: </strong>{{upload.hybrid}}</p>
-                  <p class="card-text"><strong>Location: </strong>{{upload.location}}</p>
+                  <p class="card-text"><strong>Salary Range: </strong>{{upload.get_salaryRange_display}}</p>
+                  <p class="card-text"><strong>Years of expirience:</strong>  {{upload.get_yearsexp_display}}</p>
+                  <p class="card-text"><strong>Job Type: </strong>{{upload.get_time_display}}</p>
+                  <p class="card-text"><strong>Hybrid: </strong>{{upload.get_hybrid_display}}</p>
+                  <p class="card-text"><strong>Location: </strong>{{upload.get_location_display}}</p>
 
 
 
@@ -55,20 +57,7 @@
               </div>
 
 
-             <!--   <div class="upload">
-                  <h2>  <li><a href="{% url 'detail' upload  %}">{{upload.title}}</a></li></h2>
-                    <p>{{upload.subtitle}}</p>
-                    <p>{{upload.snippet}}</p>
-                    <p>Date: {{upload.date}}</p>
-                    <p>Salary Range: {{upload.salaryRange}}</p>
-                    <p>Years of expirience: {{upload.yearsexp}}</p>
-                    <p>Job Type: {{upload.time}}</p>
-                    <p>Hybrid: {{upload.hybrid}}</p>
-                    <p>Location: {{upload.location}}</p>
-
-
-                   
-                </div>-->
+             
                 <br/><br/>
             {% endfor %}
 

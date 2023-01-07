@@ -1,10 +1,67 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,FileResponse
 from .models import Upload
 from .forms import UploadForm,SortForm
 from django.views.generic import CreateView
 from django.db.models.functions import Lower
 import csv
+
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
+
+
+
+def jobsPdfFile(request):
+    buf=io.BytesIO()
+    c=canvas.Canvas(buf,pagesize=letter,bottomup=0)
+   
+    #c.saveState()
+    #c.rotate(180)
+    #c.drawImage(image, x=10, y=10, width=100, height=100)
+    #c.restoreState()
+
+    textob=c.beginText()
+    textob.setTextOrigin(inch,inch)
+    textob.setFont("Helvetica-Bold",10)
+    
+    image_path = 'C:\JHS_GROUP-36\static\jpg\LOGO.jpg'
+    image = ImageReader(image_path)
+    c.drawImage(image, x=5, y=0, width=250, height=200)
+    
+
+    jobs=Upload.objects.all().order_by('location')
+    lines=[" "," "," "," "," "," "," "," "," "]
+    for job in jobs:
+       # lines.append(job.category.)
+        lines.append("                                 ")
+        lines.append('Job Title: '+job.title)
+        lines.append(job.subTitle)
+        lines.append(job.body)
+        lines.append('Date of Publish: '+str(job.date))
+        category = job.get_category_display()
+        lines.append('Category: '+category)
+        salaryRange = job.get_salaryRange_display()
+        lines.append('Salary Range: '+salaryRange)
+        yearsexp=job.get_yearsexp_display()
+        lines.append('Years of expirience: '+yearsexp)
+        lines.append('Education: '+str(job.education))
+        time=job.get_time_display()
+        lines.append('Job Type: '+time)
+        lines.append('Hybrid: '+str(job.hybrid))
+        location=job.get_location_display()
+        lines.append('Location: '+location)
+        lines.append("================================")
+    for line in lines:
+        textob.textLine(line)
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileResponse(buf,as_attachment=True,filename="JobListPdf.pdf")
 
 #generate textFileUploadList
 def jobscsvFile(request):
@@ -22,7 +79,6 @@ def jobscsvFile(request):
 def Upload_list(request):
     uploads=Upload.objects.all()
     sort_form = SortForm()  # Create an instance of your form
-
     # Check if the form has been submitted
     if request.method == "POST":
         sort_form = SortForm(request.POST)  # Bind the form to the POST data
@@ -67,9 +123,6 @@ def Upload_list(request):
                     uploads = uploads.order_by("location")
                 else:
                     uploads = uploads.order_by("-location")
-
-
-
 
 
     return render(request,'jobs/Upload_list.html',{'uploads':uploads,"sort_form": sort_form})
