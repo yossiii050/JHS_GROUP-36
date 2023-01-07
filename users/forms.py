@@ -1,59 +1,70 @@
 from django import forms
-from .models import Candidate,EmployerProfile
+from .models import CVFormModel
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from users.models import Employer, Candidate
+from django.contrib.auth.hashers import make_password
 
-from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from django.contrib.auth.models import User #impor user databased
-from django.contrib.auth.models import Group
+class EmployerSignUpForm(UserCreationForm):
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
-
-class CreateEmployerForm(UserCreationForm):
-    CompanyName=forms.CharField(max_length=100)    
-    is_active=False
     class Meta:
-        model=User
-        fields=['username','email','CompanyName','password1','password2','is_active']
-    
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.is_active = False
-        if commit:
-            user.save()
-            group = Group.objects.get(name='Employers')
-            user.groups.add(group)
-        return user            
-#
-class CreateCandidateForm(UserCreationForm):
-    class Meta:
-        model=Candidate
-        fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth','phone_number')
+        model = Employer
+        fields = ['username', 'email', 'password1', 'password2', 'CompanyName', 'employer_id','is_employer','bios']
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
 
     def save(self, commit=True):
-        user = super().save(commit=False)
+        user = super(EmployerSignUpForm, self).save(commit=False)
         if commit:
             user.save()
-            group = Group.objects.get(name='Candidate')
-            user.groups.add(group)
         return user
 
-class EmployerProfileForm(forms.ModelForm):
-    
-    class Meta:
-        model = EmployerProfile
-        fields = ['bio', 'avatar', 'contact_methods', 'location', ]
+class CandidateSignUpForm(UserCreationForm):
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
-class UpdateProfileForm(forms.ModelForm):
-    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
-    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
-    #contact_methods = forms.TextField()
-    #location = forms.CharField(max_length=255)
     class Meta:
-        model = EmployerProfile
-        fields = ['bio', 'avatar' ]
+        model = Candidate
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'candidate_id', 'date_of_birth', 'phone_number','bios']
+    
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
+
+    def save(self, commit=True):
+        user = super(CandidateSignUpForm, self).save(commit=False)
+        if commit:
+            user.save()
+        return user
+
+class CandidateForm(forms.ModelForm):
+    class Meta:
+        model = Candidate
+        fields = ['first_name', 'last_name','date_of_birth', 'phone_number','bios']
+
+class EmployerForm(forms.ModelForm):
+    class Meta:
+        model = Employer
+        fields = ['CompanyName', 'employer_id','bios']
+
+
 from .choices import *
 class CVForm(forms.Form):
-    file      = forms.FileField() # for creating file input
+    #file      = forms.FileField() # for creating file input    
     field = forms.ChoiceField(choices = FIELD_CHOICES, label="Field of work", initial='', widget=forms.Select(), required=True)
     yearsexp  = forms.ChoiceField(choices = YEARS_CHOICES,label="Years of experience",required=True)
     education = forms.ChoiceField(choices = EDUCATION_CHOICES, label="Education", widget=forms.Select(), required=True)
-    GitUrl = forms.URLField(max_length=25,label= "Git-URL")     
+    GitUrl = forms.URLField(max_length=25,label= "Git-URL")  
+    class Meta:
+       model = CVFormModel
+       fields = ['field', 'yearsexp', 'education', 'GitUrl']        

@@ -1,20 +1,20 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from django.forms import inlineformset_factory
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import CreateEmployerForm,CreateCandidateForm,EmployerProfileForm,UpdateProfileForm
+from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout,get_user_model
 from .functions import handle_uploaded_file  
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
+from django.http import Http404
 
 from functools import wraps
 
@@ -44,72 +44,102 @@ def update_user_status(request):
 @user_passes_test(lambda u: u.is_staff)    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
+    print(form)
     context={'form':form}
     return render(request,'appr.html',context)
 
+@user_passes_test(lambda u: u.is_staff)    
 def ReportUsers(request):
     form=User.objects.all()
     context={'form':form}
     return render(request,'reportUser.html',context)
-
+    
+@user_passes_test(lambda u: u.is_staff)    
+def ReportVIPUsers(request):
+    User = get_user_model()
+    vip_group = Group.objects.get(name='VIP')
+    form = User.objects.filter(groups=vip_group)
+    context={'form':form}
+    return render(request,'reportVIPUsers.html',context)
 
 def employerRegPage(request):
-    form=CreateEmployerForm()
-
     if request.method == 'POST':
-        form=CreateEmployerForm(request.POST)
+        form = EmployerSignUpForm(request.POST)
         if form.is_valid():
-            form.save() 
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            password=form.cleaned_data['password1'],
+                                            email=form.cleaned_data['email'],
+                                            is_active=False)
+
+            employer = Employer.objects.create(user=user,
+                                              email=form.cleaned_data['email'],
+                                              username=form.cleaned_data['username'],
+                                              CompanyName=form.cleaned_data['CompanyName'],
+                                              employer_id=form.cleaned_data['employer_id'],)
             return redirect('login')
-
-    context={'form':form}
-    return render(request,'employerreg.html',context)
-
+    else:
+        form = EmployerSignUpForm()
+    context = {'form': form}
+    return render(request, 'employerreg.html', context)
 
 def candidateRegPage(request):
-    form=CreateCandidateForm()
-
     if request.method == 'POST':
-        form = CreateCandidateForm(request.POST)
+        form = CandidateSignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            password=form.cleaned_data['password1'],
+                                            email=form.cleaned_data['email'],
+                                            first_name=form.cleaned_data['first_name'],
+                                            last_name=form.cleaned_data['last_name'])
+
+            candidate = Candidate.objects.create(user=user,
+                                              email=form.cleaned_data['email'],
+                                              username=form.cleaned_data['username'],
+                                              first_name=form.cleaned_data['first_name'],
+                                              last_name=form.cleaned_data['last_name'],
+                                              candidate_id=form.cleaned_data['candidate_id'],
+                                              date_of_birth=form.cleaned_data['date_of_birth'],
+                                              phone_number=form.cleaned_data['phone_number'])
+
             return redirect('login')
-    
+    else:
+        form=CandidateSignUpForm()
     context={'form':form}
     return render(request,'candidatereg.html',context)
 
+
 def loginPage(request):
-
     if request.method == 'POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-
-        user=authenticate(request,username=username,password=password)
-        if(user is not None):
-            login(request,user)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
             return redirect('home page')
         else:
-            messages.info(request,'Username OR Password is incorrect')
-            
-    context={}
-    return render(request,'login.html',context)
+            messages.info(request, 'Username OR Password is incorrect')
+    context = {}
+    return render(request, 'login.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect('login')
 
-from users.models import CVForm
-from users.forms import CVForm  
-def index(request):  
+from .models import CVFormModel
+from .forms import CVForm  
+def cv(request):  
     if request.method == 'POST':  
-        
-        student = CVForm(request.POST, request.FILES)  
-        if student.is_valid():  
-            handle_uploaded_file(request.FILES['file'])  
-            return HttpResponse("File uploaded successfuly",usershome)  
+        form = CVForm(request.POST)
+        if form.is_valid():
+            new_form = CVFormModel(field=form.cleaned_data['field'], yearsexp=form.cleaned_data['yearsexp'], education=form.cleaned_data['education'], GitUrl=form.cleaned_data['GitUrl'])
+            new_form.save()
+            return HttpResponse("Form saved successfully")
+        else:
+            return render(request, "cv.html", {'form': form})
     else:  
-        student = CVForm()  
-        return render(request,"cv.html",{'form':student})  
+        form = CVForm()  
+        return render(request,"cv.html",{'form':form})
+
 
 def usershome(request):
     return render(request,'users.html')
@@ -125,28 +155,79 @@ def registered_users(request):
 
 from django.contrib.auth.models import Group
 
+
 def view_groups(request):
     groups = Group.objects.filter(user=request.user)
     return render(request, 'template.html', {'groups': groups})
 
-def employer_profile(request):
-    #profile = request.user.employerprofile
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    print(user)
+    #print(user.employer.is_employer)
+    if request.user.username != user.username:
+        return redirect('/')
+    try:
+        if user.employer.is_employer==True:
+            employer = user.employer
+            context = {'employer': employer}
+            return render(request, 'employer_profile.html', context)
+    except:
+        if user.candidate.is_candidate==True:
+            candidate = user.candidate
+            print(candidate)
+            context = {'candidate': candidate}
+            return render(request, 'candidate_profile.html', context)
+   
+
+
+def edit_profile(request, username):
+    user = get_object_or_404(User,username=username)
+    print(user)
+    try:
+        if user.candidate.is_candidate==True:
+            print("-----------"+user.candidate.candidate_id)
+            return candidate_edit_profile(request, user.candidate.candidate_id)
+    except:    
+        if user.employer.is_employer==True:
+            print("bababa")
+            print( user.employer.employer_id)
+            return employer_edit_profile(request, user.employer.employer_id)
+    raise Http404   
+
+def candidate_edit_profile(request, candidate_id):
+    candidate = get_object_or_404(Candidate, candidate_id=candidate_id)
+    print(candidate)
+
+    print("candidate is "+str(candidate))
     if request.method == 'POST':
-        form = EmployerProfileForm(request.POST, request.FILES, instance=profile)
+        form1 = CandidateForm(request.POST, instance=candidate)
+        print(form1.is_valid())
 
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-
-        if form.is_valid() and profile_form.is_valid():
-            form.save()
-            profile_form.save()
-            messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='Profile_employer')
+        if form1.is_valid():
+            form1.save()
+            return redirect('Profile', username=candidate.username) 
     else:
-        form = EmployerProfileForm(instance=profile)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
+        form1 = CandidateForm(instance=candidate)
+    return render(request, 'candidate_edit_profile.html', {'form1': form1, 'candidate': candidate})
 
-    return render(request, 'Profile_employer.html',{'form': form, 'profile_form': profile_form})    
+def employer_edit_profile(request, employer_id):
+    print("i get here")
+    employer = get_object_or_404(Employer, employer_id=employer_id)
+    print("here2")
+    if request.method == 'POST':
+        form1 = EmployerForm(request.POST, instance=employer)
+        print(form1.is_valid())
 
-@login_required
-def profile(request):
-    return render(request, 'profile.html')    
+        if form1.is_valid() :#and form2.is_valid():
+            form1.save()            
+            return redirect('Profile', username=employer.username) 
+    else:
+        form1 = EmployerForm( instance=employer)
+    return render(request, 'employer_edit_profile.html', {'form1': form1, 'employer': employer})
+
+
+def delete_account(request):
+    if request.method == 'POST':
+        request.user.delete()
+        return redirect('home page')
+    return render(request, 'delete_account_confirm.html')
