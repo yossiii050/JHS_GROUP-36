@@ -12,7 +12,9 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
-
+# django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+#from .forms import JobApplicationForm
 
 
 def jobsPdfFile(request):
@@ -168,3 +170,32 @@ def deleteJob(request,upload_id):
     job=Upload.objects.get(slug=upload_id)
     job.delete()
     return render(request,'jobs/success.html',{'job':job})
+
+def applyCv(request,upload_id):
+    job=Upload.objects.get(slug=upload_id)
+    #job = get_object_or_404(Upload, pk=upload_id)
+    print(job.applycandiadteuser.all())
+    print(request.user.candidate)
+    job.applycandiadteuser.add(request.user.candidate)
+    #job.availableAmount-=1
+    print(job.availableAmount)
+    print(job.applycandiadteuser)
+    return render(request,'jobs/success.html',{'job':job})
+
+#def apply_for_job(request, job_id):
+    if request.method == 'POST':
+        form = JobApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            # create a new JobApplication object
+            application = JobApplication(
+                candidate_name=form.cleaned_data['name'],
+                candidate_email=form.cleaned_data['email'],
+                resume=form.cleaned_data['resume'],
+                job_id=job_id
+            )
+            application.save()  # save the object to the database
+            return redirect('jobs:success')
+    else:
+        form = JobApplicationForm()
+    return render(request, 'jobs/apply.html', {'form': form})
+

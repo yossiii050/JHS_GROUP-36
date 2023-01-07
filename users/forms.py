@@ -58,12 +58,6 @@ class EmployerForm(forms.ModelForm):
         fields = ['CompanyName', 'employer_id','bios']
 
 
-class EmployerProfileForm(forms.ModelForm):
-    
-    class Meta:
-        model = EmployerProfile
-        fields = ['bio', 'avatar', 'contact_methods', 'location', ]
-
 from .choices import *
 class CVForm(forms.Form):
     #file      = forms.FileField() # for creating file input    

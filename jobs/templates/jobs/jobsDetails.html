@@ -41,6 +41,14 @@
                     </a>
                 <br>
             {% endif %}
+            {% if request.user.candidate.is_candidate %}
+                {% if job.availableAmount > 0 %}
+                    <a href="{% url 'ApllyCv' job  %}">
+                    <button>Apply CV</button>
+                    </a>
+                {% endif %}
+            {% endif %}
+    
         {% endif %}
         <br/><br/>
         <br/><br/>

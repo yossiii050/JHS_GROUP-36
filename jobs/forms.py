@@ -8,7 +8,7 @@ from . import models
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from django.contrib.auth.models import User #impor user databased
 from .choices import * 
-
+from django import forms
 class UploadForm(ModelForm):
     class Meta:
         model=Upload
@@ -28,3 +28,9 @@ class SortForm(forms.Form):
         choices=SORT_ORDER_CHOICES,  # Set the choices for this field
         required=True,  # This field is required (cannot be left blank)
     )
+
+
+#class JobApplicationForm(forms.Form):
+   # name = forms.CharField(max_length=100)
+    #email = forms.EmailField()
+    #resume = forms.FileField()
