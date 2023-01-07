@@ -30,8 +30,8 @@
             </div>
         </div>
 
-        {% if user.is_authenticated %}
-            {% if user.id == job.owner.id %}
+        {% if request.user.is_authenticated %}
+          {% if request.user.employer.is_employer %}
                 <a href="{% url 'update' job %}">
                     <button>Edit job</button>
                     </a>
