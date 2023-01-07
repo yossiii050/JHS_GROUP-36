@@ -40,6 +40,6 @@ urlpatterns = [
     path('registered-users/', registered_users, name='registered_users'),
     path('appr/update_user_status',update_user_status,name="update_user_status"),
     path('update_user_status/',update_user_status,name="update_user_status"),
-
+    path('api-auth/', include('rest_framework.urls')),
 
 ]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

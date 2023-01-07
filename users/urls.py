@@ -9,4 +9,5 @@ urlpatterns = [
     path('cv/', views.cv,name="cv"),  
     path('',views.usershome,name="home"),
     path('Profile/<username>',views.Profile,name="Profile"),
+    
 ]

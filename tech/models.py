@@ -8,8 +8,12 @@ class Ticket(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='user')
     handler = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='handler')
+    isopen = models.BooleanField(default=True)
+    closed_by = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='closed_by')
+    Reply=models.TextField(blank=True,default=" ")
     def __str__(self):
         return self.title
+
 
 
 #def numofUser()
