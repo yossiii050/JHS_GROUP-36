@@ -81,8 +81,7 @@ def loginPage(request):
     if request.method == 'POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
-        captcha = ReCaptchaField()
-
+        #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
         user=authenticate(request,username=username,password=password)
         if(user is not None):
             login(request,user)

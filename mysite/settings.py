@@ -103,7 +103,7 @@ DATABASES = {
 
 RECAPTCHA_PUBLIC_KEY = '6LfmeMkjAAAAABatAc2Kw3vzAUA1iCzdBcSrN1TE'
 RECAPTCHA_PRIVATE_KEY = '6LfmeMkjAAAAAJFXQ2bzfcwrhIXYZMpVk9bAEwFl'
-
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
