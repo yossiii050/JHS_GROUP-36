@@ -1,15 +1,12 @@
 from django.test import TestCase
-from .forms import CreateEmployerForm,CreateCandidateForm
 from django.contrib.auth import get_user_model,authenticate
-import datetime
-from datetime import date,timedelta
-from collections import OrderedDict
-from asyncio import Task
+from .models import Employer, Candidate
+from .forms import EmployerSignUpForm, CandidateSignUpForm, CandidateForm, EmployerForm
 from users.models import Candidate,User
 from django.urls import reverse
 from users.views import ReportUsers
 from django.http import HttpRequest
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group,User
 
 class ReportVIPUsersViewTests(TestCase):
     def test_view_only_accessible_to_staff(self):
@@ -59,99 +56,147 @@ class ReportViewTest(TestCase):
                     last_name=f'Surname {user_id}',
                 )        
     
-
-class ReportUsersTestCase(TestCase):
-    def test_report_users_template(self):
-        request = HttpRequest()
-        request.method = 'GET'
-        response = ReportUsers(request)
-
-
-class SigninTestEmployer(TestCase):
-
-    def setUp(self):
-        self.CreateEmployerForm = get_user_model().objects.create_user(username='test', password='12test12', email='test@example.com')
-        self.CreateEmployerForm.save()
-
-    def tearDown(self):
-        self.CreateEmployerForm.delete()
-
-    def test_correct(self):
-        CreateEmployerForm = authenticate(username='test', password='12test12')
-        self.assertTrue((CreateEmployerForm is not None) and CreateEmployerForm.is_authenticated)
-
-    def test_wrong_username(self):
-        CreateEmployerForm = authenticate(username='wrong', password='12test12')
-        self.assertFalse(CreateEmployerForm is not None and CreateEmployerForm.is_authenticated)
-
-    def test_wrong_pssword(self):
-        CreateEmployerForm = authenticate(username='test', password='wrong')
-        self.assertFalse(CreateEmployerForm is not None and CreateEmployerForm.is_authenticated)
-
-class SigninTestCandidate(TestCase):
-
-    def setUp(self):
-        self.CreateCandidateForm = get_user_model().objects.create_user(username='test', password='12test12', email='test@example.com')
-        self.CreateCandidateForm.save()
-
-    def tearDown(self):
-        self.CreateCandidateForm.delete()
-
-    def test_correct(self):
-        CreateCandidateForm = authenticate(username='test', password='12test12')
-        self.assertTrue((CreateCandidateForm is not None) and CreateCandidateForm.is_authenticated)
-
-    def test_wrong_username(self):
-        CreateCandidateForm = authenticate(username='wrong', password='12test12')
-        self.assertFalse(CreateCandidateForm is not None and CreateCandidateForm.is_authenticated)
-
-    def test_wrong_pssword(self):
-        CreateCandidateForm = authenticate(username='test', password='wrong')
-        self.assertFalse(CreateCandidateForm is not None and CreateCandidateForm.is_authenticated)        
-
-
-class CandidateTestCase(TestCase):
-    def setUp(self):
-        # create a candidate object to use in the tests
-        self.candidate = Candidate.objects.create(
-            username='testuser',
-            email='testuser@example.com',
-            first_name='Test',
-            last_name='User',
-            password='testpass',
-            Id='123456789',
-            date_of_birth='2000-01-01',
-            phone_number='+1234567890'
+class EmployerModelTests(TestCase):
+    def test_employer_creation(self):
+        # Create a new employer
+        user = User.objects.create_user(
+            username='employer1', email='employer1@example.com', password='testpass'
+        )
+        employer = Employer.objects.create(
+            user=user,
+            email='employer1@example.com',
+            username='employer1',
+            CompanyName='Test Company',
+            employer_id='12345',
+            is_employer=True,
+            bios='Test employer bio'
         )
 
-    def test_candidate_username(self):
-        # test that the candidate's username is set correctly
-        self.assertEqual(self.candidate.username, 'testuser')
+        # Check that the employer was created correctly
+        self.assertEqual(employer.user.username, 'employer1')
+        self.assertEqual(employer.email, 'employer1@example.com')
+        self.assertEqual(employer.username, 'employer1')
+        self.assertEqual(employer.CompanyName, 'Test Company')
+        self.assertEqual(employer.employer_id, '12345')
+        self.assertTrue(employer.is_employer)
+        self.assertEqual(employer.bios, 'Test employer bio')
 
-    def test_candidate_email(self):
-        # test that the candidate's email is set correctly
-        self.assertEqual(self.candidate.email, 'testuser@example.com')
+class CandidateModelTests(TestCase):
+    def test_candidate_creation(self):
+        # Create a new candidate
+        user = User.objects.create_user(
+            username='candidate1', email='candidate1@example.com', password='testpass'
+        )
+        candidate = Candidate.objects.create(
+            user=user,
+            email='candidate1@example.com',
+            username='candidate1',
+            candidate_id='12345',
+            date_of_birth='2000-01-01',
+            phone_number='123-456-7890',
+            first_name='Test',
+            last_name='Candidate',
+            is_candidate=True,
+            bios='Test candidate bio'
+        )
 
-    def test_candidate_first_name(self):
-        # test that the candidate's first name is set correctly
-        self.assertEqual(self.candidate.first_name, 'Test')
+        # Check that the candidate was created correctly
+        self.assertEqual(candidate.user.username, 'candidate1')
+        self.assertEqual(candidate.email, 'candidate1@example.com')
+        self.assertEqual(candidate.username, 'candidate1')
+        self.assertEqual(candidate.candidate_id, '12345')
+        self.assertEqual(candidate.date_of_birth, '2000-01-01')
+        self.assertEqual(candidate.phone_number, '123-456-7890')
+        self.assertEqual(candidate.first_name, 'Test')
+        self.assertEqual(candidate.last_name, 'Candidate')
+        self.assertTrue(candidate.is_candidate)
+        self.assertEqual(candidate.bios, 'Test candidate bio')
 
-    def test_candidate_last_name(self):
-        # test that the candidate's last name is set correctly
-        self.assertEqual(self.candidate.last_name, 'User')
+class EmployerSignUpFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'username': 'employer1',
+            'email': 'employer1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'is_employer': True,
+            'bios': 'Test employer bio'
+        }
+        form = EmployerSignUpForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-    def test_candidate_password(self):
-        # test that the candidate's password is set correctly
-        self.assertEqual(self.candidate.password, 'testpass')
+        # Test form with mismatched passwords
+        form_data = {
+            'username': 'employer1',
+            'email': 'employer1@example.com',
+            'password1': 'testpass',
+            'password2': 'invalidpass',
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'is_employer': True,
+            'bios': 'Test employer bio'
+        }
+        form = EmployerSignUpForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['password2'], ["Passwords don't match"])
+class CandidateSignUpFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'username': 'candidate1',
+            'email': 'candidate1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'candidate_id': '12345',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        form = CandidateSignUpForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-    def test_candidate_id(self):
-        # test that the candidate's ID is set correctly
-        self.assertEqual(self.candidate.Id, '123456789')
+        # Test form with mismatched passwords
+        form_data = {
+            'username': 'candidate1',
+            'email': 'candidate1@example.com',
+            'password1': 'testpass',
+            'password2': 'invalidpass',
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'candidate_id': '12345',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        form = CandidateSignUpForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['password2'], ["Passwords don't match"])
 
-    def test_candidate_date_of_birth(self):
-        # test that the candidate's date of birth is set correctly
-        self.assertEqual(self.candidate.date_of_birth, '2000-01-01')
+class CandidateFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        form = CandidateForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-    def test_candidate_phone_number(self):
-        # test that the candidate's phone number is set correctly
-        self.assertEqual(self.candidate.phone_number, '+1234567890')
+class EmployerFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'bios': 'Test employer bio'
+        }
+        form = EmployerForm(data=form_data)
+        self.assertTrue(form.is_valid())        

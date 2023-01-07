@@ -1,8 +1,8 @@
 from django import forms
-from .models import CVFormMode,CVFormModell
+from .models import CVFormModel
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from users.models import Employer, Candidate,EmployerProfile,CandidateProfile
+from users.models import Employer, Candidate
 from django.contrib.auth.hashers import make_password
 
 class EmployerSignUpForm(UserCreationForm):
@@ -56,23 +56,6 @@ class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer
         fields = ['CompanyName', 'employer_id','bios']
-
-class CandidateProfileForm(forms.ModelForm):
-    class Meta:
-        model = CandidateProfile
-        fields = ['candidate_bio']
-
-class EmployerProfileForm(forms.ModelForm):
-    class Meta:
-        model = EmployerProfile
-        fields = ['employer_bio']
-
-class CandidateEditProfileForm(CandidateForm, CandidateProfileForm):
-    pass
-
-class EmployerEditProfileForm(EmployerForm, EmployerProfileForm):
-    pass
-
 
 
 from .choices import *
