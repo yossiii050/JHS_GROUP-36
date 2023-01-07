@@ -81,5 +81,8 @@
     </form>
   </div>
   <p>Thank you for choosing JHS</p>
+  {% if date %}
+    <p>Ticket created on {{ date }}</p>
+  {% endif %}
 </body>
 </html>
