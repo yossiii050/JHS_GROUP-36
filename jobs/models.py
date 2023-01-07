@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm #user create from django 
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .choices import * 
 from decimal import *
+from users.models import Employer
 
 
 
@@ -26,7 +27,7 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     time=models.IntegerField(choices=TIME_CHOICES, default=1)
     hybrid=models.BooleanField(default=True)
     priority=models.IntegerField(choices=PRIORITY_CHOICES,default=1)
-    owner=models.ForeignKey(User, on_delete=models.CASCADE, default=1, related_name='user')
+    owner=models.ForeignKey(Employer, on_delete=models.CASCADE, default=1, related_name='employer')
     location=models.IntegerField(choices=CITIES, default=1)
     availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
     notification=models.DecimalField(max_digits=3 ,decimal_places=0, default=Decimal('5'))
