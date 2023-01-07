@@ -40,6 +40,7 @@ def home(request):
 
         #return render(request, 'maintenance.html')
     else:
+        print(request.user)
         # Return the regular home page template
         return render(request, 'home.html')
 

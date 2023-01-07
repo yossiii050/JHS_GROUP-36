@@ -1,14 +1,43 @@
 from django.test import TestCase
-from .forms import CreateEmployerForm,CreateCandidateForm
 from django.contrib.auth import get_user_model,authenticate
-import datetime
-from datetime import date,timedelta
-from collections import OrderedDict
-from asyncio import Task
+from .models import Employer, Candidate
+from .forms import EmployerSignUpForm, CandidateSignUpForm, CandidateForm, EmployerForm
 from users.models import Candidate,User
 from django.urls import reverse
 from users.views import ReportUsers
 from django.http import HttpRequest
+from django.contrib.auth.models import Group,User
+from django.http import Http404
+
+class ReportVIPUsersViewTests(TestCase):
+    def test_view_only_accessible_to_staff(self):
+        response = self.client.get(reverse('VipUsers'))
+        self.assertEqual(response.status_code, 302)
+
+        staff_user = User.objects.create_user(
+            username='staff', password='password', is_staff=True)
+        self.client.login(username='staff', password='password')
+
+        response = self.client.get(reverse('home page'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_vip_users_are_shown_in_template(self):
+        staff_user = User.objects.create_user(
+            username='staff', password='password', is_staff=True)
+        self.client.login(username='staff', password='password')
+
+        vip_group = Group.objects.create(name='VIP')
+        vip_user1 = User.objects.create_user(
+            username='vip1', password='password')
+        vip_user1.groups.add(vip_group)
+        vip_user2 = User.objects.create_user(
+            username='vip2', password='password')
+        vip_user2.groups.add(vip_group)
+
+        response = self.client.get(reverse('VipUsers'))
+        self.assertContains(response, 'vip1')
+        self.assertContains(response, 'vip2')
+
 
 class ReportViewTest(TestCase):
     @classmethod
@@ -28,99 +57,260 @@ class ReportViewTest(TestCase):
                     last_name=f'Surname {user_id}',
                 )        
     
-
-class ReportUsersTestCase(TestCase):
-    def test_report_users_template(self):
-        request = HttpRequest()
-        request.method = 'GET'
-        response = ReportUsers(request)
-
-
-class SigninTestEmployer(TestCase):
-
-    def setUp(self):
-        self.CreateEmployerForm = get_user_model().objects.create_user(username='test', password='12test12', email='test@example.com')
-        self.CreateEmployerForm.save()
-
-    def tearDown(self):
-        self.CreateEmployerForm.delete()
-
-    def test_correct(self):
-        CreateEmployerForm = authenticate(username='test', password='12test12')
-        self.assertTrue((CreateEmployerForm is not None) and CreateEmployerForm.is_authenticated)
-
-    def test_wrong_username(self):
-        CreateEmployerForm = authenticate(username='wrong', password='12test12')
-        self.assertFalse(CreateEmployerForm is not None and CreateEmployerForm.is_authenticated)
-
-    def test_wrong_pssword(self):
-        CreateEmployerForm = authenticate(username='test', password='wrong')
-        self.assertFalse(CreateEmployerForm is not None and CreateEmployerForm.is_authenticated)
-
-class SigninTestCandidate(TestCase):
-
-    def setUp(self):
-        self.CreateCandidateForm = get_user_model().objects.create_user(username='test', password='12test12', email='test@example.com')
-        self.CreateCandidateForm.save()
-
-    def tearDown(self):
-        self.CreateCandidateForm.delete()
-
-    def test_correct(self):
-        CreateCandidateForm = authenticate(username='test', password='12test12')
-        self.assertTrue((CreateCandidateForm is not None) and CreateCandidateForm.is_authenticated)
-
-    def test_wrong_username(self):
-        CreateCandidateForm = authenticate(username='wrong', password='12test12')
-        self.assertFalse(CreateCandidateForm is not None and CreateCandidateForm.is_authenticated)
-
-    def test_wrong_pssword(self):
-        CreateCandidateForm = authenticate(username='test', password='wrong')
-        self.assertFalse(CreateCandidateForm is not None and CreateCandidateForm.is_authenticated)        
-
-
-class CandidateTestCase(TestCase):
-    def setUp(self):
-        # create a candidate object to use in the tests
-        self.candidate = Candidate.objects.create(
-            username='testuser',
-            email='testuser@example.com',
-            first_name='Test',
-            last_name='User',
-            password='testpass',
-            Id='123456789',
-            date_of_birth='2000-01-01',
-            phone_number='+1234567890'
+class EmployerModelTests(TestCase):
+    def test_employer_creation(self):
+        # Create a new employer
+        user = User.objects.create_user(
+            username='employer1', email='employer1@example.com', password='testpass'
+        )
+        employer = Employer.objects.create(
+            user=user,
+            email='employer1@example.com',
+            username='employer1',
+            CompanyName='Test Company',
+            employer_id='12345',
+            is_employer=True,
+            bios='Test employer bio'
         )
 
-    def test_candidate_username(self):
-        # test that the candidate's username is set correctly
-        self.assertEqual(self.candidate.username, 'testuser')
+        # Check that the employer was created correctly
+        self.assertEqual(employer.user.username, 'employer1')
+        self.assertEqual(employer.email, 'employer1@example.com')
+        self.assertEqual(employer.username, 'employer1')
+        self.assertEqual(employer.CompanyName, 'Test Company')
+        self.assertEqual(employer.employer_id, '12345')
+        self.assertTrue(employer.is_employer)
+        self.assertEqual(employer.bios, 'Test employer bio')
 
-    def test_candidate_email(self):
-        # test that the candidate's email is set correctly
-        self.assertEqual(self.candidate.email, 'testuser@example.com')
+class CandidateModelTests(TestCase):
+    def test_candidate_creation(self):
+        # Create a new candidate
+        user = User.objects.create_user(
+            username='candidate1', email='candidate1@example.com', password='testpass'
+        )
+        candidate = Candidate.objects.create(
+            user=user,
+            email='candidate1@example.com',
+            username='candidate1',
+            candidate_id='12345',
+            date_of_birth='2000-01-01',
+            phone_number='123-456-7890',
+            first_name='Test',
+            last_name='Candidate',
+            is_candidate=True,
+            bios='Test candidate bio'
+        )
 
-    def test_candidate_first_name(self):
-        # test that the candidate's first name is set correctly
-        self.assertEqual(self.candidate.first_name, 'Test')
+        # Check that the candidate was created correctly
+        self.assertEqual(candidate.user.username, 'candidate1')
+        self.assertEqual(candidate.email, 'candidate1@example.com')
+        self.assertEqual(candidate.username, 'candidate1')
+        self.assertEqual(candidate.candidate_id, '12345')
+        self.assertEqual(candidate.date_of_birth, '2000-01-01')
+        self.assertEqual(candidate.phone_number, '123-456-7890')
+        self.assertEqual(candidate.first_name, 'Test')
+        self.assertEqual(candidate.last_name, 'Candidate')
+        self.assertTrue(candidate.is_candidate)
+        self.assertEqual(candidate.bios, 'Test candidate bio')
 
-    def test_candidate_last_name(self):
-        # test that the candidate's last name is set correctly
-        self.assertEqual(self.candidate.last_name, 'User')
+class EmployerSignUpFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'username': 'employer1',
+            'email': 'employer1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'is_employer': True,
+            'bios': 'Test employer bio'
+        }
+        form = EmployerSignUpForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-    def test_candidate_password(self):
-        # test that the candidate's password is set correctly
-        self.assertEqual(self.candidate.password, 'testpass')
+        # Test form with mismatched passwords
+        form_data = {
+            'username': 'employer1',
+            'email': 'employer1@example.com',
+            'password1': 'testpass',
+            'password2': 'invalidpass',
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'is_employer': True,
+            'bios': 'Test employer bio'
+        }
+        form = EmployerSignUpForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['password2'], ["Passwords don't match"])
+class CandidateSignUpFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'username': 'candidate1',
+            'email': 'candidate1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'candidate_id': '12345',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        form = CandidateSignUpForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-    def test_candidate_id(self):
-        # test that the candidate's ID is set correctly
-        self.assertEqual(self.candidate.Id, '123456789')
+        # Test form with mismatched passwords
+        form_data = {
+            'username': 'candidate1',
+            'email': 'candidate1@example.com',
+            'password1': 'testpass',
+            'password2': 'invalidpass',
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'candidate_id': '12345',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        form = CandidateSignUpForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['password2'], ["Passwords don't match"])
 
-    def test_candidate_date_of_birth(self):
-        # test that the candidate's date of birth is set correctly
-        self.assertEqual(self.candidate.date_of_birth, '2000-01-01')
+class CandidateFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        form = CandidateForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-    def test_candidate_phone_number(self):
-        # test that the candidate's phone number is set correctly
-        self.assertEqual(self.candidate.phone_number, '+1234567890')
+class EmployerFormTests(TestCase):
+    def test_form_validation(self):
+        # Test form with valid data
+        form_data = {
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'bios': 'Test employer bio'
+        }
+        form = EmployerForm(data=form_data)
+        self.assertTrue(form.is_valid())        
+
+class EmployerRegPageTests(TestCase):
+    def test_employer_registration(self):
+        # Test successful employer registration
+        form_data = {
+            'username': 'employer1',
+            'email': 'employer1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'is_employer': True,
+            'bios': 'Test employer bio'
+        }
+        response = self.client.post(reverse('employer register'), form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Employer.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertTrue(User.objects.filter(username='employer1').exists())
+        self.assertTrue(Employer.objects.filter(user__username='employer1').exists())
+
+class CandidateRegPageTests(TestCase):
+    def test_candidate_registration(self):
+        # Test successful candidate registration
+        form_data = {
+            'username': 'candidate1',
+            'email': 'candidate1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'candidate_id': '12345',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        response = self.client.post(reverse('candidate register'), form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Candidate.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertTrue(User.objects.filter(username='candidate1').exists())
+        self.assertTrue(Candidate.objects.filter(user__username='candidate1').exists())
+
+class LoginPageTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.test_user = User.objects.create_user(username='testuser', password='testpass')
+
+    def test_login(self):
+        # Test successful login
+        form_data = {
+            'username': 'testuser',
+            'password': 'testpass'
+        }
+        response = self.client.post(reverse('login'), form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse('home page')))
+
+    def test_login_invalid_credentials(self):
+        # Test login with invalid credentials
+        form_data = {
+            'username': 'testuser',
+            'password': 'invalidpass'
+        }
+        response = self.client.post(reverse('login'), form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Username OR Password is incorrect')
+
+class LogoutUserTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.test_user = User.objects.create_user(username='testuser', password='testpass')
+
+    def test_logout(self):
+        # Test logout
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse('login')))        
+
+class EditProfileTests(TestCase):
+    def setUp(self):
+        # Create test users
+        self.employer = User.objects.create_user(username='employer', password='testpass12')
+        self.candidate = User.objects.create_user(username='candidate', password='testpass12')
+
+    def test_employer_edit_profile(self):
+        # Test employer edit profile
+        self.client.login(username='employer', password='testpass12')
+        form_data = {
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'bios': 'Test employer bio'
+        }
+
+    def test_edit_profile_invalid_user(self):
+        # Test edit profile for invalid user
+        self.client.login(username='candidate', password='testpass')
+        response = self.client.get(reverse('edit_profile', kwargs={'username': 'invalid'}))
+        self.assertRaises(Http404)    
+
+class DeleteAccountTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.test_user = User.objects.create_user(username='testuser', password='testpass12')
+
+    def test_delete_account(self):
+        # Test deleting account
+        self.client.login(username='testuser', password='testpass12')
+        response = self.client.post(reverse('delete_account'))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse('home page')))
+        self.assertFalse(User.objects.filter(username='testuser').exists())        

@@ -8,15 +8,42 @@
     <body> 
         <div class="jobs-details">
             <div class="job">
+               
                 <h2>{{job.subTitle}}</h2>
+                <small>By:
+                    {{job.owner.first_name}}
+                    {{job.owner.last_name}}
+                </small>
                 <p><h3>job description: </h3>{{job.body}}</p>
-                <p>category: {{job.category}}</p>
+                <p>category: {{job.get_category_display}}</p>
 
-                <p>Salary range: {{job.salaryRange}}</p>
+                <p>Salary range: {{job.get_salaryRange_display}}</p>
 
                 <p>date of publish: {{job.date}}</p>
+
+                <p>Years of expirience: {{job.get_yearsexp_display}}</p>
+                <p>Education: {{job.education}}</p>
+                <p>Time: {{job.get_time_display}}</p>
+                <p>Location: {{job.get_location_display}}</p>
+                <p>Avaliable Amount: {{job.availableAmount }}</p>
+
             </div>
         </div>
+
+        {% if request.user.is_authenticated %}
+          {% if request.user.employer.is_employer %}
+                <a href="{% url 'update' job %}">
+                    <button>Edit job</button>
+                    </a>
+               
+                <a href="{% url 'deleteJob' job  %}">
+                    <button>Delete Job</button>
+                    </a>
+                <br>
+            {% endif %}
+        {% endif %}
+        <br/><br/>
+        <br/><br/>
         <a href="{% url 'list' %}">
             <button>Back to JobList</button>
             </a>

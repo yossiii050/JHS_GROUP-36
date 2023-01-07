@@ -35,3 +35,16 @@ TIME_CHOICES = (
     (2, ("part time")),
     (3, ("shifts")),
 )
+
+PRIORITY_CHOICES = (
+    (1, ("high priority")),
+    (2, ("mid priority")),
+    (3, ("low priority")),
+)
+CITIES = (
+    (1, 'Jerusalem'),
+    (2, 'Tel Aviv'),
+    (3, 'Haifa'),
+    (4, 'Rishon Le Zion'),
+    (5, 'Beersheba'),
+)
