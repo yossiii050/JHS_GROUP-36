@@ -113,7 +113,11 @@ def loginPage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        print(user)
         if user is not None:
+            if user.is_active ==False:
+                messages.info(request, 'Your profile Not activated!')
+                return redirect('login')
             login(request, user)
             return redirect('home page')
         else:

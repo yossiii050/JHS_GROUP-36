@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'jobs',
     'rules',
     'crispy_forms',
+    'reportlab'
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
