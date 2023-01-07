@@ -131,6 +131,7 @@ def logoutUser(request):
 
 from .models import CVFormModel
 from .forms import CVForm  
+
 def cv(request):  
     if request.method == 'POST':  
         form = CVForm(request.POST)
