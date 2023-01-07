@@ -41,6 +41,7 @@ class Candidate(models.Model):
     last_name=models.CharField(max_length=50)
     is_candidate = models.BooleanField(default=True)
     bios=models.TextField(blank=True,default="write you bio here...")
+    cvcandidate = models.OneToOneField(CVFormModel,on_delete=models.CASCADE,blank=True,null=True)
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
     USERNAME_FIELD='username'
@@ -48,3 +49,6 @@ class Candidate(models.Model):
     def __str__(self):
         return self.user.username
         
+    def set_cv(self,c):
+        self.cvcandidate=c
+        return self.cvcandidate
