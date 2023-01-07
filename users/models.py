@@ -1,35 +1,6 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser,User,BaseUserManager, AbstractBaseUser,UserManager
-import os
-#from phonenumber_field.modelfields import PhoneNumberField
-from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.contrib.auth.hashers import make_password
-from datetime import timezone
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-
-class Candidate(User):
-    verbose_name = 'Candidate'
-    User.username=models.CharField(max_length=100)
-    User.email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
-        unique=True,
-    )
-    User.first_name = models.CharField(max_length=30)
-    User.last_name = models.CharField(max_length=30)
-    User.password = models.CharField(('password'), max_length=128)
-    Id=models.CharField(max_length=9)
-    USERNAME_FIELD = 'email'
-    date_of_birth = models.DateField()
-    #phone_number = PhoneNumberField(blank=True)
-    
-    objects = UserManager()
-        
 
 from .choices import * 
-
+from django.db import models
 class CVFormModel(models.Model):
     #user = models.OneToOneField(User)    
     field = models.IntegerField(choices=FIELD_CHOICES, default=1)   
@@ -41,17 +12,42 @@ class CVFormModel(models.Model):
     def __str__(self):
            return self.GitUrl
 
-User=get_user_model()
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 
-class EmployerProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='EmployerProfile')
-    avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
-    #photo = models.ImageField(upload_to='employer_photos', blank=True)
-    #company_name = models.CharField(max_length=255)
-    bio = models.TextField()
-    contact_methods = models.TextField()
-    location = models.CharField(max_length=255)
-    #jobs = models.ManyToManyField('Job', blank=True)    
+class Employer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    username=models.CharField(max_length=50)
+    CompanyName = models.CharField(max_length=255)
+    employer_id = models.CharField(max_length=200,unique=True)
+    is_employer = models.BooleanField(default=True)
+    bios=models.TextField(blank=True,default="write you bio here...")
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+    USERNAME_FIELD='username'
+
+    def __str__(self):
+        return self.user.username
+
+class Candidate(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    username=models.CharField(max_length=50)
+    candidate_id = models.CharField(max_length=200,unique=True)
+    date_of_birth = models.DateField()
+    phone_number = models.CharField(max_length=255)
+    first_name=models.CharField(max_length=50)
+    last_name=models.CharField(max_length=50)
+    is_candidate = models.BooleanField(default=True)
+    bios=models.TextField(blank=True,default="write you bio here...")
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+    USERNAME_FIELD='username'
+    
+    def __str__(self):
+        return self.user.username
+        
 
     def _str_(self):
         return self.user.username

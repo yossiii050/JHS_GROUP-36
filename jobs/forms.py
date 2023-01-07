@@ -13,38 +13,18 @@ class UploadForm(ModelForm):
     class Meta:
         model=Upload
         #fields="__all__"
-        fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid')
+        fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid','priority','location','availableAmount','notification')
+        exclude =['owner']
         
-        # labels={ 'title':forms.TextInput(attrs={'class':'form-control'}),
-        # 'body':forms.TextInput(attrs={'class':'form-control'}),
-        # 'category':forms.TextInput(attrs={'class':'form-control'}),
-        # 'salaryRange':forms.TextInput(attrs={'class':'form-control'}),
-        # 'yearsexp':forms.TextInput(attrs={'class':'form-control'}),
-        # 'education':forms.TextInput(attrs={'class':'form-control'}),
-        # 'time':forms.TextInput(attrs={'class':'form-control'}),
-        # 'hybrid':forms.TextInput(attrs={'class':'form-control'})}
-        # widgets={
-        # 'title':forms.TextInput(attrs={'class':'form-control'}),
-        # 'body':forms.TextInput(attrs={'class':'form-control'}),
-        # 'category':forms.TextInput(attrs={'class':'form-control'}),
-        # 'salaryRange':forms.TextInput(attrs={'class':'form-control'}),
-        # 'yearsexp':forms.TextInput(attrs={'class':'form-control'}),
-        # 'education':forms.TextInput(attrs={'class':'form-control'}),
-        # 'time':forms.TextInput(attrs={'class':'form-control'}),
-        # 'hybrid':forms.TextInput(attrs={'class':'form-control'})
-        # }
+class SortForm(forms.Form):
+    SORT_FIELD_CHOICES = (("title", "Title"), ("date", "Date"),("salaryRange","Salary Range"),("yearsexp","Years of expirience"),("time","Job Type"),("hybrid","Hybrid"),("location","Location"))  # Add more choices here to support additional sort fields
+    SORT_ORDER_CHOICES = (("ascending", "Ascending"), ("descending", "Descending"))
 
-
-# class Upload(forms.Form):
-#     title=models.CharField(max_length=60,null=True)
-#     #author=models.ForeignKey(User,on_delete=models.CASCADE)
-#     subTitle=models.Charfield(max_length=100)
-#     slug=models.SlugField()
-#     body=models.TextField(max_length=200)
-#     date=models.DateTimeField(auto_now_add=True) #automaticly applied
-#     category = models.IntegerField(choices=FIELD_CHOICES, default=1)  
-#     salaryRange = models.IntegerField(choices=SALARY_CHOICES, default=1)   
-#     yearsexp = models.IntegerField(choices=YEARS_CHOICES, default=1)
-#     education=models.CharField(max_length=60,null=True)
-#     time=models.IntegerField(choices=TIME_CHOICES, default=1)
-#     hybrid=models.BooleanField(default=True)
+    sort_field = forms.ChoiceField(
+        choices=SORT_FIELD_CHOICES,  # Set the choices for this field
+        required=True,  # This field is required (cannot be left blank)
+    )
+    sort_order = forms.ChoiceField(
+        choices=SORT_ORDER_CHOICES,  # Set the choices for this field
+        required=True,  # This field is required (cannot be left blank)
+    )

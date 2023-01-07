@@ -100,6 +100,8 @@ DATABASES = {
     }
 }
 
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 RECAPTCHA_PUBLIC_KEY = '6LfmeMkjAAAAABatAc2Kw3vzAUA1iCzdBcSrN1TE'
 RECAPTCHA_PRIVATE_KEY = '6LfmeMkjAAAAAJFXQ2bzfcwrhIXYZMpVk9bAEwFl'
@@ -155,4 +157,10 @@ STATICFILES_DIRS = [
 AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'mysite.authentication.MyUserAuthBackend',
+    
+    
 )
+
+#AUTH_USER_MODEL = ('usermodel.CandidateUser','usermodel.EmployerUser',)
+AUTH_USER_MODEL='auth.User'
