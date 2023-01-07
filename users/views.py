@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
@@ -134,7 +134,10 @@ def cv(request):
         if form.is_valid():
             new_form = CVFormModel(field=form.cleaned_data['field'], yearsexp=form.cleaned_data['yearsexp'], education=form.cleaned_data['education'], GitUrl=form.cleaned_data['GitUrl'])
             new_form.save()
-            return HttpResponse("Form saved successfully")
+            cand=Candidate.objects.get(username=request.user)
+            cand.set_cv(new_form)
+            cand.save()
+            return redirect('home')
         else:
             return render(request, "cv.html", {'form': form})
     else:  
@@ -175,8 +178,9 @@ def user_profile(request, username):
     except:
         if user.candidate.is_candidate==True:
             candidate = user.candidate
-            print(candidate)
-            context = {'candidate': candidate}
+            candidatecv = candidate.cvcandidate
+            print(candidatecv)
+            context = {'candidate': candidate,'candidatecv': candidatecv}
             return render(request, 'candidate_profile.html', context)
    
 
