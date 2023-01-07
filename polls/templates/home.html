@@ -102,8 +102,8 @@
         <h1>JHS-Jobs Hi-tech Search</h1>
         {% if request.user.is_authenticated %}
         <p>Welcome, {{ request.user.username }}!</p>
-        
-        <a href="{% url 'profile_move' %}" class="login" id="logout-button">Profile</a>
+        <a href="{% url 'ticket' %}" class="login" id="logout-button">Contact us</a>
+        <a href="{% url 'profile_move' %}"class="login" id="login-button" class="login" id="logout-button">Profile</a>
         <a href="logout" class="login" id="logout-button">Logout</a>
         {% else %}
         <a href="login" class="login" id="login-button">Login/Signup</a>

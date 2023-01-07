@@ -48,7 +48,20 @@
     <h2>Bio</h2><textarea readonly>{{ candidate.bios }}</textarea>
 
 </div>
-
+<div class="profile-info">
+    <h2>CV Form</h2>
+{% if candidate.cvcandidate %}
+    <p>Field of work: {{ candidatecv.get_field_display }}</p>
+    <p>Years of Experience: {{ candidatecv.get_yearsexp_display }}</p>
+    <p>Education: {{ candidatecv.get_education_display }}</p>
+    <p>GitHub URL: {{ candidatecv.GitUrl }}</p>  
+{% else %}
+    <p>No CV:</p>
+    <form action="{% url 'cv' %}">
+        <button type="submit" class="btn btn-primary">Upload cv</button>
+    </form> 
+{% endif %}
+</div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
     <form action="{% url 'edit_profile' candidate.user.username %}">
         <button type="submit" class="btn btn-primary">Edit Profile</button>

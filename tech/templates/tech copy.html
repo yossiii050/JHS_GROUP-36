@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <script>
+      const progressBar = document.getElementById('progress-bar');
+  
+    function updateProgress(newValue) {
+      progressBar.value = newValue;
+    }
+  </script>
+    <style>
+      /* Add some style to the page */
+      body {
+        font-family: sans-serif;
+      }
+      nav {
+        background-color: lightgray;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+      }
+      my-pie-chart {
+        height: 100px;
+        width: 100px;
+      }
+      my-pie-chart {
+      border-radius: 50%;
+      }
+      a {
+        color: black;
+        text-decoration: none;
+      }
+      a:hover {
+        color: white;
+      }
+      .nav-item {
+        padding: 0 20px;
+      }
+      h1 {
+        text-align: center;
+        margin: 50px 0;
+      }
+      .headline {
+        text-align: center;
+        margin: 50px 0;
+        background-color: lightgray;
+        padding: 20px;
+      }
+      .progress-bar-container {
+        width: 500px;
+        height: 20px;
+        background-color: lightgray;
+        border-radius: 10px;
+      }
+      
+      #progress-bar {
+        width: 100%;
+        height: 100%;
+        background-color: blue;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="headline">
+      <h1>Tech Support Area</h1>
+    </div>
+    <nav>
+      <div class="nav-item">
+        <a href="http://127.0.0.1:8000/tech/tech_tickets">Tickets</a>
+      </div>
+      <div class="nav-item">
+        <a href="#">Site Reports</a>
+      </div>
+      <div class="nav-item">
+        <a href="#">Employer Requests</a>
+      </div>
+    </nav>
+    <h2>Closed Tickets: </h2>
+    <h2>My Closed Tickets:{{closed_tickets}} </h2>
+    <h2>All Tickets: {{total_tickets}} </h2>
+    <div class="progress-bar-container">
+      <progress id="progress-bar" value={{closed_tickets}} max={{total_tickets}}></progress>
+    </div>
+  </body>
+</html>
