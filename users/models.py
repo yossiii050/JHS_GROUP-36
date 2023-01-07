@@ -48,10 +48,3 @@ class Candidate(models.Model):
     def __str__(self):
         return self.user.username
         
-class EmployerProfile(models.Model):
-    employer = models.OneToOneField(Employer, on_delete=models.CASCADE)
-    employer_bio = models.TextField(blank=True,default="write you bio here...")
-
-class CandidateProfile(models.Model):
-    candidate = models.OneToOneField(Candidate, on_delete=models.CASCADE)
-    candidate_bio = models.TextField(blank=True,default="write you bio here...")

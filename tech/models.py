@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Ticket(models.Model):
     title = models.CharField(("Main claim"), max_length=50)

@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateEditProfileForm,EmployerEditProfileForm,CandidateProfileForm,CandidateForm,EmployerForm,EmployerProfile,EmployerProfileForm
+from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -196,7 +196,6 @@ def edit_profile(request, username):
 
 def candidate_edit_profile(request, candidate_id):
     candidate = get_object_or_404(Candidate, candidate_id=candidate_id)
-    #candidatebio = get_object_or_404(CandidateProfile, candidate=candidate)
     print(candidate)
 
     print("candidate is "+str(candidate))

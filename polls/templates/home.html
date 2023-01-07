@@ -112,7 +112,7 @@
         <a href="login" class="login" id="login-button">Login/Signup</a>
         {% endif %}
         {% if request.user.is_authenticated %}
-          {% if not request.is_employer %}
+          {% if request.user.employer.is_employer %}
             <a href="{% url 'uplodelist' %}">Post a job</a>
           {% endif %}
         {% endif %}
