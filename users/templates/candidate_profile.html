@@ -49,7 +49,7 @@
 
 </div>
 
-{% if employer.user.username == user.username or user.is_staff == True  %}
+{% if candidate.user.username == user.username or user.is_staff == True  %}
     <form action="{% url 'edit_profile' candidate.user.username %}">
         <button type="submit" class="btn btn-primary">Edit Profile</button>
     </form> 

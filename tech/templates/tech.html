@@ -61,6 +61,25 @@
         background-color: blue;
         border-radius: 10px;
       }
+      form .btn-primary {
+        background-color: #337ab7;
+        border-color: #2e6da4;
+        color: #fff;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    form .btn-primary:hover {
+        background-color: #286090;
+        border-color: #204d74;
+    }
+
+    form .btn-primary:active {
+        background-color: #204d74;
+        border-color: #122b40;
+    }
     </style>
   </head>
   <body>
@@ -72,10 +91,13 @@
         <a href="http://127.0.0.1:8000/tech/tech_tickets">Tickets</a>
       </div>
       <div class="nav-item">
-        <a href="#">Site Reports</a>
+        <a href="Allreports">Site Reports</a>
       </div>
       <div class="nav-item">
-        <a href="#">Employer Requests</a>
+        <a href="{% url 'approve_employers' %}">Employer Requests</a>
+      </div>
+      <div class="nav-item">
+        <a href="{% url 'toggle_maintenance_mode' %}">Maintenance-mode</a>
       </div>
     </nav>
     <h2>Closed Tickets: </h2>

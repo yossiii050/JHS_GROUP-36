@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+
 def create_ticket(request):
     if request.method == 'POST':
       form = TicketForm(request.POST)
@@ -104,3 +105,12 @@ def update_status(request):
         User.objects.filter(is_active=False).update(is_active=True)
     return render(request,'tech.html')
 
+
+def allreports(request):
+    alluserform=User.objects.all()
+    vipuser = get_user_model()
+    vip_group = Group.objects.get(name='VIP')
+    VIPform = vipuser.objects.filter(groups=vip_group)
+    Approveform=User.objects.filter(is_active=False)
+    context={'alluserform':alluserform,'VIPform':VIPform,'Approveform':Approveform}
+    return render(request,'Allreports.html',context)

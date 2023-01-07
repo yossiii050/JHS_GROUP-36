@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'jobs',
     'rules',
     'crispy_forms',
-    'reportlab'
+    'reportlab',
     'rest_framework',
 
     
@@ -144,20 +144,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR/'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    #'/var/www/static/',
-]
+#STATICFILES_DIRS = [
+ #   os.path.join(BASE_DIR, "static"),
+#]
 AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -165,6 +164,5 @@ AUTHENTICATION_BACKENDS = (
     
     
 )
-
 #AUTH_USER_MODEL = ('usermodel.CandidateUser','usermodel.EmployerUser',)
 AUTH_USER_MODEL='auth.User'
