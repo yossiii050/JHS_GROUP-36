@@ -102,7 +102,7 @@
         <h1>Job Search Website</h1>
         {% if request.user.is_authenticated %}
         <p>Welcome, {{ request.user.username }}!</p>
-
+        
         {% if user.is_authenticated and user.is_staff and user.is_superuser %}
           <a href="{% url 'toggle_maintenance_mode' %}">Toggle maintenance mode</a>
         {% endif %}
@@ -111,18 +111,12 @@
         {% else %}
         <a href="login" class="login" id="login-button">Login/Signup</a>
         {% endif %}
-        
-        {% for group in request.user.groups.all %}
-          {% if group.name == 'Employers' %}
+        {% if request.user.is_authenticated %}
+          {% if not request.is_employer %}
             <a href="{% url 'uplodelist' %}">Post a job</a>
           {% endif %}
-          {% if group.name == 'Candidate' %}
-            <a href="{% url 'cv' %}">Upload CV</a>
-          {% endif %}
-        {% endfor %}
-        {% if request.user.is_authenticated %}
-          <a href="{% url 'ticket' %}">Contact us</a>
         {% endif %}
+
       </div>
       <form class="search-form" action="/search" method="get">
         <input type="text" name="q" placeholder="Search jobs">

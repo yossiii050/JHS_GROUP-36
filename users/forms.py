@@ -1,49 +1,78 @@
 from django import forms
-from .models import Candidate,CVFormModel
-from django.contrib.auth import get_user_model
-from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from django.contrib.auth.models import User #impor user databased
-from django.contrib.auth.models import Group
-#User=get_user_model()
+from .models import CVFormMode,CVFormModell
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from users.models import Employer, Candidate,EmployerProfile,CandidateProfile
+from django.contrib.auth.hashers import make_password
 
-class UserUpdateForm(forms.ModelForm):
-    description=forms.CharField(max_length=100)
-    bio=forms.CharField(max_length=500) 
+class EmployerSignUpForm(UserCreationForm):
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
-        model = User
-        fields = ['bio','description']
+        model = Employer
+        fields = ['username', 'email', 'password1', 'password2', 'CompanyName', 'employer_id','is_employer','bios']
 
-class CreateEmployerForm(UserCreationForm):
-    CompanyName=forms.CharField(max_length=100)    
-    is_active=False
-    description=forms.CharField(max_length=100)
-    class Meta:
-        model=User
-        fields=['username','email','password1','password2','CompanyName','description','is_active']
-    
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.is_active = False
-        if commit:
-            user.save()
-            group = Group.objects.get(name='Employers')
-            user.groups.add(group)
-        return user            
-#
-class CreateCandidateForm(UserCreationForm):
-    class Meta:
-        model=Candidate
-        fields=('username','email','password1','password2','first_name','last_name','Id','date_of_birth','phone_number')
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
 
     def save(self, commit=True):
-        user = super().save(commit=False)
+        user = super(EmployerSignUpForm, self).save(commit=False)
         if commit:
             user.save()
-            group = Group.objects.get(name='Candidate')
-            user.groups.add(group)
         return user
+
+class CandidateSignUpForm(UserCreationForm):
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+
+    class Meta:
+        model = Candidate
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'candidate_id', 'date_of_birth', 'phone_number','bios']
+    
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
+
+    def save(self, commit=True):
+        user = super(CandidateSignUpForm, self).save(commit=False)
+        if commit:
+            user.save()
+        return user
+
+class CandidateForm(forms.ModelForm):
+    class Meta:
+        model = Candidate
+        fields = ['first_name', 'last_name','date_of_birth', 'phone_number','bios']
+
+class EmployerForm(forms.ModelForm):
+    class Meta:
+        model = Employer
+        fields = ['CompanyName', 'employer_id','bios']
+
+class CandidateProfileForm(forms.ModelForm):
+    class Meta:
+        model = CandidateProfile
+        fields = ['candidate_bio']
+
+class EmployerProfileForm(forms.ModelForm):
+    class Meta:
+        model = EmployerProfile
+        fields = ['employer_bio']
+
+class CandidateEditProfileForm(CandidateForm, CandidateProfileForm):
+    pass
+
+class EmployerEditProfileForm(EmployerForm, EmployerProfileForm):
+    pass
+
 
 
 from .choices import *

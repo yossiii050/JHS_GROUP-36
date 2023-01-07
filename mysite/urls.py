@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from polls.views import home_page_view,home_template,home
-from users.views import loginPage,logoutUser,approveEmp,registered_users,ReportUsers,update_user_status
+from users.views import loginPage,logoutUser,approveEmp,registered_users,ReportUsers,update_user_status,ReportVIPUsers
 from mysite.mysite.views import maintenance
 from payments.views import paymentpage
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
     path('jobs/',include('jobs.urls'),name="jobs"),
@@ -35,6 +36,7 @@ urlpatterns = [
     path('maintenance/', maintenance),
     path('users/', include('users.urls')),
     path('ReportUsers/',ReportUsers,name="ReportUsers"),
+    path('VipUsers/',ReportVIPUsers,name="VipUsers"),
     path('appr/',approveEmp),
     path('Reports/',approveEmp),
     path('registered-users/', registered_users, name='registered_users'),
@@ -43,3 +45,5 @@ urlpatterns = [
 
 
 ]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'mysite.views.handler404'
