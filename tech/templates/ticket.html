@@ -80,6 +80,9 @@
       </html>
     </form>
   </div>
+  {% for message in messages%}
+					<p id="messages">{{message}}</p>
+				{% endfor %}
   <p>Thank you for choosing JHS</p>
   {% if date %}
     <p>Ticket created on {{ date }}</p>

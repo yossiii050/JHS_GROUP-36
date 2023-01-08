@@ -82,17 +82,27 @@
                     <tr>
                     <th>Username</th>
                     <th>Email</th>
+                    <th>Type</th>
                     <th>Last Login</th>
+                    <th>Active</th>
 
                     </tr>
                     </thead>
             {% for data in form %}
             <tbody>
+              {% load class_tag %}
                 <tr>
                 <td>{{data.username}}</td>
                 <td>{{data.email}}</td>
+                {% if data.employer|get_class != "str" %}
+                  <td>{{data.employer|get_class}}</td>
+                {% elif data.candidate|get_class != "str" %}
+                  <td>{{data.candidate|get_class}}</td>
+                {% else %}
+                  <td>Admin</td>
+                {% endif %}
                 <td> {{data.last_login}}</td>
-
+                <td> {{data.is_active}}</td>
                 </tr>
             </tbody>                    
             
