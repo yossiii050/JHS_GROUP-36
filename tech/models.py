@@ -9,11 +9,12 @@ class Ticket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='user',blank=True,null=True)
     handler = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='handler',blank=True,null=True)
     isopen = models.BooleanField(default=True)
-    closed_by = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='closed_by',blank=True,null=True)
+    closed_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='closed_by',blank=True,null=True)
+    #closed_by = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='closed_by',blank=True,null=True)
+
     Reply=models.TextField(blank=True,default=" ")
     def __str__(self):
         return self.title
-
 
 
 #def numofUser()

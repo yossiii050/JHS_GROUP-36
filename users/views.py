@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm
+from tech.models import Ticket
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -15,7 +16,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
-
+from jobs.models import Upload
 from functools import wraps
 
 def role_required(allowed_roles=[]):
@@ -141,7 +142,7 @@ def cv(request):
             cand=Candidate.objects.get(username=request.user)
             cand.set_cv(new_form)
             cand.save()
-            return redirect('home')
+            return redirect('Profile',request.user.username)
         else:
             return render(request, "cv.html", {'form': form})
     else:  
@@ -174,14 +175,17 @@ def user_profile(request, username):
     try:
         if user.employer.is_employer==True:
             employer = user.employer
-            context = {'employer': employer}
+            tick=Ticket.objects.all()
+            job=Upload.objects.all()
+            print("--------->"+str(job))
+            context = {'employer': employer,'tick':tick,'job':job}
             return render(request, 'employer_profile.html', context)
     except:
         if user.candidate.is_candidate==True:
             candidate = user.candidate
             candidatecv = candidate.cvcandidate
-            print(candidatecv)
-            context = {'candidate': candidate,'candidatecv': candidatecv}
+            tick=Ticket.objects.all()
+            context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick}
             return render(request, 'candidate_profile.html', context)
    
 
@@ -191,7 +195,6 @@ def edit_profile(request, username):
     print(user)
     try:
         if user.candidate.is_candidate==True:
-            print("-----------"+user.candidate.candidate_id)
             return candidate_edit_profile(request, user.candidate.candidate_id)
     except:    
         if user.employer.is_employer==True:

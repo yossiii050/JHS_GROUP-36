@@ -51,7 +51,7 @@ class CandidateForm(forms.ModelForm):
     class Meta:
         model = Candidate
         fields = ['first_name', 'last_name','date_of_birth', 'phone_number','bios','cvcandidate']
-
+        exclude = ['cvcandidate']
 class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer

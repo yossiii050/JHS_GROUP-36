@@ -1,6 +1,6 @@
 <style>
     body {
-        background-color: #f5f5f5;
+        background-color: #0582CA;
     }
 
     .profile-info {
@@ -30,6 +30,79 @@
         border-radius: 5px;
         padding: 10px;
     }
+    .button-container {
+        display: flex;
+      }
+      .button-container button, .button-container input {
+        margin: 0 10px;
+    }
+    .label-value {
+        display: flex;
+        align-items: center;
+      }
+      .label-box {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        font-weight: bold;
+        width: 300px;
+        height: 20px;
+      }
+      .label-boxReply {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        font-weight: bold;
+        width: 300px;
+        height: 80px;
+      }
+      .label1 {
+        margin-right: 10px;
+      }
+      .label1-value {
+        display: flex;
+        align-items: center;
+      }
+      .label1-box {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        font-weight: bold;
+        width: 300px;
+        height: 100px;
+      }
+      .label1 {
+        margin-right: 10px;
+        color: red;
+      }
+      .label2-value {
+    display: flex;
+    align-items: center;
+  }
+  .label2-box {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    font-weight: bold;
+    width: 300px;
+    height: 50px;
+  }
+  .label2 {
+    margin-right: 10px;
+  }
+  .label3-box {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    font-weight: bold;
+    width: 300px;
+    height: 150px;
+  }
 </style>
 
 <h1>Hello {{ employer.user.username }} :-)</h1>
@@ -47,6 +120,115 @@
 <div class="profile-bio">
     <h2>Bio:</h2>        
     <textarea readonly>{{ employer.bios }}</textarea>
+    <br>
+    <div class="button-container">
+        <form action="{% url 'edit_profile' employer.user.username %}">
+            <br>
+            <button type="submit" class="btn btn-primary">Edit Profile</button>
+        </form> 
+        <form action="{% url 'delete_account' %}">
+            <br>
+            <input type="submit" value="Delete" />
+        </form>    
+        </div>
+    </div>
+
+<div class="profile-bio">
+    <h2>Jobs:</h2>
+    {% for j in job %}
+        <div class="label-value">
+            <span class="label">Title:</span>
+            <div class="label-box">{{ j.title }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Subtitle:</span>
+            <div class="label-box">{{ j.subTitle }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Body:</span>
+            <div class="label3-box">{{ j.body }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Date:</span>
+            <div class="label-box">{{ j.date }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Category:</span>
+            <div class="label-box">{{ j.get_category_display }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Years of Experience:</span>
+            <div class="label-box">{{ j.get_yearsexp_display }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Hybrid:</span>
+            <div class="label-box">{{ j.hybrid }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Priority:</span>
+            <div class="label-box">{{ j.priority }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Location:</span>
+            <div class="label-box">{{ j.get_location_display }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Available Amount:</span>
+            <div class="label-box">{{ j.availableAmount }}</div>
+            </div>
+            <p>------------------------------------------------------------------------------------------------------</p>
+            {% endfor %}
+    </div>    
+
+{% if employer.user.username == user.username or user.is_staff == True  %}
+<div class="profile-info">
+    <h2>User Tickets:</h2><h4>(Red is open,Green is Closed)</h4>
+    {% for t in tick %}
+        {% if t.user == employer.user %}
+            {% if t.isopen == 0 %}
+            <div class="label-value">
+                <span class="label">Title:</span>
+                <div class="label-box" style="color: green;">{{ t.title }}</div>
+              </div>
+              <div class="label-value">
+                <span class="label">Body:</span>
+                <div class="label-box" style="color: green;">{{ t.body }}</div>
+              </div>
+              <div class="label-value">
+                <span class="label">Date:</span>
+                <div class="label-box" style="color: green;">{{ t.date }}</div>
+              </div>
+              <div class="label-value">
+                <span class="label">Status:</span>
+                <div class="label-box" style="color: green;">Closed</div>
+              </div>
+              <div class="label-value">
+                <span class="label">Reply:</span>
+                <div class="label-boxReply" style="color: green;">{{ t.Reply }}</div>
+              </div>
+                <p>------------------------------------------------------------------------------</p>
+            {% else %}
+            <div class="label-value">
+                <span class="label">Title:</span>
+                <div class="label-box" style="color: red;">{{ t.title }}</div>
+              </div>
+              <div class="label-value">
+                <span class="label">Body:</span>
+                <div class="label-box" style="color: red;">{{ t.body }}</div>
+              </div>
+              <div class="label-value">
+                <span class="label">Date:</span>
+                <div class="label-box" style="color: red;">{{ t.date }}</div>
+              </div>
+              <div class="label-value">
+                <span class="label">Status:</span>
+                <div class="label-box" style="color: red;">Open</div>
+            </div>
+            <p>------------------------------------------------------------------------------</p>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}  
 </div>
 {% if employer.user.username == user.username or user.is_staff == True  %}
     <form action="{% url 'edit_profile' employer.user.username %}">
