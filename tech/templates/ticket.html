@@ -57,17 +57,17 @@
       margin: 0;
       padding: 0;
     }
+    #messages{
+      background-color: grey;
+      color: #fff;
+      padding: 10px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-{% if messages %}
-<ul class="messages">
-{% for message in messages %}
-<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-  <h1>This is supports team tickets</h1>
+
+  <center><h1>This is supports team tickets</h1></center>
   <div class="Ticket">
     <form method="post" action="{% url 'ticket' %}">
         {% csrf_token %}
@@ -80,12 +80,12 @@
       </html>
     </form>
   </div>
-  {% for message in messages%}
+<center>  {% for message in messages%}
 					<p id="messages">{{message}}</p>
 				{% endfor %}
-  <p>Thank you for choosing JHS</p>
+<p>Thank you for choosing JHS</p>
   {% if date %}
     <p>Ticket created on {{ date }}</p>
-  {% endif %}
+  {% endif %}</center>
 </body>
 </html>

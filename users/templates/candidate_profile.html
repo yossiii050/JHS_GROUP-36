@@ -126,7 +126,7 @@
 </div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
 <div class="profile-info">
-    <h2>User Tickets:</h2><h4>(Red is open,Green is Closed)</h4>
+    <h2>My Tickets:</h2><h4>(Red is open,Green is Closed)</h4>
     {% for t in tick %}
         {% if t.user == candidate.user %}
             {% if t.isopen == 0 %}
