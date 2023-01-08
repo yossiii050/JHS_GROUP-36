@@ -121,6 +121,8 @@
     <h2>Bio:</h2>        
     <textarea readonly>{{ employer.bios }}</textarea>
     <br>
+    {% if employer.user.username == user.username or user.is_staff == True  %}
+
     <div class="button-container">
         <form action="{% url 'edit_profile' employer.user.username %}">
             <br>
@@ -131,6 +133,7 @@
             <input type="submit" value="Delete" />
         </form>    
         </div>
+        {% endif %}
     </div>
 
 <div class="profile-bio">
@@ -182,7 +185,7 @@
 
 {% if employer.user.username == user.username or user.is_staff == True  %}
 <div class="profile-info">
-    <h2>User Tickets:</h2><h4>(Red is open,Green is Closed)</h4>
+    <h2>My Tickets:</h2><h4>(Red is open,Green is Closed)</h4>
     {% for t in tick %}
         {% if t.user == employer.user %}
             {% if t.isopen == 0 %}

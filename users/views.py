@@ -39,18 +39,20 @@ def update_user_status(request):
         user = User.objects.get(id=user_id)
         user.is_active = True
         user.save()
-        return JsonResponse({'message': 'User approved successfully'})
+        messages.info(request, 'User approved successfully')
+        return redirect('approve_employers')
+        #return JsonResponse({'message': 'User approved successfully'})
     return JsonResponse({'message': 'An error occurred while approving the user'}, status=400)
 
 @user_passes_test(lambda u: u.is_staff)    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
-    print(form)
     context={'form':form}
     return render(request,'appr.html',context)
 
 @user_passes_test(lambda u: u.is_staff)    
 def ReportUsers(request):
+    
     form=User.objects.all()
     context={'form':form}
     return render(request,'reportUser.html',context)
