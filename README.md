@@ -54,7 +54,7 @@ Software engineering students at Sami Shimon College in Beer Sheva
 
 - [@yossiii050](https://github.com/yossiii050) **- Yossi Yosupov**
 
-- [@neriala](https://github.com/neriala) **- Neria Le**
+- [@neriala](https://github.com/neriala) **- Neria Lahyani**
 
 - [@idotamsis](https://github.com/idotamsis) **- Ido Tamsis**
 
