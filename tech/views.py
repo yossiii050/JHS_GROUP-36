@@ -16,13 +16,16 @@ from django.contrib.auth import get_user_model
 
 def create_ticket(request):
     if request.method == 'POST':
-      form = TicketForm(request.POST)
-      if form.is_valid():
-            new_ticket = Ticket(
-            title=form.cleaned_data['title'],body=form.cleaned_data['body'],user=request.user,handler=request.user,closed_by = request.user)
-            new_ticket.save()
-            messages.success(request, 'Ticket saved successfully!')
-            return render(request, 'home.html', {'form': form, 'date':new_ticket.date})
+        form = TicketForm(request.POST)
+        if form.is_valid():
+                new_ticket = Ticket(
+                title=form.cleaned_data['title'],body=form.cleaned_data['body'],user=request.user,handler=request.user,closed_by = request.user)
+                new_ticket.save()
+                messages.success(request, 'Ticket saved successfully!')
+                return render(request, 'ticket.html', {'form': form, 'date':new_ticket.date})
+        else:
+            messages.success(request, 'Errors,please try again!')   
+            return render(request, 'ticket.html', {'form': form})
     else:
         form = TicketForm()
     return render(request, 'ticket.html', {'form': form})
