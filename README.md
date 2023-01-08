@@ -19,14 +19,8 @@ The project was prepared as part of the "Fundamentals of Software Engineering"
 
 
 ## Demo
+[![ezgif-com-gif-maker.gif](https://i.postimg.cc/yx8YDGCd/ezgif-com-gif-maker.gif)](https://postimg.cc/zb41M0BZ)
 
-GIPHY
-Pros: If you already have a video or pictures. GIPHY is a quick solution.
-
-Create → Upload a video or add video URL → Choose starting time → Caption → Add info -> Upload and done!
-
-
-![Demo](https://miro.medium.com/max/640/1*4UBX8NcVOoENInRp6fNkVw.gif)
 ## Installation
 
 To get started with the project.
