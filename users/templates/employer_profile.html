@@ -48,9 +48,22 @@
     <h2>Bio:</h2>        
     <textarea readonly>{{ employer.bios }}</textarea>
 </div>
-<form action="{% url 'edit_profile' employer.user.username %}">
-    <button type="submit" class="btn btn-primary">Edit Profile</button>
-</form> 
-<form action="{% url 'delete_account' %}">
-    <input type="submit" value="Delete" />
-</form>
+<div>
+    <form action="{% url 'jobs_list' employer.user.username %}">
+        <button type="submit" class="btn btn-primary">View Jobs List by {{employer.user.username}}</button>
+    </form> 
+
+
+</div>
+
+
+<div>
+    {% if employer.username == user.username %}
+        <form action="{% url 'edit_profile' employer.user.username %}">
+            <button type="submit" class="btn btn-primary">Edit Profile</button>
+        </form> 
+        <form action="{% url 'delete_account' %}">
+            <input type="submit" value="Delete" />
+        </form>
+    {% endif %}
+</div>
