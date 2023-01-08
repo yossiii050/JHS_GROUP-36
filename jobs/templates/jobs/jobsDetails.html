@@ -10,7 +10,14 @@
             <div class="job">
                
                 <h2>{{job.subTitle}}</h2>
+<<<<<<< HEAD
                 <small>By: <a href="{% url 'Profile' job.owner %}">{{job.owner}}</a></small>                <p><h3>job description: </h3>{{job.body}}</p>
+=======
+                <small>By:
+                    {{job.owner.username}}
+                </small>
+                <p><h3>job description: </h3>{{job.body}}</p>
+>>>>>>> 424d1433e4af21b992403122251f4e8d84c61b6a
                 <p>category: {{job.get_category_display}}</p>
 
                 <p>Salary range: {{job.get_salaryRange_display}}</p>
@@ -27,7 +34,11 @@
         </div>
 
         {% if request.user.is_authenticated %}
+<<<<<<< HEAD
             {% if request.user.employer.is_employer %}
+=======
+          {% if request.user.employer.is_employer %}
+>>>>>>> 424d1433e4af21b992403122251f4e8d84c61b6a
                 <a href="{% url 'update' job %}">
                     <button>Edit job</button>
                     </a>

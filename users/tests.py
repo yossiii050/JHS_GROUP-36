@@ -7,6 +7,7 @@ from django.urls import reverse
 from users.views import ReportUsers
 from django.http import HttpRequest
 from django.contrib.auth.models import Group,User
+from django.http import Http404
 
 class ReportVIPUsersViewTests(TestCase):
     def test_view_only_accessible_to_staff(self):
@@ -200,3 +201,116 @@ class EmployerFormTests(TestCase):
         }
         form = EmployerForm(data=form_data)
         self.assertTrue(form.is_valid())        
+
+class EmployerRegPageTests(TestCase):
+    def test_employer_registration(self):
+        # Test successful employer registration
+        form_data = {
+            'username': 'employer1',
+            'email': 'employer1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'is_employer': True,
+            'bios': 'Test employer bio'
+        }
+        response = self.client.post(reverse('employer register'), form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Employer.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertTrue(User.objects.filter(username='employer1').exists())
+        self.assertTrue(Employer.objects.filter(user__username='employer1').exists())
+
+class CandidateRegPageTests(TestCase):
+    def test_candidate_registration(self):
+        # Test successful candidate registration
+        form_data = {
+            'username': 'candidate1',
+            'email': 'candidate1@example.com',
+            'password1': 'testpass12',
+            'password2': 'testpass12',
+            'first_name': 'Test',
+            'last_name': 'Candidate',
+            'candidate_id': '12345',
+            'date_of_birth': '2000-01-01',
+            'phone_number': '123-456-7890',
+            'bios': 'Test candidate bio'
+        }
+        response = self.client.post(reverse('candidate register'), form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Candidate.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertTrue(User.objects.filter(username='candidate1').exists())
+        self.assertTrue(Candidate.objects.filter(user__username='candidate1').exists())
+
+class LoginPageTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.test_user = User.objects.create_user(username='testuser', password='testpass')
+
+    def test_login(self):
+        # Test successful login
+        form_data = {
+            'username': 'testuser',
+            'password': 'testpass'
+        }
+        response = self.client.post(reverse('login'), form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse('home page')))
+
+    def test_login_invalid_credentials(self):
+        # Test login with invalid credentials
+        form_data = {
+            'username': 'testuser',
+            'password': 'invalidpass'
+        }
+        response = self.client.post(reverse('login'), form_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Username OR Password is incorrect')
+
+class LogoutUserTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.test_user = User.objects.create_user(username='testuser', password='testpass')
+
+    def test_logout(self):
+        # Test logout
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('logout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse('login')))        
+
+class EditProfileTests(TestCase):
+    def setUp(self):
+        # Create test users
+        self.employer = User.objects.create_user(username='employer', password='testpass12')
+        self.candidate = User.objects.create_user(username='candidate', password='testpass12')
+
+    def test_employer_edit_profile(self):
+        # Test employer edit profile
+        self.client.login(username='employer', password='testpass12')
+        form_data = {
+            'CompanyName': 'Test Company',
+            'employer_id': '12345',
+            'bios': 'Test employer bio'
+        }
+
+    def test_edit_profile_invalid_user(self):
+        # Test edit profile for invalid user
+        self.client.login(username='candidate', password='testpass')
+        response = self.client.get(reverse('edit_profile', kwargs={'username': 'invalid'}))
+        self.assertRaises(Http404)    
+
+class DeleteAccountTests(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.test_user = User.objects.create_user(username='testuser', password='testpass12')
+
+    def test_delete_account(self):
+        # Test deleting account
+        self.client.login(username='testuser', password='testpass12')
+        response = self.client.post(reverse('delete_account'))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.endswith(reverse('home page')))
+        self.assertFalse(User.objects.filter(username='testuser').exists())        

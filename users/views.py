@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm
+from tech.models import Ticket
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -16,8 +17,6 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
 from jobs.models import Upload
-from jobs.forms import SortForm
-
 from functools import wraps
 
 def role_required(allowed_roles=[]):
@@ -115,7 +114,11 @@ def loginPage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        print(user)
         if user is not None:
+            if user.is_active ==False:
+                messages.info(request, 'Your profile Not activated!')
+                return redirect('login')
             login(request, user)
             return redirect('home page')
         else:
@@ -129,13 +132,17 @@ def logoutUser(request):
 
 from .models import CVFormModel
 from .forms import CVForm  
+
 def cv(request):  
     if request.method == 'POST':  
         form = CVForm(request.POST)
         if form.is_valid():
             new_form = CVFormModel(field=form.cleaned_data['field'], yearsexp=form.cleaned_data['yearsexp'], education=form.cleaned_data['education'], GitUrl=form.cleaned_data['GitUrl'])
             new_form.save()
-            return HttpResponse("Form saved successfully")
+            cand=Candidate.objects.get(username=request.user)
+            cand.set_cv(new_form)
+            cand.save()
+            return redirect('Profile',request.user.username)
         else:
             return render(request, "cv.html", {'form': form})
     else:  
@@ -166,16 +173,22 @@ def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     print(user)
     #print(user.employer.is_employer)
+    if request.user.username != user.username:
+        return redirect('/')
     try:
         if user.employer.is_employer==True:
             employer = user.employer
-            context = {'employer': employer}
+            tick=Ticket.objects.all()
+            job=Upload.objects.all()
+            print("--------->"+str(job))
+            context = {'employer': employer,'tick':tick,'job':job}
             return render(request, 'employer_profile.html', context)
     except:
         if user.candidate.is_candidate==True:
             candidate = user.candidate
-            print(candidate)
-            context = {'candidate': candidate}
+            candidatecv = candidate.cvcandidate
+            tick=Ticket.objects.all()
+            context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick}
             return render(request, 'candidate_profile.html', context)
    
 
@@ -185,7 +198,6 @@ def edit_profile(request, username):
     print(user)
     try:
         if user.candidate.is_candidate==True:
-            print("-----------"+user.candidate.candidate_id)
             return candidate_edit_profile(request, user.candidate.candidate_id)
     except:    
         if user.employer.is_employer==True:

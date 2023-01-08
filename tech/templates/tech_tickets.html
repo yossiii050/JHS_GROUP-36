@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <style>
+      /* Add some style to the page */
+      body {
+        font-family: sans-serif;
+      }
+      .ticket {
+        margin: 20px;
+        padding: 20px;
+        background-color: lightgray;
+      }
+      .ticket h2 {
+        margin: 0;
+      }
+      .ticket p {
+        margin: 10px 0;
+      }
+      .ticket select {
+        width: 150px;
+      }
+      .ticket button {
+        margin-top: 10px;
+        padding: 5px;
+        background-color: lightblue;
+        border-color: black;
+        border-radius: 5px;
+      }
+      .go-back-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: lightblue;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+      }
+      .go-back-button:hover {
+        background-color: royalblue;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="position:absolute; top:0; right:0;">
+      <a href="http://127.0.0.1:8000/tech" style="position: absolute; top: 5px; right: 10px; background-color: lightgray; padding: 10px 15px; border-radius: 5px; text-decoration: none; color: black; font-weight: bold;">Go Back</a>
+    </div>
+    <h1>Tickets list</h1>
+    {% for ticket in tickets %}
+      <form method="post" action="{% url 'update_ticket' ticket.id %}">
+        {% if ticket.isopen%}
+          {% csrf_token %}
+          <div class="ticket">
+            <h2>Submitted by {{ ticket.user }}</h2>
+            <h3>Title: {{ ticket.title }}</h3>
+            <p>Submitted on {{ ticket.date }}</p>
+            <p>Body: {{ ticket.body }}</p>
+            <p>Status is open: {{ticket.isopen}}</p>
+            <p>handler:
+              <select name="handler">
+                {% for user in users %}
+                  {%if user.is_staff %}
+                  <option value="{{ user.id }}" {% if user == ticket.handler %}selected{% endif %}>{{ user }}</option>
+                  {%endif%}
+                {% endfor %}
+              </select>
+              <button type="submit">Update handler</button>
+            </p>
+          </form>
+          <form method="post" action="{% url 'closed_ticket' ticket.id %}">
+            {% csrf_token %}
+            <label for="reply">Reply:</label><br>
+            <textarea name="reply" id="reply"></textarea><br>
+            <input type="submit" value="Submit">
+            </p>
+          </div>
+          
+        {%endif%}
+      </form>
+    {% endfor %}
+  </body>
+</html>

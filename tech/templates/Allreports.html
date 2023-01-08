@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Reports</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+body {font-size:16px;}
+.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
+.w3-half img:hover{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+  <div class="w3-container">
+    <h3 class="w3-padding-64"><b>Admin<br>system</b></h3>
+  </div>
+  <div class="w3-bar-block">
+    <a href="{% url 'techhome' %}" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
+    <a href="#showcase" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">All User Reports</a> 
+    <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">VIP Users Reports</a> 
+    <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Employer Requests</a> 
+    <a href="#packages" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Packages</a> 
+    <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Contact</a>
+  </div>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+  <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
+  <span>Company Name</span>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:340px;margin-right:40px">
+
+  <!-- Header -->
+  <div class="w3-container" style="margin-top:80px" id="showcase">
+    <h1 class="w3-jumbo"><b>Interior Design</b></h1>
+    <h1 class="w3-xxxlarge w3-text-red"><b>All User Reports.</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+  </div>
+  
+    
+
+  {% block content %}
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+              <h1>Users-Report </h1>
+              <style type="text/css">
+                  table.blueTable {
+                      border: 0px solid #1C6EA4;
+                      background-color: #EEEEEE;
+                      width: 100%;
+                      text-align: center;
+                      border-collapse: collapse;
+                    }
+                    table.blueTable td, table.blueTable th {
+                      border: 1px solid #AAAAAA;
+                      padding: 4px 2px;
+                    }
+                    table.blueTable tbody td {
+                      font-size: 19px;
+                      font-weight: bold;
+                    }
+                    table.blueTable tr:nth-child(even) {
+                      background: #D0E4F5;
+                    }
+                    table.blueTable thead {
+                      background: #1C6EA4;
+                      background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+                      background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+                      background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+                      border-bottom: 2px solid #444444;
+                    }
+                    table.blueTable thead th {
+                      font-size: 18px;
+                      font-weight: bold;
+                      color: #FFFFFF;
+                      text-align: center;
+                      border-left: 2px solid #D0E4F5;
+                    }
+                    table.blueTable thead th:first-child {
+                      border-left: none;
+                    }
+                    
+                    table.blueTable tfoot {
+                      font-size: 12px;
+                      font-weight: bold;
+                      color: #FFFFFF;
+                      background: #D0E4F5;
+                      background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+                      background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+                      background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+                      border-top: 2px solid #444444;
+                    }
+                    table.blueTable tfoot td {
+                      font-size: 12px;
+                    }
+                    table.blueTable tfoot .links {
+                      text-align: right;
+                    }
+                    table.blueTable tfoot .links a{
+                      display: inline-block;
+                      background: #1C6EA4;
+                      color: #FFFFFF;
+                      padding: 2px 8px;
+                      border-radius: 5px;
+                    }
+                  </style>
+                  <table class="tg" style="undefined;table-layout: fixed; width: 790px">
+                  <colgroup>
+                  <col style="width: 171px">
+                  <col style="width: 196px">
+                  <col style="width: 196px">
+                  <col style="width: 207px">
+                  <col style="width: 20px">
+                  </colgroup>
+
+
+                  
+                  <table class="blueTable">
+                      <thead>
+                      <tr>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Type</th>
+                      <th>Last Login</th>
+                      <th>Active</th>
+
+                      </tr>
+                      </thead>
+              {% for data in alluserform %}
+              <tbody>
+                {% load class_tag %}
+                  <tr>
+                  <td>{{data.username}}</td>
+                  <td>{{data.email}}</td>
+                  {% if data.employer|get_class != "str" %}
+                    <td>{{data.employer|get_class}}</td>
+                  {% elif data.candidate|get_class != "str" %}
+                    <td>{{data.candidate|get_class}}</td>
+                  {% else %}
+                    <td>Admin</td>
+                  {% endif %}
+                  <td> {{data.last_login}}</td>
+                  <td> {{data.is_active}}</td>
+                  </tr>
+              </tbody>                    
+              
+              {% endfor %}
+                      </table>
+                  
+          </div>
+      </div>
+  </div>
+
+  {% endblock content %}
+
+
+
+
+
+  <!-- Services -->
+  <div class="w3-container" id="services" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>VIP Users Reports.</b></h1>
+    <table class="tg" style="undefined;table-layout: fixed; width: 790px">
+      <colgroup>
+      <col style="width: 171px">
+      <col style="width: 196px">
+      <col style="width: 196px">
+      <col style="width: 207px">
+      <col style="width: 20px">
+      </colgroup>
+
+
+      
+      <table class="blueTable">
+          <thead>
+          <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Company Name</th>
+
+          </tr>
+          </thead>
+  {% for data in VIPform %}
+  <tbody>
+      <tr>
+      <td>{{data.username}}</td>
+      <td>{{data.email}}</td>
+      <td> {{data.employer.CompanyName}}</td>
+      </tr>
+  </tbody>                    
+  
+  {% endfor %}
+          </table>
+
+  <!-- Designers -->
+  <div class="w3-container" id="designers" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Employer Requests.</b></h1>
+    {% block content2 %}
+      <table class="blueTable">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>approved</th>
+          </tr>
+        </thead>
+        {% for data in Approveform %}
+        <form action="{% url 'update_user_status' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="user_id" value="{{ data.id }}">
+          <tbody>
+            <tr>
+              <td>{{data.username}}</td>
+              <td> <button type="submit" class="save btn btn-default">approved</button></td>
+            </tr>
+          </tbody>                    
+        </form>
+        {% endfor %}
+      </table>
+      <div class="message"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  {% csrf_token %}
+
+  $('.save').click(function(event) {
+    event.preventDefault();
+
+    var form = $(this).closest('form');
+    var url = form.attr('action');
+    var data = form.serialize();
+
+    $.ajax({
+      url: '/appr/',
+      type: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      success: function(response) {
+        // Handle the success response
+      },
+      error: function(response) {
+        // Handle the error response
+      },
+    });
+    
+  </script>
+    </div>
+  {% endblock content2 %}
+
+  <!-- Packages / Pricing Tables -->
+  <div class="w3-container" id="packages" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>User Managment.</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p>Some text our prices. Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure</p>
+  </div>
+
+  
+  <!-- Contact -->
+  <div class="w3-container" id="contact" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Contact.</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p>Do you want us to style your home? Fill out the form and fill me in with the details :) We love meeting new people!</p>
+    <form action="/action_page.php" target="_blank">
+      <div class="w3-section">
+        <label>Name</label>
+        <input class="w3-input w3-border" type="text" name="Name" required>
+      </div>
+      <div class="w3-section">
+        <label>Email</label>
+        <input class="w3-input w3-border" type="text" name="Email" required>
+      </div>
+      <div class="w3-section">
+        <label>Message</label>
+        <input class="w3-input w3-border" type="text" name="Message" required>
+      </div>
+      <button type="submit" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom">Send Message</button>
+    </form>  
+  </div>
+
+<!-- End page content -->
+</div>
+
+<!-- W3.CSS Container -->
+<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+</script>
+
+</body>
+</html>

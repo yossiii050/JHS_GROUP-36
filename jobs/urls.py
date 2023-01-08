@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from .views import job_details
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 #from jobs import views
 
 urlpatterns = [
