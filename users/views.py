@@ -66,6 +66,7 @@ def ReportVIPUsers(request):
 def employerRegPage(request):
     if request.method == 'POST':
         form = EmployerSignUpForm(request.POST)
+        #print(form.captcha)
         if form.is_valid():
             user = User.objects.create_user(username=form.cleaned_data['username'],
                                             password=form.cleaned_data['password1'],
@@ -80,6 +81,7 @@ def employerRegPage(request):
             return redirect('login')
     else:
         form = EmployerSignUpForm()
+       # print(form.captcha)
     context = {'form': form}
     return render(request, 'employerreg.html', context)
 

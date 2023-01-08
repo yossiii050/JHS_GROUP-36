@@ -75,7 +75,8 @@
         <input type="text" id="title" name="title"><br>
         <label for="body">Body:</label><br>
         <textarea id="body" name="body" rows="10" cols="30"></textarea><br><br>
-        <button type="submit" name="submit">Create ticket</button>
+        <div id="html_element"></div>
+        <button class="submit" type="submit" name="submit" disabled>Create ticket</button>
       </form>
       </html>
     </form>
@@ -87,5 +88,24 @@
   {% if date %}
     <p>Ticket created on {{ date }}</p>
   {% endif %}
+
+  <script type="text/javascript">
+    var onloadCallback = function() {
+      grecaptcha.render('html_element', {
+        'sitekey' : '6Lfdg98jAAAAAHjqT78ctyqeoacS-Eyc-BofLvgy',
+        'theme':"bright",
+        'callback': enableButton
+      });
+    };
+  </script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
+<script>
+  function enableButton() {
+    document.querySelector('.submit').disabled = false;
+  }
+  </script>
+
 </body>
+
 </html>

@@ -4,10 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from users.models import Employer, Candidate
 from django.contrib.auth.hashers import make_password
+from captcha.widgets import ReCaptchaV2Checkbox
+try:
+    from captcha.fields import ReCaptchaField
+except ImportError:
+    from captcha.fields import CaptchaField
 
 class EmployerSignUpForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    #captcha = CaptchaField(widget=ReCaptchaV2Checkbox())
+    #print("abc"+str(captcha))
+    #print(captcha.get_bound_field())
 
     class Meta:
         model = Employer
