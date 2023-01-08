@@ -76,51 +76,68 @@
 
 </head>
 <body>
-	<div class="container h-100">
-		<div class="d-flex justify-content-center h-100">
-			<div class="user_card">
-				<div class="d-flex justify-content-center">
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <h3 id="form-title">LOGIN</h3>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    <form method="POST" action="">
+                        {%csrf_token%}
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="username" placeholder="Username..." class="form-control">
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                                <input type="password" name="password" placeholder="Password..." class="form-control" >
+                        </div>
 
+                        <div id="html_element"></div>
+                       
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <input class="btn login_btn" type="submit" value="Login" disabled>
+                        </div>
+                    </form>
 
-					<h3 id="form-title">LOGIN</h3>
-				</div>
-				<div class="d-flex justify-content-center form_container">
-					<form method="POST" action="">
-						{%csrf_token%}
-						<div class="input-group mb-3">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-user"></i></span>
-							</div>
-							<input type="text" name="username" placeholder="Username..." class="form-control">
-						</div>
-						<div class="input-group mb-2">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-key"></i></span>
-							</div>
-								<input type="password" name="password" placeholder="Password..." class="form-control" >
-						</div>
-
-							<div class="d-flex justify-content-center mt-3 login_container">
-				 				<input class="btn login_btn" type="submit" value="Login">
-				   			</div>
-					</form>
-
-				</div>
-				{% for message in messages%}
-					<p id="messages">{{message}}</p>
-				{% endfor %}
-				<div class="mt-4">
-					<div class="d-flex justify-content-center links">
-						Don't have an account? <a href="{% url 'employer register' %}" class="ml-2">Employer Sign Up</a>
-					</div>
+                </div>
+                {% for message in messages%}
+                    <p id="messages">{{message}}</p>
+                {% endfor %}
+                <div class="mt-4">
                     <div class="d-flex justify-content-center links">
-						Don't have an account? <a href="{% url 'candidate register' %}" class="ml-2">Candidate Sign Up</a>
-					</div>
-			
-				</div>
-			</div>
-		</div>
-	</div>
+                        Don't have an account? <a href="{% url 'employer register' %}" class="ml-2">Employer Sign Up</a>
+                    </div>
+                    <div class="d-flex justify-content-center links">
+                        Don't have an account? <a href="{% url 'candidate register' %}" class="ml-2">Candidate Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      var onloadCallback = function() {
+        grecaptcha.render('html_element', {
+          'sitekey' : '6Lfdg98jAAAAAHjqT78ctyqeoacS-Eyc-BofLvgy',
+		  'theme':"bright",
+		  'callback': enableLoginButton
+        });
+      };
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
+	<script>
+		function enableLoginButton() {
+		  document.querySelector('.login_btn').disabled = false;
+		}
+	  </script>
+	  
 </body>
 
 </html>

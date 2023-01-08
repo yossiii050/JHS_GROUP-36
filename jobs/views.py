@@ -30,16 +30,18 @@ def jobsPdfFile(request):
     
     image_path = 'C:\JHS_GROUP-36\static\jpg\LOGO.jpg'
     image = ImageReader(image_path)
-    c.drawImage(image, x=5, y=0, width=250, height=200)
+    c.drawImage(image, x=200, y=-50, width=250, height=200)
     
 
     jobs=Upload.objects.all().order_by('location')
-    lines=[" "," "," "," "," "," "," "," "," "]
+    lines=[" "," "," "," "," "," "," "]
     for job in jobs:
-       # lines.append(job.category.)
         lines.append("                                 ")
+        textob.setFont("Helvetica-Bold", 12)
         lines.append('Job Title: '+job.title)
-        lines.append(job.subTitle)
+        textob.setFont("Helvetica-Bold", 10)
+        lines.append('Sub Title: '+job.subTitle)
+        textob.setFont("Helvetica", 10)
         lines.append(job.body)
         lines.append('Date of Publish: '+str(job.date))
         category = job.get_category_display()
@@ -55,8 +57,15 @@ def jobsPdfFile(request):
         location=job.get_location_display()
         lines.append('Location: '+location)
         lines.append("================================")
-    for line in lines:
-        textob.textLine(line)
+
+    
+    for i in range(len(lines)):
+        if lines[i].startswith('Job Title:'):
+            textob.setFont("Helvetica-Bold", 10)
+        else:
+            textob.setFont("Helvetica", 10)
+        textob.textLine(lines[i])
+
     c.drawText(textob)
     c.showPage()
     c.save()

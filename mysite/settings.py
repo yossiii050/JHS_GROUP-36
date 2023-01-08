@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'reportlab',
     'rest_framework',
+    #'recaptcha',
+    'captcha',
 
     
 ]
@@ -83,6 +85,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'maintenance_mode.context_processors.maintenance_mode',
+                
             ],
         },
     },
@@ -166,3 +169,6 @@ AUTHENTICATION_BACKENDS = (
 )
 #AUTH_USER_MODEL = ('usermodel.CandidateUser','usermodel.EmployerUser',)
 AUTH_USER_MODEL='auth.User'
+
+RECAPTCHA_PUBLIC_KEY = '6Lfdg98jAAAAAHjqT78ctyqeoacS-Eyc-BofLvgy'
+RECAPTCHA_PRIVATE_KEY = '6Lfdg98jAAAAAIFHKa40_0Ym-YEhQznfHnQZl3-7'

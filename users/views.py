@@ -68,6 +68,7 @@ def ReportVIPUsers(request):
 def employerRegPage(request):
     if request.method == 'POST':
         form = EmployerSignUpForm(request.POST)
+        #print(form.captcha)
         if form.is_valid():
             user = User.objects.create_user(username=form.cleaned_data['username'],
                                             password=form.cleaned_data['password1'],
@@ -82,6 +83,7 @@ def employerRegPage(request):
             return redirect('login')
     else:
         form = EmployerSignUpForm()
+       # print(form.captcha)
     context = {'form': form}
     return render(request, 'employerreg.html', context)
 
@@ -174,6 +176,9 @@ def view_groups(request):
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     print(user)
+    #print(user.employer.is_employer)
+    if request.user.username != user.username:
+        return redirect('/')
     try:
         if user.employer.is_employer==True:
             employer = user.employer
@@ -242,3 +247,54 @@ def delete_account(request):
         request.user.delete()
         return redirect('home page')
     return render(request, 'delete_account_confirm.html')
+
+def jobsList(request):
+    uploads=Upload.objects.all()
+    sort_form = SortForm()  # Create an instance of your form
+    # Check if the form has been submitted
+    if request.method == "POST":
+        sort_form = SortForm(request.POST)  # Bind the form to the POST data
+        if sort_form.is_valid():  # Check if the form is valid
+            sort_field = sort_form.cleaned_data["sort_field"]  # Get the selected sort field
+            sort_order = sort_form.cleaned_data["sort_order"]  # Get the selected sort order
+
+            # Modify the queryset based on the selected sort field and order
+            if sort_field == "title":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("title"))
+                else:
+                    uploads = uploads.order_by("-title")
+            elif sort_field == "date":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("date"))
+                else:
+                    uploads = uploads.order_by("-date")
+            elif sort_field == "salaryRange":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("salaryRange"))
+                else:
+                    uploads = uploads.order_by("-salaryRange")
+            elif sort_field == "yearsexp":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("yearsexp"))
+                else:
+                    uploads = uploads.order_by("-yearsexp")
+            elif sort_field == "time":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("time"))
+                else:
+                    uploads = uploads.order_by("-time")
+
+            elif sort_field == "hybrid":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by("hybrid")
+                else:
+                    uploads = uploads.order_by("-hybrid")
+            elif sort_field == "location":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by("location")
+                else:
+                    uploads = uploads.order_by("-location")
+
+
+    return render(request,'jobs/Upload_list.html',{'uploads':uploads,"sort_form": sort_form})
