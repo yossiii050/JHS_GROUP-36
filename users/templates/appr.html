@@ -78,6 +78,12 @@
                     color: #a94442;
                     border: 1px solid #ebccd1;
                   }
+                  #messages{
+                    background-color: grey;
+                    color: #fff;
+                    padding: 10px;
+                    margin-top: 10px;
+                  }
                 </style>
                 <table class="tg" style="undefined;table-layout: fixed; width: 790px">
                 <colgroup>
@@ -110,8 +116,11 @@
                   </form>
                   {% endfor %}
                 </table>
-                <div class="message"></div>
-          
+                <div class="message">
+                  {% for message in messages%}
+                    <p id="messages">{{message}}</p>
+                  {% endfor %}</div>
+                
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
           <script>
             {% csrf_token %}

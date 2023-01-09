@@ -4,10 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from users.models import Employer, Candidate
 from django.contrib.auth.hashers import make_password
+from captcha.widgets import ReCaptchaV2Checkbox
+try:
+    from captcha.fields import ReCaptchaField
+except ImportError:
+    from captcha.fields import CaptchaField
 
 class EmployerSignUpForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    #captcha = CaptchaField(widget=ReCaptchaV2Checkbox())
+    #print("abc"+str(captcha))
+    #print(captcha.get_bound_field())
 
     class Meta:
         model = Employer
@@ -32,7 +40,7 @@ class CandidateSignUpForm(UserCreationForm):
 
     class Meta:
         model = Candidate
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'candidate_id', 'date_of_birth', 'phone_number','bios']
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'candidate_id', 'date_of_birth', 'phone_number','bios','cvcandidate']
     
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -50,8 +58,8 @@ class CandidateSignUpForm(UserCreationForm):
 class CandidateForm(forms.ModelForm):
     class Meta:
         model = Candidate
-        fields = ['first_name', 'last_name','date_of_birth', 'phone_number','bios']
-
+        fields = ['first_name', 'last_name','date_of_birth', 'phone_number','bios','cvcandidate']
+        exclude = ['cvcandidate']
 class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer

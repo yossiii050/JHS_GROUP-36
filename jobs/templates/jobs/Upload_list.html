@@ -33,9 +33,11 @@
 
              
                 <br/>
+            {% if request.user.employer.is_employer %}    
             <a href="{% url 'upload' %}">
             <button>Upload job</button>
             </a>
+            {%endif%}
             <br/><br/> 
             {% for upload in uploads %}
             
@@ -52,7 +54,7 @@
 
 
 
-                  <a href="{% url 'detail' upload  %}" class="btn btn-primary">Show More..</a>
+                  <a href="{% url 'Jobsdetail' upload  %}" class="btn btn-primary">Show More..</a>
                 </div>
               </div>
 
