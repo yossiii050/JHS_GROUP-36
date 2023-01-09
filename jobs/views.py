@@ -12,10 +12,11 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
-# django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 #from .forms import JobApplicationForm
-
+from django.contrib.auth.models import User
+from users.models import Candidate
 
 def jobsPdfFile(request):
     buf=io.BytesIO()
@@ -168,6 +169,7 @@ def updateJob(request,upload_id):
 
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
+    print(job.applycandiadteuser.all())
     #job.update_views()
     #job=Upload.objects.filter(slug=slug.values())
     return render (request,'jobs/jobsDetails.html',{'job':job})
@@ -181,16 +183,16 @@ def deleteJob(request,upload_id):
     return render(request,'jobs/success.html',{'job':job})
 
 def applyCv(request,upload_id):
-    job=Upload.objects.get(slug=upload_id)
-    #job = get_object_or_404(Upload, pk=upload_id)
-    print(job.applycandiadteuser.all())
-    print(request.user.candidate)
-    job.applycandiadteuser.add(request.user.candidate)
-    #job.availableAmount-=1
-    print(job.availableAmount)
-    print(job.applycandiadteuser)
-    return render(request,'jobs/success.html',{'job':job})
+    job = get_object_or_404(Upload, slug=upload_id)
+    cand=get_object_or_404(Candidate,username=request.user.username)
+    print("HIHIHIHHIIH+"+str(cand))
+    
 
+    # Set the applycandiadteuser field to the request.user object
+    job.applycandiadteuser.add(cand)
+    job.save()
+    return render(request,'jobs/success.html')
+"""
 #def apply_for_job(request, job_id):
     if request.method == 'POST':
         form = JobApplicationForm(request.POST, request.FILES)
@@ -208,3 +210,4 @@ def applyCv(request,upload_id):
         form = JobApplicationForm()
     return render(request, 'jobs/apply.html', {'form': form})
 
+"""

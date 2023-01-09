@@ -31,7 +31,7 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     location=models.IntegerField(choices=CITIES, default=1)
     availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
     notification=models.DecimalField(max_digits=3 ,decimal_places=0, default=Decimal('5'))
-    applycandiadteuser=models.ManyToManyField(Candidate, related_name='CandidatesCv')
+    applycandiadteuser = models.ManyToManyField(Candidate, blank=True, null=True)    
     def __str__(self):
         return self.title
 
