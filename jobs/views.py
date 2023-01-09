@@ -5,7 +5,7 @@ from .forms import UploadForm,SortForm
 from django.views.generic import CreateView
 from django.db.models.functions import Lower
 import csv
-
+import json
 from django.http import FileResponse
 import io
 from reportlab.pdfgen import canvas
@@ -170,6 +170,9 @@ def updateJob(request,upload_id):
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
     print(job.applycandiadteuser.all())
+    cand=get_object_or_404(Candidate,username=request.user.username)
+    applyjobs = json.loads(cand.applyjobs)
+    print("HIHIHIHHIIH+"+str(applyjobs))
     #job.update_views()
     #job=Upload.objects.filter(slug=slug.values())
     return render (request,'jobs/jobsDetails.html',{'job':job})
@@ -186,7 +189,7 @@ def applyCv(request,upload_id):
     job = get_object_or_404(Upload, slug=upload_id)
     cand=get_object_or_404(Candidate,username=request.user.username)
     print("HIHIHIHHIIH+"+str(cand))
-    
+    applyjobs = json.loads(cand.applyjobs)
 
     # Set the applycandiadteuser field to the request.user object
     job.applycandiadteuser.add(cand)
