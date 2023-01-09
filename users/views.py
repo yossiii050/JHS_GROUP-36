@@ -177,8 +177,7 @@ def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     print(user)
     #print(user.employer.is_employer)
-    if request.user.username != user.username:
-        return redirect('/')
+    
     try:
         if user.employer.is_employer==True:
             employer = user.employer
@@ -191,8 +190,9 @@ def user_profile(request, username):
         if user.candidate.is_candidate==True:
             candidate = user.candidate
             candidatecv = candidate.cvcandidate
+            jobs=Upload.objects.all()
             tick=Ticket.objects.all()
-            context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick}
+            context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick,'jobs':jobs}
             return render(request, 'candidate_profile.html', context)
    
 

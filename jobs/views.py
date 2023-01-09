@@ -169,6 +169,8 @@ def updateJob(request,upload_id):
 
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
+    print(job.applycandiadteuser.all())
+
     #job.update_views()
     #job=Upload.objects.filter(slug=slug.values())
     return render (request,'jobs/jobsDetails.html',{'job':job})
@@ -181,17 +183,20 @@ def deleteJob(request,upload_id):
     job.delete()
     return render(request,'jobs/success.html',{'job':job})
 
+
+
 def applyCv(request,upload_id):
     job = get_object_or_404(Upload, slug=upload_id)
     cand=get_object_or_404(Candidate,username=request.user.username)
     
     # Set the applycandiadteuser field to the request.user object
     job.applycandiadteuser.add(cand)
-    applyjobs = set(json.loads(cand.applyjobs))
+    
+    applyjobs = set(cand.applyjobs)
     applyjobs.add(upload_id)
-
     # Save the updated list back to the applyjobs field
-    cand.applyjobs = json.dumps(list(applyjobs))
+    #cand.applyjobs = json.dumps(list(applyjobs))
+    cand.applyjobs = list(applyjobs)
     cand.save()
     job.save()
     return render(request,'jobs/success.html')
