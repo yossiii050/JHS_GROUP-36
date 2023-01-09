@@ -1,6 +1,11 @@
 
 from .choices import * 
 from django.db import models
+
+import os
+if not os.path.exists('files'):
+    os.makedirs('files')
+
 class CVFormModel(models.Model):
     #user = models.OneToOneField(User)    
     field = models.IntegerField(choices=FIELD_CHOICES, default=1)   

@@ -44,6 +44,7 @@ urlpatterns = [
     path('update_user_status/',update_user_status,name="update_user_status"),
     path('api-auth/', include('rest_framework.urls')),
 
-]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler404 = 'mysite.views.handler404'
