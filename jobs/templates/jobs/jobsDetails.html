@@ -144,7 +144,7 @@
                               <button type="submit">Accept</button>
                               <button type="submit">Interview</button>
                           </form>
-                          <form action="{% url 'update_user' d.username %}" method="post">
+                          <form action="{% url 'abort_user' d.username %}" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="status" value="accepted">
                             <input type="hidden" name="jobtitle" value="{{ job.title }}">
