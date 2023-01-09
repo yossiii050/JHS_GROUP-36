@@ -189,6 +189,7 @@ def user_profile(request, username):
             candidatecv = candidate.cvcandidate
             jobs=Upload.objects.all()
             tick=Ticket.objects.all()
+            
             context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick,'jobs':jobs}
             return render(request, 'candidate_profile.html', context)
    
@@ -295,3 +296,8 @@ def jobsList(request):
 
 
     return render(request,'jobs/Upload_list.html',{'uploads':uploads,"sort_form": sort_form})
+
+
+from .forms import ProgressForm
+
+

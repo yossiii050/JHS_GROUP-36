@@ -1,273 +1,287 @@
 <style>
-    body {
-        background-color: #0582CA;
-    }
+  body {
+      background-color: #0582CA;
+  }
 
-    .profile-info {
-        margin: 20px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 20px;
-        background-color: #f5f5f5;
-    }
+  .profile-info {
+      margin: 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      background-color: #f5f5f5;
+  }
 
-    .profile-info h2 {
-        margin-bottom: 10px;
-    }
+  .profile-info h2 {
+      margin-bottom: 10px;
+  }
 
-    
+  
 
-    .profile-bio {
-        margin: 20px 0;
-        padding: 20px;
-        background-color: #fff;
-    }
+  .profile-bio {
+      margin: 20px 0;
+      padding: 20px;
+      background-color: #fff;
+  }
 
-    .profile-bio textarea {
-        width: 100%;
-        height: 200px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
+  .profile-bio textarea {
+      width: 100%;
+      height: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+  }
+  .button-container {
+      display: flex;
     }
-    .button-container {
-        display: flex;
-      }
-      .button-container button, .button-container input {
-        margin: 0 10px;
+    .button-container button, .button-container input {
+      margin: 0 10px;
+  }
+  .label-value {
+      display: flex;
+      align-items: center;
     }
-    .label-value {
-        display: flex;
-        align-items: center;
-      }
-      .label-box {
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px;
-        font-weight: bold;
-        width: 300px;
-        height: 15px;
-      }
-      .label-boxReply {
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px;
-        font-weight: bold;
-        width: 300px;
-        height: 80px;
-      }
-      .label1 {
-        margin-right: 10px;
-      }
-      .label1-value {
-        display: flex;
-        align-items: center;
-      }
-      .label1-box {
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px;
-        font-weight: bold;
-        width: 300px;
-        height: 50px;
-      }
-      .label1 {
-        margin-right: 10px;
-        color: red;
-      }
-      .label2-value {
-        display: flex;
-        align-items: center;
-      }
-      .label2-box {
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px;
-        font-weight: bold;
-        width: 300px;
-        height: 50px;
-      }
-      .label2 {
-        margin-right: 10px;
-      }
-      .label3-box {
-        border: 2px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 10px;
-        font-weight: bold;
-        width: 300px;
-        height: 150px;
-      }
+    .label-box {
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      font-weight: bold;
+      width: 300px;
+      height: 15px;
+    }
+    .label-boxReply {
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      font-weight: bold;
+      width: 300px;
+      height: 80px;
+    }
+    .label1 {
+      margin-right: 10px;
+    }
+    .label1-value {
+      display: flex;
+      align-items: center;
+    }
+    .label1-box {
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      font-weight: bold;
+      width: 300px;
+      height: 50px;
+    }
+    .label1 {
+      margin-right: 10px;
+      color: red;
+    }
+    .label2-value {
+      display: flex;
+      align-items: center;
+    }
+    .label2-box {
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      font-weight: bold;
+      width: 300px;
+      height: 50px;
+    }
+    .label2 {
+      margin-right: 10px;
+    }
+    .label3-box {
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      font-weight: bold;
+      width: 300px;
+      height: 150px;
+    }
 </style>
 
 <h1>Hello {{ candidate.user.username }} :-)</h1>
 
 <div class="profile-info">
-    <h2>Basic Information</h2>
-    <p>Username: {{ candidate.user.username }}</p>
-    <p>Email: {{ candidate.user.email }}</p>
-    <p>Date of birth: {{ candidate.date_of_birth }}</p>
-    <p>Phone number: {{ candidate.phone_number }}</p>
-    <p>First name: {{ candidate.first_name }}</p>
-    <p>Last name: {{ candidate.last_name }}</p>
+  <h2>Basic Information</h2>
+  <p>Username: {{ candidate.user.username }}</p>
+  <p>Email: {{ candidate.user.email }}</p>
+  <p>Date of birth: {{ candidate.date_of_birth }}</p>
+  <p>Phone number: {{ candidate.phone_number }}</p>
+  <p>First name: {{ candidate.first_name }}</p>
+  <p>Last name: {{ candidate.last_name }}</p>
 </div>
 
 <div class="profile-bio">
-    <h2>Bio</h2><textarea readonly>{{ candidate.bios }}</textarea>
-    {% if candidate.user.username == user.username or user.is_staff == True  %}
-    <br>
-    <div class="button-container">
-        
-        <form action="{% url 'edit_profile' candidate.user.username %}">
-            <br>
-          <button type="submit" class="btn btn-primary">Edit Profile</button>
-        </form> 
-        <form action="{% url 'delete_account' %}">
-            <br>
-          <input type="submit" value="Delete" />
-        </form>
-      </div>
+  <h2>Bio</h2><textarea readonly>{{ candidate.bios }}</textarea>
+  {% if candidate.user.username == user.username or user.is_staff == True  %}
+  <br>
+  <div class="button-container">
       
-    {% endif %}
+      <form action="{% url 'edit_profile' candidate.user.username %}">
+          <br>
+        <button type="submit" class="btn btn-primary">Edit Profile</button>
+      </form> 
+      <form action="{% url 'delete_account' %}">
+          <br>
+        <input type="submit" value="Delete" />
+      </form>
+    </div>
+    
+  {% endif %}
 </div>
 <div class="profile-info">
-    <h2>CV Form</h2>
+  <h2>CV Form</h2>
 {% if candidate.cvcandidate %}
-    <p>Field of work: {{ candidatecv.get_field_display }}</p>
-    <p>Years of Experience: {{ candidatecv.get_yearsexp_display }}</p>
-    <p>Education: {{ candidatecv.get_education_display }}</p>
-    <p>GitHub URL: {{ candidatecv.GitUrl }}</p>  
+  <p>Field of work: {{ candidatecv.get_field_display }}</p>
+  <p>Years of Experience: {{ candidatecv.get_yearsexp_display }}</p>
+  <p>Education: {{ candidatecv.get_education_display }}</p>
+  <p>GitHub URL: {{ candidatecv.GitUrl }}</p>  
 {% else %}
-    <p>No CV</p>
-    {% if candidate.user.username == user.username or user.is_staff == True  %}
-    <form action="{% url 'cv' %}">
-        <button type="submit" class="btn btn-primary">Upload cv</button>
-    </form> 
-    {% endif %}
+  <p>No CV</p>
+  {% if candidate.user.username == user.username or user.is_staff == True  %}
+  <form action="{% url 'cv' %}">
+      <button type="submit" class="btn btn-primary">Upload cv</button>
+  </form> 
   {% endif %}
+{% endif %}
 </div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
 <div class="profile-info">
-  <h2>All the jobs I submitted:</h2>  <form action="{% url 'list' %}">
-    <button type="submit" class="btn btn-primary">Look for jobs</button>
+<h2>All the jobs I submitted:</h2>  <form action="{% url 'list' %}">
+  <button type="submit" class="btn btn-primary">Look for jobs</button>
 </form> 
-  {% for x in candidate.applyjobs %}
-    {% for j in jobs %}
-      {% if x == j.slug %}
+{% for x in candidate.applyjobs %}
+  {% for j in jobs %}
+    {% if x == j.slug %}
+    {% for item in candidate.get_progress %}    
+    <div class="label-value">
+      <span class="label">Title:</span>
+      <div class="label-box">{{ j.title }}</div>
+      </div>
       <div class="label-value">
-        <span class="label">Title:</span>
-        <div class="label-box">{{ j.title }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Subtitle:</span>
-        <div class="label-box">{{ j.subTitle }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Body:</span>
-        <div class="label3-box">{{ j.body }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Date:</span>
-        <div class="label-box">{{ j.date }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Category:</span>
-        <div class="label-box">{{ j.get_category_display }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Years of Experience:</span>
-        <div class="label-box">{{ j.get_yearsexp_display }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Hybrid:</span>
-        <div class="label-box">{{ j.hybrid }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Priority:</span>
-        <div class="label-box">{{ j.priority }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Location:</span>
-        <div class="label-box">{{ j.get_location_display }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Available Amount:</span>
-        <div class="label-box">{{ j.availableAmount }}</div>
-        </div>
-        <p>------------------------------------------------------------------------------------------------------</p>
-
+      <span class="label">Subtitle:</span>
+      <div class="label-box">{{ j.subTitle }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Body:</span>
+      <div class="label3-box">{{ j.body }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Date:</span>
+      <div class="label-box">{{ j.date }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Category:</span>
+      <div class="label-box">{{ j.get_category_display }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Years of Experience:</span>
+      <div class="label-box">{{ j.get_yearsexp_display }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Hybrid:</span>
+      <div class="label-box">{{ j.hybrid }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Priority:</span>
+      <div class="label-box">{{ j.priority }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Location:</span>
+      <div class="label-box">{{ j.get_location_display }}</div>
+      </div>
+      <div class="label-value">
+      <span class="label">Available Amount:</span>
+      <div class="label-box">{{ j.availableAmount }}</div>
+      </div>
+      <h2>Hiring process:</h2>
+      <progress value='{{ item }}' max="100" style="width: 100%; height: 35px;"></progress>
+      {% if item == 25 %}
+        <h2 style="color: brown;">Resumes accepted</h2>
+    {% elif item == 50 %}
+        <h2 style="color: orange;">The employer received the resume</h2>
+    {% elif item == 75 %}
+        <h2 style="color: blue;">You Called for a job interview</h2>
+    {% elif item == 100 %}
+        <h2 style="color: green;">Good luck! You been hired</h2>
+    {% else %}
+        <h2 style="color: red;">We apologize, but the recruitment process has stopped</h2>
+    {% endif %}
+      <p>------------------------------------------------------------------------------------------------------</p>
+      {% endfor %}
       {% endif %}
-    {% endfor %}
   {% endfor %}
-  
+{% endfor %}
+
 
 {% endif %}
 </div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
 <div class="profile-info">
-    <h2>My Tickets:</h2><h4>(Red is open,Green is Closed)</h4>
-    {% for t in tick %}
-        {% if t.user == candidate.user %}
-            {% if t.isopen == 0 %}
-            <div class="label-value">
-                <span class="label">Title:</span>
-                <div class="label-box" style="color: green;">{{ t.title }}</div>
-              </div>
-              <div class="label-value">
-                <span class="label">Body:</span>
-                <div class="label-box" style="color: green;">{{ t.body }}</div>
-              </div>
-              <div class="label-value">
-                <span class="label">Date:</span>
-                <div class="label-box" style="color: green;">{{ t.date }}</div>
-              </div>
-              <div class="label-value">
-                <span class="label">Status:</span>
-                <div class="label-box" style="color: green;">Closed</div>
-              </div>
-              <div class="label-value">
-                <span class="label">Reply:</span>
-                <div class="label-boxReply" style="color: green;">{{ t.Reply }}</div>
-              </div>
-                <p>------------------------------------------------------------------------------</p>
-            {% else %}
-            <div class="label-value">
-                <span class="label">Title:</span>
-                <div class="label-box" style="color: red;">{{ t.title }}</div>
-              </div>
-              <div class="label-value">
-                <span class="label">Body:</span>
-                <div class="label-box" style="color: red;">{{ t.body }}</div>
-              </div>
-              <div class="label-value">
-                <span class="label">Date:</span>
-                <div class="label-box" style="color: red;">{{ t.date }}</div>
-              </div>
-              <div class="label-value">
-                <span class="label">Status:</span>
-                <div class="label-box" style="color: red;">Open</div>
+  <h2>My Tickets:</h2><h4>(Red is open,Green is Closed)</h4>
+  {% for t in tick %}
+      {% if t.user == candidate.user %}
+          {% if t.isopen == 0 %}
+          <div class="label-value">
+              <span class="label">Title:</span>
+              <div class="label-box" style="color: green;">{{ t.title }}</div>
             </div>
-            <p>------------------------------------------------------------------------------</p>
-            {% endif %}
-        {% endif %}
-    {% endfor %}
+            <div class="label-value">
+              <span class="label">Body:</span>
+              <div class="label-box" style="color: green;">{{ t.body }}</div>
+            </div>
+            <div class="label-value">
+              <span class="label">Date:</span>
+              <div class="label-box" style="color: green;">{{ t.date }}</div>
+            </div>
+            <div class="label-value">
+              <span class="label">Status:</span>
+              <div class="label-box" style="color: green;">Closed</div>
+            </div>
+            <div class="label-value">
+              <span class="label">Reply:</span>
+              <div class="label-boxReply" style="color: green;">{{ t.Reply }}</div>
+            </div>
+              <p>------------------------------------------------------------------------------</p>
+          {% else %}
+          <div class="label-value">
+              <span class="label">Title:</span>
+              <div class="label-box" style="color: red;">{{ t.title }}</div>
+            </div>
+            <div class="label-value">
+              <span class="label">Body:</span>
+              <div class="label-box" style="color: red;">{{ t.body }}</div>
+            </div>
+            <div class="label-value">
+              <span class="label">Date:</span>
+              <div class="label-box" style="color: red;">{{ t.date }}</div>
+            </div>
+            <div class="label-value">
+              <span class="label">Status:</span>
+              <div class="label-box" style="color: red;">Open</div>
+          </div>
+          <p>------------------------------------------------------------------------------</p>
+          {% endif %}
+      {% endif %}
+  {% endfor %}
 {% endif %}  
 </div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
-    <form action="{% url 'delete_account' %}">
-        <input type="submit" value="Delete" />
-    </form>
+  <form action="{% url 'delete_account' %}">
+      <input type="submit" value="Delete" />
+  </form>
 {% endif %}  
 
 
 <script>
-  var jobs = candidate.applyjobs;
-  for (var i = 0; i < jobs.length; i++) {
-    document.write(jobs[i] + "<br>");
-  }
+var jobs = candidate.applyjobs;
+for (var i = 0; i < jobs.length; i++) {
+  document.write(jobs[i] + "<br>");
+}
 </script>

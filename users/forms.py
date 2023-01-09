@@ -76,3 +76,6 @@ class CVForm(forms.Form):
     class Meta:
        model = CVFormModel
        fields = ['field', 'yearsexp', 'education', 'GitUrl']        
+
+class ProgressForm(forms.Form):
+    progress = forms.IntegerField()

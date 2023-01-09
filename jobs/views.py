@@ -8,6 +8,7 @@ import csv
 import json
 from django.http import FileResponse
 import io
+from django.urls import reverse
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
@@ -17,6 +18,7 @@ from django.shortcuts import render, redirect
 #from .forms import JobApplicationForm
 from django.contrib.auth.models import User
 from users.models import Candidate
+from django.shortcuts import HttpResponseRedirect
 
 def jobsPdfFile(request):
     buf=io.BytesIO()
@@ -170,7 +172,7 @@ def updateJob(request,upload_id):
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
     print(job.applycandiadteuser.all())
-
+    
     #job.update_views()
     #job=Upload.objects.filter(slug=slug.values())
     return render (request,'jobs/jobsDetails.html',{'job':job})
@@ -183,23 +185,62 @@ def deleteJob(request,upload_id):
     job.delete()
     return render(request,'jobs/success.html',{'job':job})
 
+def update_user(request, username):
+    if request.method == 'POST':
+        job_title=request.POST.get('jobtitle')
+        print(job_title)
+        # Update the statusforapplyjobs field for the user with the given username
+        candidate = Candidate.objects.get(username=username)
+        statusforapplyjobs = json.loads(candidate.statusforapplyjobs)
+        jobi=candidate.applyjobs
+        index = jobi.index(job_title)
+        statusforapplyjobs[index]+=25
+        status_list =candidate.statusforapplyjobs[index]
+        candidate.statusforapplyjobs = json.dumps(statusforapplyjobs)
+        print(candidate.statusforapplyjobs)
+        candidate.save()
+        return redirect('list')
+    return render(request, 'jobsDetails.html')
 
+def update_user1(request, username):
+    user = User.objects.get(username=username)
+    candidate = user.candidate
+    applyjobs = json.loads(candidate.applyjobs)
+    statusforapplyjobs = json.loads(candidate.statusforapplyjobs)
+    # Find the index of the current job in the applyjobs list
+    index = applyjobs.index(job.subTitle)
+    # Update the statusforapplyjobs list at the same index
+    statusforapplyjobs[index] = 'updated status'
+    # Save the updated lists back to the model
+    candidate.applyjobs = json.dumps(applyjobs)
+    candidate.statusforapplyjobs = json.dumps(statusforapplyjobs)
+    candidate.save()
+    return HttpResponseRedirect(reverse('view_jobs'))
 
 def applyCv(request,upload_id):
     job = get_object_or_404(Upload, slug=upload_id)
     cand=get_object_or_404(Candidate,username=request.user.username)
-    
-    # Set the applycandiadteuser field to the request.user object
     job.applycandiadteuser.add(cand)
-    
     applyjobs = set(cand.applyjobs)
     applyjobs.add(upload_id)
-    # Save the updated list back to the applyjobs field
-    #cand.applyjobs = json.dumps(list(applyjobs))
     cand.applyjobs = list(applyjobs)
+    
+    if cand.statusforapplyjobs:
+        status_list = json.loads(cand.statusforapplyjobs)
+    else:
+        status_list = []
+    #status_list = json.loads(cand.statusforapplyjobs)
+    status_list.append(25)
+    cand.statusforapplyjobs = json.dumps(status_list)
+    print(cand.statusforapplyjobs)
+    print(cand.applyjobs)
     cand.save()
     job.save()
     return render(request,'jobs/success.html')
+
+def candsta(request):
+    return render(request, 'statusbar.html')
+
 """
 #def apply_for_job(request, job_id):
     if request.method == 'POST':

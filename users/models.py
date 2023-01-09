@@ -1,6 +1,8 @@
 
 from .choices import * 
 from django.db import models
+import json
+
 class CVFormModel(models.Model):
     #user = models.OneToOneField(User)    
     field = models.IntegerField(choices=FIELD_CHOICES, default=1)   
@@ -46,6 +48,7 @@ class Candidate(models.Model):
     #appllyjobs=models.CharField(max_length=)
     #applyjobs = models.TextField(default='[]')
     applyjobs = JSONField(blank=True, default=dict)
+    statusforapplyjobs=models.TextField()
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -60,3 +63,6 @@ class Candidate(models.Model):
 
     def _str_(self):
         return self.user.username
+        
+    def get_progress(self):
+        return json.loads(self.statusforapplyjobs)
