@@ -57,17 +57,17 @@
       margin: 0;
       padding: 0;
     }
+    #messages{
+      background-color: grey;
+      color: #fff;
+      padding: 10px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-{% if messages %}
-<ul class="messages">
-{% for message in messages %}
-<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
-  <h1>This is supports team tickets</h1>
+
+  <center><h1>This is supports team tickets</h1></center>
   <div class="Ticket">
     <form method="post" action="{% url 'ticket' %}">
         {% csrf_token %}
@@ -75,14 +75,37 @@
         <input type="text" id="title" name="title"><br>
         <label for="body">Body:</label><br>
         <textarea id="body" name="body" rows="10" cols="30"></textarea><br><br>
-        <button type="submit" name="submit">Create ticket</button>
+        <div id="html_element"></div>
+        <button class="submit" type="submit" name="submit" disabled>Create ticket</button>
       </form>
       </html>
     </form>
   </div>
-  <p>Thank you for choosing JHS</p>
+<center>  {% for message in messages%}
+					<p id="messages">{{message}}</p>
+				{% endfor %}
+<p>Thank you for choosing JHS</p>
   {% if date %}
     <p>Ticket created on {{ date }}</p>
-  {% endif %}
+  {% endif %}</center>
+
+  <script type="text/javascript">
+    var onloadCallback = function() {
+      grecaptcha.render('html_element', {
+        'sitekey' : '6Lfdg98jAAAAAHjqT78ctyqeoacS-Eyc-BofLvgy',
+        'theme':"bright",
+        'callback': enableButton
+      });
+    };
+  </script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
+<script>
+  function enableButton() {
+    document.querySelector('.submit').disabled = false;
+  }
+  </script>
+
 </body>
+
 </html>

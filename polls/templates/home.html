@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Job Search Website</title>
+  <title>JHS</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style>
@@ -99,23 +99,20 @@
 <body>
     <div class="container">
       <div class="header">
-        <h1>Job Search Website</h1>
+        <h1>JHS-Jobs Hi-tech Search</h1>
         {% if request.user.is_authenticated %}
         <p>Welcome, {{ request.user.username }}!</p>
-        <a href="{% url 'ticket' %}" class="login" id="logout-button">Contact us</a>
-        {% if user.is_authenticated and user.is_staff and user.is_superuser %}
-          <a href="{% url 'toggle_maintenance_mode' %}"class="login" id="login-button">Toggle maintenance mode</a>
-        {% endif %}
-
+        <a href="{% url 'profile_move' %}"class="login" id="login-button" class="login" id="logout-button">Profile</a>
         <a href="logout" class="login" id="logout-button">Logout</a>
         {% else %}
         <a href="login" class="login" id="login-button">Login/Signup</a>
         {% endif %}
         {% if request.user.is_authenticated %}
           {% if request.user.employer.is_employer %}
-            <a href="{% url 'uplodelist' %}">Post a job</a>
+          <a href="{% url 'uplodelist' %}" class="login" id="login-button">Post</a>
           {% endif %}
-        {% endif %}
+          <a href="{% url 'ticket' %}" class="login" id="logout-button">Contact</a>
+          {% endif %}
 
       </div>
       <form class="search-form" action="/search" method="get">

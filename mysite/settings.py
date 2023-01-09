@@ -39,8 +39,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "tech.apps.TechConfig",
-    "phonenumber_field",
+    'tech.apps.TechConfig',
+    'phonenumber_field',
     'users.apps.UsersConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
@@ -49,10 +49,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'captcha',
     'jobs',
     'rules',
+    'reportlab',
     'crispy_forms',
+    #'reportlab',
     'rest_framework',
+    #'recaptcha',
+    'captcha',
 
     
 ]
@@ -82,6 +87,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'maintenance_mode.context_processors.maintenance_mode',
+                
             ],
         },
     },
@@ -109,6 +115,10 @@ REST_FRAMEWORK = {
 }
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+RECAPTCHA_PUBLIC_KEY = '6LfmeMkjAAAAABatAc2Kw3vzAUA1iCzdBcSrN1TE'
+RECAPTCHA_PRIVATE_KEY = '6LfmeMkjAAAAAJFXQ2bzfcwrhIXYZMpVk9bAEwFl'
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -143,20 +153,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR/'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    #'/var/www/static/',
-]
+#STATICFILES_DIRS = [
+ #   os.path.join(BASE_DIR, "static"),
+#]
 AUTHENTICATION_BACKENDS = (
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -164,6 +173,8 @@ AUTHENTICATION_BACKENDS = (
     
     
 )
-
 #AUTH_USER_MODEL = ('usermodel.CandidateUser','usermodel.EmployerUser',)
 AUTH_USER_MODEL='auth.User'
+
+RECAPTCHA_PUBLIC_KEY = '6Lfdg98jAAAAAHjqT78ctyqeoacS-Eyc-BofLvgy'
+RECAPTCHA_PRIVATE_KEY = '6Lfdg98jAAAAAIFHKa40_0Ym-YEhQznfHnQZl3-7'

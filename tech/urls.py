@@ -11,5 +11,7 @@ urlpatterns = [
     path("tech_approve_employer",views.update_status, name = "update-status" ),
     path('tickets/<int:ticket_id>/update/', views.update_ticket, name='update_ticket'),
     path('tickets/<int:ticket_id>/closed/', views.close_ticket, name='closed_ticket'),
+    path('Allreports/', views.allreports, name='Allreports'),
+
 ]
 

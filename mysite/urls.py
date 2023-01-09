@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from polls.views import home_page_view,home_template,home
+from polls.views import home_page_view,home_template,home,movetoprofilebysuer
 from users.views import loginPage,logoutUser,approveEmp,registered_users,ReportUsers,update_user_status,ReportVIPUsers
 from mysite.mysite.views import maintenance
 from payments.views import paymentpage
@@ -37,12 +37,14 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('ReportUsers/',ReportUsers,name="ReportUsers"),
     path('VipUsers/',ReportVIPUsers,name="VipUsers"),
-    path('appr/',approveEmp),
+    path('appr/',approveEmp,name="approve_employers"),
     path('Reports/',approveEmp),
     path('registered-users/', registered_users, name='registered_users'),
     path('appr/update_user_status',update_user_status,name="update_user_status"),
     path('update_user_status/',update_user_status,name="update_user_status"),
     path('api-auth/', include('rest_framework.urls')),
+    path('Profile/',movetoprofilebysuer,name="profile_move"),
+
 
 ]
 

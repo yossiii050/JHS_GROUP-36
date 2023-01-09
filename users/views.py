@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm
+from tech.models import Ticket
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import  redirect
@@ -15,7 +16,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
-
+from jobs.models import Upload
 from functools import wraps
 
 def role_required(allowed_roles=[]):
@@ -38,18 +39,20 @@ def update_user_status(request):
         user = User.objects.get(id=user_id)
         user.is_active = True
         user.save()
-        return JsonResponse({'message': 'User approved successfully'})
+        messages.info(request, 'User approved successfully')
+        return redirect('approve_employers')
+        #return JsonResponse({'message': 'User approved successfully'})
     return JsonResponse({'message': 'An error occurred while approving the user'}, status=400)
 
 @user_passes_test(lambda u: u.is_staff)    
 def approveEmp(request):
     form=User.objects.filter(is_active=False)
-    print(form)
     context={'form':form}
     return render(request,'appr.html',context)
 
 @user_passes_test(lambda u: u.is_staff)    
 def ReportUsers(request):
+    
     form=User.objects.all()
     context={'form':form}
     return render(request,'reportUser.html',context)
@@ -65,6 +68,7 @@ def ReportVIPUsers(request):
 def employerRegPage(request):
     if request.method == 'POST':
         form = EmployerSignUpForm(request.POST)
+        #print(form.captcha)
         if form.is_valid():
             user = User.objects.create_user(username=form.cleaned_data['username'],
                                             password=form.cleaned_data['password1'],
@@ -79,6 +83,7 @@ def employerRegPage(request):
             return redirect('login')
     else:
         form = EmployerSignUpForm()
+       # print(form.captcha)
     context = {'form': form}
     return render(request, 'employerreg.html', context)
 
@@ -113,7 +118,11 @@ def loginPage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        print(user)
         if user is not None:
+            if user.is_active ==False:
+                messages.info(request, 'Your profile Not activated!')
+                return redirect('login')
             login(request, user)
             return redirect('home page')
         else:
@@ -166,21 +175,21 @@ def view_groups(request):
 
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    print(user)
-    #print(user.employer.is_employer)
-    if request.user.username != user.username:
-        return redirect('/')
     try:
         if user.employer.is_employer==True:
             employer = user.employer
-            context = {'employer': employer}
+            tick=Ticket.objects.all()
+            job=Upload.objects.all()
+            print("--------->"+str(job))
+            context = {'employer': employer,'tick':tick,'job':job}
             return render(request, 'employer_profile.html', context)
     except:
         if user.candidate.is_candidate==True:
             candidate = user.candidate
             candidatecv = candidate.cvcandidate
-            print(candidatecv)
-            context = {'candidate': candidate,'candidatecv': candidatecv}
+            jobs=Upload.objects.all()
+            tick=Ticket.objects.all()
+            context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick,'jobs':jobs}
             return render(request, 'candidate_profile.html', context)
    
 
@@ -190,7 +199,6 @@ def edit_profile(request, username):
     print(user)
     try:
         if user.candidate.is_candidate==True:
-            print("-----------"+user.candidate.candidate_id)
             return candidate_edit_profile(request, user.candidate.candidate_id)
     except:    
         if user.employer.is_employer==True:
@@ -236,3 +244,54 @@ def delete_account(request):
         request.user.delete()
         return redirect('home page')
     return render(request, 'delete_account_confirm.html')
+
+def jobsList(request):
+    uploads=Upload.objects.all()
+    sort_form = SortForm()  # Create an instance of your form
+    # Check if the form has been submitted
+    if request.method == "POST":
+        sort_form = SortForm(request.POST)  # Bind the form to the POST data
+        if sort_form.is_valid():  # Check if the form is valid
+            sort_field = sort_form.cleaned_data["sort_field"]  # Get the selected sort field
+            sort_order = sort_form.cleaned_data["sort_order"]  # Get the selected sort order
+
+            # Modify the queryset based on the selected sort field and order
+            if sort_field == "title":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("title"))
+                else:
+                    uploads = uploads.order_by("-title")
+            elif sort_field == "date":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("date"))
+                else:
+                    uploads = uploads.order_by("-date")
+            elif sort_field == "salaryRange":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("salaryRange"))
+                else:
+                    uploads = uploads.order_by("-salaryRange")
+            elif sort_field == "yearsexp":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("yearsexp"))
+                else:
+                    uploads = uploads.order_by("-yearsexp")
+            elif sort_field == "time":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by(Lower("time"))
+                else:
+                    uploads = uploads.order_by("-time")
+
+            elif sort_field == "hybrid":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by("hybrid")
+                else:
+                    uploads = uploads.order_by("-hybrid")
+            elif sort_field == "location":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by("location")
+                else:
+                    uploads = uploads.order_by("-location")
+
+
+    return render(request,'jobs/Upload_list.html',{'uploads':uploads,"sort_form": sort_form})
