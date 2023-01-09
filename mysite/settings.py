@@ -39,8 +39,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "tech.apps.TechConfig",
-    "phonenumber_field",
+    'tech.apps.TechConfig',
+    'phonenumber_field',
     'users.apps.UsersConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
@@ -49,10 +49,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'captcha',
     'jobs',
     'rules',
-    'crispy_forms',
     'reportlab',
+    'crispy_forms',
+    #'reportlab',
     'rest_framework',
     #'recaptcha',
     'captcha',
@@ -113,6 +115,10 @@ REST_FRAMEWORK = {
 }
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+RECAPTCHA_PUBLIC_KEY = '6LfmeMkjAAAAABatAc2Kw3vzAUA1iCzdBcSrN1TE'
+RECAPTCHA_PRIVATE_KEY = '6LfmeMkjAAAAAJFXQ2bzfcwrhIXYZMpVk9bAEwFl'
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 

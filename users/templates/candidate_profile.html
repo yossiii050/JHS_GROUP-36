@@ -78,6 +78,31 @@
         margin-right: 10px;
         color: red;
       }
+      .label2-value {
+        display: flex;
+        align-items: center;
+      }
+      .label2-box {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        font-weight: bold;
+        width: 300px;
+        height: 50px;
+      }
+      .label2 {
+        margin-right: 10px;
+      }
+      .label3-box {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        font-weight: bold;
+        width: 300px;
+        height: 150px;
+      }
 </style>
 
 <h1>Hello {{ candidate.user.username }} :-)</h1>
@@ -118,10 +143,69 @@
     <p>Education: {{ candidatecv.get_education_display }}</p>
     <p>GitHub URL: {{ candidatecv.GitUrl }}</p>  
 {% else %}
-    <p>No CV:</p>
+    <p>No CV</p>
+    {% if candidate.user.username == user.username or user.is_staff == True  %}
     <form action="{% url 'cv' %}">
         <button type="submit" class="btn btn-primary">Upload cv</button>
     </form> 
+    {% endif %}
+  {% endif %}
+</div>
+{% if candidate.user.username == user.username or user.is_staff == True  %}
+<div class="profile-info">
+  <h2>All the jobs I submitted:</h2>  <form action="{% url 'list' %}">
+    <button type="submit" class="btn btn-primary">Look for jobs</button>
+</form> 
+  {% for x in candidate.applyjobs %}
+    {% for j in jobs %}
+      {% if x == j.slug %}
+      <div class="label-value">
+        <span class="label">Title:</span>
+        <div class="label-box">{{ j.title }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Subtitle:</span>
+        <div class="label-box">{{ j.subTitle }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Body:</span>
+        <div class="label3-box">{{ j.body }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Date:</span>
+        <div class="label-box">{{ j.date }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Category:</span>
+        <div class="label-box">{{ j.get_category_display }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Years of Experience:</span>
+        <div class="label-box">{{ j.get_yearsexp_display }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Hybrid:</span>
+        <div class="label-box">{{ j.hybrid }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Priority:</span>
+        <div class="label-box">{{ j.priority }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Location:</span>
+        <div class="label-box">{{ j.get_location_display }}</div>
+        </div>
+        <div class="label-value">
+        <span class="label">Available Amount:</span>
+        <div class="label-box">{{ j.availableAmount }}</div>
+        </div>
+        <p>------------------------------------------------------------------------------------------------------</p>
+
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  
+
 {% endif %}
 </div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
@@ -179,3 +263,11 @@
         <input type="submit" value="Delete" />
     </form>
 {% endif %}  
+
+
+<script>
+  var jobs = candidate.applyjobs;
+  for (var i = 0; i < jobs.length; i++) {
+    document.write(jobs[i] + "<br>");
+  }
+</script>

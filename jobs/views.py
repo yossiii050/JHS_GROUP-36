@@ -5,15 +5,18 @@ from .forms import UploadForm,SortForm
 from django.views.generic import CreateView
 from django.db.models.functions import Lower
 import csv
-
+import json
 from django.http import FileResponse
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
-
-
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+#from .forms import JobApplicationForm
+from django.contrib.auth.models import User
+from users.models import Candidate
 
 def jobsPdfFile(request):
     buf=io.BytesIO()
@@ -166,6 +169,8 @@ def updateJob(request,upload_id):
 
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
+    print(job.applycandiadteuser.all())
+
     #job.update_views()
     #job=Upload.objects.filter(slug=slug.values())
     return render (request,'jobs/jobsDetails.html',{'job':job})
@@ -177,3 +182,40 @@ def deleteJob(request,upload_id):
     job=Upload.objects.get(slug=upload_id)
     job.delete()
     return render(request,'jobs/success.html',{'job':job})
+
+
+
+def applyCv(request,upload_id):
+    job = get_object_or_404(Upload, slug=upload_id)
+    cand=get_object_or_404(Candidate,username=request.user.username)
+    
+    # Set the applycandiadteuser field to the request.user object
+    job.applycandiadteuser.add(cand)
+    
+    applyjobs = set(cand.applyjobs)
+    applyjobs.add(upload_id)
+    # Save the updated list back to the applyjobs field
+    #cand.applyjobs = json.dumps(list(applyjobs))
+    cand.applyjobs = list(applyjobs)
+    cand.save()
+    job.save()
+    return render(request,'jobs/success.html')
+"""
+#def apply_for_job(request, job_id):
+    if request.method == 'POST':
+        form = JobApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            # create a new JobApplication object
+            application = JobApplication(
+                candidate_name=form.cleaned_data['name'],
+                candidate_email=form.cleaned_data['email'],
+                resume=form.cleaned_data['resume'],
+                job_id=job_id
+            )
+            application.save()  # save the object to the database
+            return redirect('jobs:success')
+    else:
+        form = JobApplicationForm()
+    return render(request, 'jobs/apply.html', {'form': form})
+
+"""

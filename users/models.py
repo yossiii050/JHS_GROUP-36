@@ -14,6 +14,7 @@ class CVFormModel(models.Model):
 
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.db.models import JSONField
 
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -42,6 +43,10 @@ class Candidate(models.Model):
     is_candidate = models.BooleanField(default=True)
     bios=models.TextField(blank=True,default="write you bio here...")
     cvcandidate = models.OneToOneField(CVFormModel,on_delete=models.CASCADE,blank=True,null=True)
+    #appllyjobs=models.CharField(max_length=)
+    #applyjobs = models.TextField(default='[]')
+    applyjobs = JSONField(blank=True, default=dict)
+
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
     USERNAME_FIELD='username'
@@ -52,3 +57,6 @@ class Candidate(models.Model):
     def set_cv(self,c):
         self.cvcandidate=c
         return self.cvcandidate
+
+    def _str_(self):
+        return self.user.username
