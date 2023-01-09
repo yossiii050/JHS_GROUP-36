@@ -143,11 +143,13 @@
     <p>Education: {{ candidatecv.get_education_display }}</p>
     <p>GitHub URL: {{ candidatecv.GitUrl }}</p>  
 {% else %}
-    <p>No CV:</p>
+    <p>No CV</p>
+    {% if candidate.user.username == user.username or user.is_staff == True  %}
     <form action="{% url 'cv' %}">
         <button type="submit" class="btn btn-primary">Upload cv</button>
     </form> 
-{% endif %}
+    {% endif %}
+  {% endif %}
 </div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
 <div class="profile-info">

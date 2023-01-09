@@ -109,9 +109,9 @@
                 {% endif %}
             {% endif %}
             <br>
-
-            <button id="button">Resume pending</button>
+            
             {% if request.user.employer.is_employer %}
+            <button id="button">Resume pending</button>
             <div id="myDiv" style="display: none;">
                 <table class="blueTable">
                     <br>
@@ -123,7 +123,7 @@
                     <th>first name</th>
                     <th>last name</th>
                     <th>phone</th>
-                    <th>cv link</th>
+                    <th>link</th>
                         
                     </tr>
                     </thead>
@@ -135,10 +135,10 @@
                         <td>{{d.first_name}}</td>
                         <td>{{d.last_name}}</td>
                         <td>{{d.phone_number}}</td>
-                        <td><a href="{% url 'Profile' request.user  %}">
+                        <td><a href="{% url 'Profile' d.username  %}">
                             <button>Profile</button>
-                            </a> <button id="profilebut" href="{% url 'Profile' d.username  %}">Profile</button></td>
-
+                            <a href="#">
+                            <button>Accept</button>
                         </tr>
                     </tbody>                    
                     
