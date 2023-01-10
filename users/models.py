@@ -18,6 +18,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.db.models import JSONField
 
+class staffUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username=models.CharField(max_length=50)
+    USERNAME_FIELD='username'
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+    USERNAME_FIELD='username'
+
+
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
