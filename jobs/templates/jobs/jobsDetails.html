@@ -5,19 +5,76 @@
         <title>Upload list</title>
         <link rel="stylsheet" href="/static/admin/css/style2.css">
     </head>
+    <style>
+        table.blueTable {
+            border: 0px solid #1C6EA4;
+            background-color: #EEEEEE;
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+          }
+          table.blueTable td, table.blueTable th {
+            border: 1px solid #AAAAAA;
+            padding: 4px 2px;
+          }
+          table.blueTable tbody td {
+            font-size: 19px;
+            font-weight: bold;
+          }
+          table.blueTable tr:nth-child(even) {
+            background: #D0E4F5;
+          }
+          table.blueTable thead {
+            background: #1C6EA4;
+            background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            border-bottom: 2px solid #444444;
+          }
+          table.blueTable thead th {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-align: center;
+            border-left: 2px solid #D0E4F5;
+          }
+          table.blueTable thead th:first-child {
+            border-left: none;
+          }
+          
+          table.blueTable tfoot {
+            font-size: 12px;
+            font-weight: bold;
+            color: #FFFFFF;
+            background: #D0E4F5;
+            background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            border-top: 2px solid #444444;
+          }
+          table.blueTable tfoot td {
+            font-size: 12px;
+          }
+          table.blueTable tfoot .links {
+            text-align: right;
+          }
+          table.blueTable tfoot .links a{
+            display: inline-block;
+            background: #1C6EA4;
+            color: #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 5px;
+          }
+        </style>
     <body> 
         <div class="jobs-details">
             <div class="job">
                
                 <h2>{{job.subTitle}}</h2>
-<<<<<<< HEAD
-                <small>By: <a href="{% url 'Profile' job.owner %}">{{job.owner}}</a></small>                <p><h3>job description: </h3>{{job.body}}</p>
-=======
                 <small>By:
                     {{job.owner.username}}
                 </small>
                 <p><h3>job description: </h3>{{job.body}}</p>
->>>>>>> 424d1433e4af21b992403122251f4e8d84c61b6a
                 <p>category: {{job.get_category_display}}</p>
 
                 <p>Salary range: {{job.get_salaryRange_display}}</p>
@@ -34,11 +91,7 @@
         </div>
 
         {% if request.user.is_authenticated %}
-<<<<<<< HEAD
-            {% if request.user.employer.is_employer %}
-=======
           {% if request.user.employer.is_employer %}
->>>>>>> 424d1433e4af21b992403122251f4e8d84c61b6a
                 <a href="{% url 'update' job %}">
                     <button>Edit job</button>
                     </a>
@@ -48,6 +101,69 @@
                     </a>
                 <br>
             {% endif %}
+            {% if request.user.candidate.is_candidate %}
+                {% if job.availableAmount > 0 %}
+                    <a href="{% url 'ApllyCv' job  %}">
+                    <button>Apply CV</button>
+                    </a>
+                {% endif %}
+            {% endif %}
+            <br>
+            
+            {% if request.user.employer.is_employer %}
+            <button id="button">Resume pending</button>
+            <div id="myDiv" style="display: none;">
+                <table class="blueTable">
+                    <br>
+                    <br>
+                    <thead>
+                    <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>first name</th>
+                    <th>last name</th>
+                    <th>phone</th>
+                    <th>link</th>
+                        
+                    </tr>
+                    </thead>
+                    {% for d in job.applycandiadteuser.all %}
+                    <tbody>
+                        <tr>
+                        <td>{{d.username}}</td>
+                        <td>{{d.email}}</td>
+                        <td>{{d.first_name}}</td>
+                        <td>{{d.last_name}}</td>
+                        <td>{{d.phone_number}}</td>
+                        <td><a href="{% url 'Profile' d.username  %}">
+                            <button>Profile</button>
+                            <form action="{% url 'update_user' d.username %}" method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="status" value="accepted">
+                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                              <button type="submit">Accept</button>
+                              <button type="submit">Interview</button>
+                          </form>
+                          <form action="{% url 'abort_user' d.username %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="accepted">
+                            <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                            <button type="submit">Reject</button>
+                        </form>
+                        <form action="{% url 'hired_user' d.username %}" method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="status" value="accepted">
+                          <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                          <button type="submit">Hired</button>
+                      </form>
+                        </tr>
+                    </tbody>                    
+                    
+                    {% endfor %}
+                </table>
+            </div>
+
+            {% endif %}
         {% endif %}
         <br/><br/>
         <br/><br/>
@@ -56,4 +172,14 @@
             </a>
         
     </body></center>
+    <script>
+        document.getElementById("button").addEventListener("click", function() {
+          var x = document.getElementById("myDiv");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+        });
+      </script>
 </html>

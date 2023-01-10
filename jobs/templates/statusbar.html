@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        #progress {
+            position: relative;
+            margin-bottom: 30px;
+          }
+          #progress-bar {
+            position: absolute;
+            background: lightseagreen;
+            height: 5px;
+            width: 0%;
+            top: 50%;
+            left: 0;
+          }
+          #progress-num {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+          }
+          #progress-num::before {
+            content: "";
+            background-color: lightgray;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 5px;
+            width: 100%;
+            z-index: -1;
+          }
+          #progress-num .step {
+            border: 3px solid lightgray;
+            border-radius: 100%;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            background-color: #fff;
+            font-family: sans-serif;
+            font-size: 14px;  
+            position: relative;
+            z-index: 1;
+          }
+          #progress-num .step.active {
+            border-color: lightseagreen;
+            background-color: lightseagreen;
+            color: #fff;
+          }
+          .btn {
+              background: lightgray;    
+              border: none;
+              border-radius: 3px;
+              padding: 6px 12px;   
+          }
+</style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>XXXXXX</title>
+  </head>
+  <body>
+    <div id="progress">
+      <div id="progress-bar"></div>
+      <ul id="progress-num">
+        <li class="step active">1</li>
+        <li class="step">2</li>
+        <li class="step">3</li>
+        <li class="step">4</li>
+      </ul>
+    </div>
+    <button id="progress-prev" class="btn" disabled>Prev</button>
+    <button id="progress-next" class="btn">Next</button>
+    <script src="script.js"></script>
+  </body>
+  <script>
+    const progressBar = document.getElementById("progress-bar");
+    const progressNext = document.getElementById("progress-next");
+    const progressPrev = document.getElementById("progress-prev");
+    const steps = document.querySelectorAll(".step");
+    let active = 1;
+
+    progressNext.addEventListener("click", () => {
+    active++;
+    if (active > steps.length) {
+        active = steps.length;
+    }
+    updateProgress();
+    });
+
+    progressPrev.addEventListener("click", () => {
+    active--;
+    if (active < 1) {
+        active = 1;
+    }
+    updateProgress();
+    });
+
+    const updateProgress = () => {
+    steps.forEach((step, i) => {
+        if (i < active) {
+        step.classList.add("active");
+        } else {
+        step.classList.remove("active");
+        }
+    });
+    progressBar.style.width = ((active - 1) / (steps.length - 1)) * 100 + "%";
+    if (active === 1) {
+        progressPrev.disabled = true;
+    } else if (active === steps.length) {
+        progressNext.disabled = true;
+    } else {
+        progressPrev.disabled = false;
+        progressNext.disabled = false;
+    }
+    };
+  </script>
+</html>

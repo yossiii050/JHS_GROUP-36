@@ -265,7 +265,49 @@ body {font-size:16px;}
   <div class="w3-container" id="packages" style="margin-top:75px">
     <h1 class="w3-xxxlarge w3-text-red"><b>User Managment.</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-    <p>Some text our prices. Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure</p>
+    <table class="tg" style="undefined;table-layout: fixed; width: 790px">
+      <colgroup>
+      <col style="width: 171px">
+      <col style="width: 196px">
+      <col style="width: 196px">
+      <col style="width: 207px">
+      <col style="width: 20px">
+      </colgroup>
+
+
+      
+      <table class="blueTable">
+          <thead>
+          <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Type</th>
+          <th>Last Login</th>
+          <th>Edit</th>
+
+          </tr>
+          </thead>
+  {% for data in alluserform %}
+  <tbody>
+    {% load class_tag %}
+      <tr>
+      <td>{{data.username}}</td>
+      <td>{{data.email}}</td>
+      {% if data.employer|get_class != "str" %}
+        <td>{{data.employer|get_class}}</td>
+      {% elif data.candidate|get_class != "str" %}
+        <td>{{data.candidate|get_class}}</td>
+      {% else %}
+        <td>Admin</td>
+      {% endif %}
+      <td> {{data.last_login}}</td>
+       <td><a href="{% url 'Profile' data.username  %}">
+        <button>Profile</button>
+      </tr></td>
+  </tbody>                    
+  
+  {% endfor %}
+          </table>
   </div>
 
   

@@ -10,8 +10,15 @@ urlpatterns = [
     path('<str:slug>',views.job_details,name='Jobsdetail'),
     path('success/',views.success,name='success'),
     path('deleteJob/<str:upload_id>',views.deleteJob,name='deleteJob'),
+    path('ApllyCv/<str:upload_id>',views.applyCv,name='ApllyCv'),
     path('jobsCsvFile/',views.jobscsvFile,name='jobscsvFile'),
-    path('jobsPdfFile/',views.jobsPdfFile,name='jobsPdfFile')
+    path('jobsPdfFile/',views.jobsPdfFile,name='jobsPdfFile'),
+    path('update_user/<str:username>', views.update_user, name='update_user'),
+    path('abort_user/<str:username>', views.abort_user, name='abort_user'),
+    path('hired/<str:username>',views.hired_user,name='hired_user'),
+
+
+    
 
 ]
 

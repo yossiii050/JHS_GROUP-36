@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm #user create from django 
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .choices import * 
 from decimal import *
-from users.models import Employer
+from users.models import Employer,Candidate
 
 
 
@@ -31,7 +31,7 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     location=models.IntegerField(choices=CITIES, default=1)
     availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
     notification=models.DecimalField(max_digits=3 ,decimal_places=0, default=Decimal('5'))
-
+    applycandiadteuser = models.ManyToManyField(Candidate, blank=True, null=True)    
     def __str__(self):
         return self.title
 
@@ -41,3 +41,9 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     def get_absolute_url(self):
         return reverse("upload_detail", kwargs={"slug": self.slug})
 
+
+#class JobApplication(models.Model):
+ #   candidate_name = models.CharField(max_length=100)
+  #  candidate_email = models.EmailField()
+   # resume = models.FileField(upload_to='resumes/')
+    #job = models.ForeignKey(Job, on_delete=models.CASCADE)

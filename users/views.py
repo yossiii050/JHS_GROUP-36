@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
-from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm
+from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm,staffUserSignUpForm
 from tech.models import Ticket
 from django.contrib import messages
 from django.views.generic import View
@@ -64,6 +64,21 @@ def ReportVIPUsers(request):
     form = User.objects.filter(groups=vip_group)
     context={'form':form}
     return render(request,'reportVIPUsers.html',context)
+
+@user_passes_test(lambda u: u.is_staff)    
+def staffRegPage(request):
+    if request.method == 'POST':
+        form=staffUserSignUpForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            password=form.cleaned_data['password1'],
+                                            is_staff=True)
+            return redirect('techhome')
+    else:
+        form=staffUserSignUpForm()
+    context={'form':form}        
+    return render(request, 'staffReg.html',context)
+    
 
 def employerRegPage(request):
     if request.method == 'POST':
@@ -175,10 +190,6 @@ def view_groups(request):
 
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    print(user)
-    #print(user.employer.is_employer)
-    if request.user.username != user.username:
-        return redirect('/')
     try:
         if user.employer.is_employer==True:
             employer = user.employer
@@ -191,8 +202,10 @@ def user_profile(request, username):
         if user.candidate.is_candidate==True:
             candidate = user.candidate
             candidatecv = candidate.cvcandidate
+            jobs=Upload.objects.all()
             tick=Ticket.objects.all()
-            context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick}
+            
+            context = {'candidate': candidate,'candidatecv': candidatecv,'tick':tick,'jobs':jobs}
             return render(request, 'candidate_profile.html', context)
    
 
@@ -298,3 +311,8 @@ def jobsList(request):
 
 
     return render(request,'jobs/Upload_list.html',{'uploads':uploads,"sort_form": sort_form})
+
+
+from .forms import ProgressForm
+
+
