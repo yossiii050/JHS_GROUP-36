@@ -6,7 +6,6 @@ urlpatterns = [
     path('ticket/',views.create_ticket,name="ticket"),
     path('tech_tickets/',views.techtickets,name="tech_tickets"),
     path('',views.techhome,name="techhome"),
-    #path("",views.tech_main,name="tech-home"),
     path("tech_approve_employer",views.tech_approve_employer, name = "approve" ),
     path("tech_approve_employer",views.update_status, name = "update-status" ),
     path('tickets/<int:ticket_id>/update/', views.update_ticket, name='update_ticket'),
