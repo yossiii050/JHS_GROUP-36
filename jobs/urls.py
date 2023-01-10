@@ -15,6 +15,7 @@ urlpatterns = [
     path('jobsPdfFile/',views.jobsPdfFile,name='jobsPdfFile'),
     path('update_user/<str:username>', views.update_user, name='update_user'),
     path('abort_user/<str:username>', views.abort_user, name='abort_user'),
+    path('hired/<str:username>',views.hired_user,name='hired_user'),
 
 
     

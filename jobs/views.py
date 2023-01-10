@@ -221,7 +221,23 @@ def abort_user(request, username):
         return redirect('list')
     return render(request, 'jobsDetails.html')
 
+def hired_user(request, username):
+    if request.method == 'POST':
+        job_title=request.POST.get('jobtitle')
+        #job = get_object_or_404(Upload, title=job_title)
+        job=Upload.objects.get(title=job_title)
+        candidate = Candidate.objects.get(username=username)
+        job.applycandiadteuser.remove(candidate)
 
+        statusforapplyjobs = json.loads(candidate.statusforapplyjobs)
+        jobi=candidate.applyjobs
+        index = jobi.index(job_title)
+        statusforapplyjobs[index]=100
+        candidate.statusforapplyjobs = json.dumps(statusforapplyjobs)
+        candidate.save()
+        job.save()
+        return redirect('list')
+    return render(request,'jobs/hired.html')
 
 def applyCv(request,upload_id):
     job = get_object_or_404(Upload, slug=upload_id)
