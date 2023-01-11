@@ -175,21 +175,25 @@ def Upload_list(request):
                     uploads = uploads.order_by(Lower("title"))
                 else:
                     uploads = uploads.order_by("-title")
+
             elif sort_field == "date":
                 if sort_order == "ascending":
                     uploads = uploads.order_by(Lower("date"))
                 else:
                     uploads = uploads.order_by("-date")
+
             elif sort_field == "salaryRange":
                 if sort_order == "ascending":
                     uploads = uploads.order_by(Lower("salaryRange"))
                 else:
                     uploads = uploads.order_by("-salaryRange")
+
             elif sort_field == "yearsexp":
                 if sort_order == "ascending":
                     uploads = uploads.order_by(Lower("yearsexp"))
                 else:
                     uploads = uploads.order_by("-yearsexp")
+
             elif sort_field == "time":
                 if sort_order == "ascending":
                     uploads = uploads.order_by(Lower("time"))
@@ -201,11 +205,18 @@ def Upload_list(request):
                     uploads = uploads.order_by("hybrid")
                 else:
                     uploads = uploads.order_by("-hybrid")
+
             elif sort_field == "location":
                 if sort_order == "ascending":
                     uploads = uploads.order_by("location")
                 else:
                     uploads = uploads.order_by("-location")
+            
+            elif sort_field == "viewsCounter":
+                if sort_order == "ascending":
+                    uploads = uploads.order_by("viewsCounter")
+                else:
+                    uploads = uploads.order_by("-viewsCounter")
 
 
     return render(request,'jobs/Upload_list.html',{'uploads':uploads,"sort_form": sort_form})
@@ -242,9 +253,8 @@ def updateJob(request,upload_id,):
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
     print(job.applycandiadteuser.all())
-    job.views.clear()
+    job.viewsCounter+=1
     job.save()
-    count_hit=True
 
     #job.update_views()
     #job=Upload.objects.filter(slug=slug.values())

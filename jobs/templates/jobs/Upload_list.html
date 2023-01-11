@@ -2,7 +2,7 @@
     <center>
 
       {% load hitcount_tags %}
-    <head>
+      <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    </head>
     <body>
@@ -25,7 +25,7 @@
                 <option value="yearsexp">Years of expirience</option>
                 <option value="time">Job Type</option>
                 <option value="hybrid">Hybrid</option>
-                <option value="location">Location</option>
+                <option value="viewsCounter">Views</option>
                 
 
               </select>
@@ -57,19 +57,12 @@
                   <p class="card-text"><strong>Job Type: </strong>{{upload.get_time_display}}</p>
                   <p class="card-text"><strong>Hybrid: </strong>{{upload.hybrid}}</p>
                   <p class="card-text"><strong>Location: </strong>{{upload.get_location_display}}</p>
+                 
+                  <p>{{ upload.viewsCounter }}<i class="fa fa-eye" aria-hidden="true"></i></p>
 
-                  <p>{% get_hit_count for upload %}<i class="fa fa-eye" aria-hidden="true"></i></p>
 
 
-                  <!--<p>{{post.total_views}} Views</p>
-
-                  <form action="{% url 'Jobsdetail' upload  %}" method="get">
-                    <input type="hidden" name="post-views" value="{{upload.id}}">
-                    <button type="submit" class="btn btn-sm btn-primary">Read More</button>
-                  </form>-->
-                  
-
-                  <a href="{% url 'Jobsdetail' upload  %}" class="btn btn-primary">Show More..</a>
+                  <a href="{% url 'job_details' upload  %}" class="btn btn-primary">Show More..</a>
                 </div>
               </div>
 
