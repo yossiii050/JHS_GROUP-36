@@ -1,16 +1,22 @@
 <html>
     <center>
+
+      {% load hitcount_tags %}
     <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    </head>
     <body>
         <h1>This is Upload list page</h1>
-        <a href="{% url 'jobscsvFile' %}"><button>jobs Text File</button></a>
-        <a href="{% url 'jobsPdfFile' %}"><button>jobs Pdf File</button></a>
+        <a href="{% url 'jobscsvFile' %}"><button>all jobs- Excel File</button></a>
+        <a href="{% url 'jobsLocationPdfFile' %}"><button>jobs by location Pdf File</button></a>
+        <a href="{% url 'jobsPriorityPdfFile' %}"><button>jobs by Priority Pdf File</button></a>
 
+        <br/>
 
         <div class="uploads">
           <form method="post">
               {% csrf_token %}
+              <br/>
               <label for="sort_field">Sort by:</label>
               <select name="sort_field" id="sort_field">
                 <option value="title">Title</option>
@@ -40,7 +46,7 @@
             {%endif%}
             <br/><br/> 
             {% for upload in uploads %}
-            
+              
             <div class="card bg-light" style="width: 30rem;">
                 <div class="card-body">
                   <h5 class="card-title"><h2><strong>{{upload.title}}</strong></h2></h5>
@@ -49,10 +55,19 @@
                   <p class="card-text"><strong>Salary Range: </strong>{{upload.get_salaryRange_display}}</p>
                   <p class="card-text"><strong>Years of expirience:</strong>  {{upload.get_yearsexp_display}}</p>
                   <p class="card-text"><strong>Job Type: </strong>{{upload.get_time_display}}</p>
-                  <p class="card-text"><strong>Hybrid: </strong>{{upload.get_hybrid_display}}</p>
+                  <p class="card-text"><strong>Hybrid: </strong>{{upload.hybrid}}</p>
                   <p class="card-text"><strong>Location: </strong>{{upload.get_location_display}}</p>
 
+                  <p>{% get_hit_count for upload %}<i class="fa fa-eye" aria-hidden="true"></i></p>
 
+
+                  <!--<p>{{post.total_views}} Views</p>
+
+                  <form action="{% url 'Jobsdetail' upload  %}" method="get">
+                    <input type="hidden" name="post-views" value="{{upload.id}}">
+                    <button type="submit" class="btn btn-sm btn-primary">Read More</button>
+                  </form>-->
+                  
 
                   <a href="{% url 'Jobsdetail' upload  %}" class="btn btn-primary">Show More..</a>
                 </div>

@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'rest_framework',
     #'recaptcha',
     'captcha',
+    'hitcount',
+    
 
     
 ]
