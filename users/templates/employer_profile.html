@@ -114,7 +114,10 @@
     <p>Company name: {{ employer.CompanyName }}</p>
     <p>Is Active: {{ employer.user.is_active }}</p>
     <p>Company Id: {{ employer.employer_id }}</p>
-    
+
+    {% if employer.username == j.owner.username  %}
+      <a href="{% url 'update' job %}"><button>Edit job</button></a>
+
 </div>
 
 <div class="profile-bio">
