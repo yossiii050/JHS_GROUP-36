@@ -17,7 +17,7 @@ class UploadForm(ModelForm):
         exclude =['owner']
         
 class SortForm(forms.Form):
-    SORT_FIELD_CHOICES = (("title", "Title"), ("date", "Date"),("salaryRange","Salary Range"),("yearsexp","Years of expirience"),("time","Job Type"),("hybrid","Hybrid"),("location","Location"))  # Add more choices here to support additional sort fields
+    SORT_FIELD_CHOICES = (("title", "Title"), ("date", "Date"),("salaryRange","Salary Range"),("yearsexp","Years of expirience"),("time","Job Type"),("hybrid","Hybrid"),("location","Location"),("viewsCounter","Views"))  # Add more choices here to support additional sort fields
     SORT_ORDER_CHOICES = (("ascending", "Ascending"), ("descending", "Descending"))
 
     sort_field = forms.ChoiceField(
