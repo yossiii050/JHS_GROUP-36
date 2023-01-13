@@ -18,6 +18,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
 from jobs.models import Upload
 from functools import wraps
+from django.contrib.auth.forms import PasswordChangeForm
 
 def role_required(allowed_roles=[]):
     def decorator(view_func):
@@ -222,6 +223,18 @@ def edit_profile(request, username):
             print( user.employer.employer_id)
             return employer_edit_profile(request, user.employer.employer_id)
     raise Http404   
+
+def change_pass(request):
+    if request.method == 'POST':
+        password_change_form = PasswordChangeForm(request.user, request.POST)
+
+        if password_change_form.is_valid():
+            password_change_form.save()
+            return redirect('login') 
+    else:
+        password_change_form = PasswordChangeForm(request.user)
+    return render(request, 'pass_change.html', {'password_change_form': password_change_form})
+
 
 def candidate_edit_profile(request, candidate_id):
     candidate = get_object_or_404(Candidate, candidate_id=candidate_id)

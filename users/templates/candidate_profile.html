@@ -176,7 +176,10 @@
   {% if candidate.user.username == user.username or user.is_staff == True  %}
   <br>
   <div class="button-container">
-      
+      <form action="{% url 'change_password' %}">
+        <br>
+      <button type="submit" class="btn btn-primary">Change Password</button>
+      </form> 
       <form action="{% url 'edit_profile' candidate.user.username %}">
           <br>
         <button type="submit" class="btn btn-primary">Edit Profile</button>
