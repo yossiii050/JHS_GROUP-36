@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm,staffUserSignUpForm
+from jobs.forms import SortForm
 from tech.models import Ticket
 from django.contrib import messages
 from django.views.generic import View
