@@ -65,6 +65,9 @@
             padding: 2px 8px;
             border-radius: 5px;
           }
+          .interview-button[disabled]{
+            background-color: gray;
+         }
         </style>
     <body> 
         <div class="jobs-details">
@@ -135,27 +138,29 @@
                         <td>{{d.first_name}}</td>
                         <td>{{d.last_name}}</td>
                         <td>{{d.phone_number}}</td>
-                        <td><a href="{% url 'Profile' d.username  %}">
-                            <button>Profile</button>
-                            <form action="{% url 'update_user' d.username %}" method="post">
+                        <td>
+                          <a href="{% url 'Profile' d.username  %}">
+                              <button>Profile</button>
+                          </a>
+                          <form action="{% url 'update_user' d.username %}" method="post">
                               {% csrf_token %}
                               <input type="hidden" name="status" value="accepted">
                               <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                              <button type="submit">Accept</button>
-                              <button type="submit">Interview</button>
+                              <button class="interview-button" id="accept-button" type="submit">Accept</button>
+                              <button class="interview-button" id="interview-button" type="submit">Interview</button>
                           </form>
                           <form action="{% url 'abort_user' d.username %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="status" value="accepted">
-                            <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                            <button type="submit">Reject</button>
-                        </form>
-                        <form action="{% url 'hired_user' d.username %}" method="post">
-                          {% csrf_token %}
-                          <input type="hidden" name="status" value="accepted">
-                          <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                          <button type="submit">Hired</button>
-                      </form>
+                              {% csrf_token %}
+                              <input type="hidden" name="status" value="accepted">
+                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                              <button class="interview-button" id="reject-button" type="submit">Reject</button>
+                          </form>
+                          <form action="{% url 'hired_user' d.username %}" method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="status" value="accepted">
+                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                              <button class="interview-button" id="hire-button" type="submit">Hired</button>
+                          </form>
                         </tr>
                     </tbody>                    
                     
@@ -173,13 +178,77 @@
         
     </body></center>
     <script>
-        document.getElementById("button").addEventListener("click", function() {
-          var x = document.getElementById("myDiv");
-          if (x.style.display === "none") {
-            x.style.display = "block";
-          } else {
-            x.style.display = "none";
-          }
+      document.getElementById("button").addEventListener("click", function() {
+        var x = document.getElementById("myDiv");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      });
+            // Function to get a cookie by its name
+      function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+      }
+
+      // Function to set a cookie
+      function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+      }
+
+      // Add event listener to buttons
+      window.onload = function() {
+        const acceptButton = document.getElementById("accept-button");
+        const interviewButton = document.getElementById("interview-button");
+        const rejectButton = document.getElementById("reject-button");
+        const hireButton = document.getElementById("hire-button");
+      
+        if (localStorage.getItem(acceptButton.id)) {
+          acceptButton.disabled = true;
+          acceptButton.style.backgroundColor = "gray";
+        }
+        if (localStorage.getItem(interviewButton.id)) {
+          interviewButton.disabled = true;
+          interviewButton.style.backgroundColor = "gray";
+        }
+        if (localStorage.getItem(rejectButton.id)) {
+          rejectButton.disabled = true;
+          rejectButton.style.backgroundColor = "gray";
+        }
+        if (localStorage.getItem(hireButton.id)) {
+          hireButton.disabled = true;
+          hireButton.style.backgroundColor = "gray";
+        }
+      
+        acceptButton.addEventListener("click", function() {
+          localStorage.setItem(this.id, true);
+          this.disabled = true;
+          this.style.backgroundColor = "gray";
         });
+        interviewButton.addEventListener("click", function() {
+          localStorage.setItem(this.id, true);
+          this.disabled = true;
+          this.style.backgroundColor = "gray";
+        });
+        rejectButton.addEventListener("click", function() {
+          localStorage.setItem(this.id, true);
+          this.disabled = true;
+          this.style.backgroundColor = "gray";
+        });
+        hireButton.addEventListener("click", function() {
+          localStorage.setItem(this.id, true);
+          this.disabled = true;
+          this.style.backgroundColor = "gray";
+        });
+      };
+      
       </script>
 </html>

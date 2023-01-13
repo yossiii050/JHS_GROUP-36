@@ -13,7 +13,7 @@ class UploadForm(ModelForm):
     class Meta:
         model=Upload
         #fields="__all__"
-        fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid','priority','location','availableAmount','notification')
+        fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid','priority','location','availableAmount','notification','owner')
         exclude =['owner']
         
 class SortForm(forms.Form):
