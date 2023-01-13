@@ -17,7 +17,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 #from .forms import JobApplicationForm
 from django.contrib.auth.models import User
-from users.models import Candidate
+from users.models import Candidate,Employer
 from django.shortcuts import HttpResponseRedirect
 
 def jobsPdfFile(request):
@@ -147,7 +147,8 @@ def uploadJob(request):
         form=UploadForm(request.POST)
         if form.is_valid():
             form.instance.slug = form.cleaned_data['title']
-            #form.instance.owner_id = request.user.id  # set the owner_id field to the id of the currently 
+            emp=Employer.objects.get(username=request.user.username)
+            form.instance.owner = emp  # set the owner_id field to the id of the currently 
             form.save()
             submitted=True
             return render(request,'jobs/success.html')

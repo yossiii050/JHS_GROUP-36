@@ -136,53 +136,58 @@
         {% endif %}
     </div>
 
+
+
 <div class="profile-bio">
+
     <h2>Jobs:</h2>
     {% for j in job %}
-        <div class="label-value">
-            <span class="label">Title:</span>
-            <div class="label-box">{{ j.title }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Subtitle:</span>
-            <div class="label-box">{{ j.subTitle }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Body:</span>
-            <div class="label3-box">{{ j.body }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Date:</span>
-            <div class="label-box">{{ j.date }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Category:</span>
-            <div class="label-box">{{ j.get_category_display }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Years of Experience:</span>
-            <div class="label-box">{{ j.get_yearsexp_display }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Hybrid:</span>
-            <div class="label-box">{{ j.hybrid }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Priority:</span>
-            <div class="label-box">{{ j.priority }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Location:</span>
-            <div class="label-box">{{ j.get_location_display }}</div>
-            </div>
-            <div class="label-value">
-            <span class="label">Available Amount:</span>
-            <div class="label-box">{{ j.availableAmount }}</div>
-            </div>
-            <p>------------------------------------------------------------------------------------------------------</p>
-            {% endfor %}
-    </div>    
+      {% if employer.username == j.owner.username  %}
+          <div class="label-value">
+              <span class="label">Title:</span>
+              <div class="label-box">{{ j.title }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Subtitle:</span>
+              <div class="label-box">{{ j.subTitle }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Body:</span>
+              <div class="label3-box">{{ j.body }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Date:</span>
+              <div class="label-box">{{ j.date }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Category:</span>
+              <div class="label-box">{{ j.get_category_display }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Years of Experience:</span>
+              <div class="label-box">{{ j.get_yearsexp_display }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Hybrid:</span>
+              <div class="label-box">{{ j.hybrid }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Priority:</span>
+              <div class="label-box">{{ j.priority }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Location:</span>
+              <div class="label-box">{{ j.get_location_display }}</div>
+              </div>
+              <div class="label-value">
+              <span class="label">Available Amount:</span>
+              <div class="label-box">{{ j.availableAmount }}</div>
+              </div>
+              <p>------------------------------------------------------------------------------------------------------</p>
+      {% endif %}
+    {% endfor %}
 
+          </div>    
 {% if employer.user.username == user.username or user.is_staff == True  %}
 <div class="profile-info">
     <h2>My Tickets:</h2><h4>(Red is open,Green is Closed)</h4>

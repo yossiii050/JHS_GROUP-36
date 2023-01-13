@@ -91,7 +91,7 @@
         </div>
 
         {% if request.user.is_authenticated %}
-          {% if request.user.employer.is_employer %}
+          {% if request.user.employer.is_employer and request.user.employer.username == job.owner.username %}
                 <a href="{% url 'update' job %}">
                     <button>Edit job</button>
                     </a>
@@ -100,6 +100,7 @@
                     <button>Delete Job</button>
                     </a>
                 <br>
+            {% endif %}
             {% endif %}
             {% if request.user.candidate.is_candidate %}
                 {% if job.availableAmount > 0 %}
@@ -110,7 +111,6 @@
             {% endif %}
             <br>
             
-            {% if request.user.employer.is_employer %}
             <button id="button">Resume pending</button>
             <div id="myDiv" style="display: none;">
                 <table class="blueTable">
@@ -162,9 +162,6 @@
                     {% endfor %}
                 </table>
             </div>
-
-            {% endif %}
-        {% endif %}
         <br/><br/>
         <br/><br/>
         <a href="{% url 'list' %}">
