@@ -1,7 +1,6 @@
 <html>
     <center>
 
-      {% load hitcount_tags %}
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    </head>
@@ -31,8 +30,8 @@
               </select>
               <label for="sort_order">Order:</label>
               <select name="sort_order" id="sort_order">
-                <option value="ascending">Ascending</option>
-                <option value="descending">Descending</option>
+                <option value="ascending">Low To High</option>
+                <option value="descending">High To Low</option>
               </select>
               <input type="submit" value="Sort">
             </form>

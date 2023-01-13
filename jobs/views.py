@@ -19,7 +19,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from users.models import Candidate,Employer
 from django.shortcuts import HttpResponseRedirect
-from hitcount.views import HitCountDetailView
 
 """def detail(request, post_id):
     job = Upload.objects.get(id=post_id)
@@ -124,7 +123,7 @@ def jobsLocationPdfFile(request):
         lines.append('Salary Range: '+salaryRange)
         yearsexp=job.get_yearsexp_display()
         lines.append('Years of expirience: '+yearsexp)
-        lines.append('Education: '+str(job.education))
+        lines.append('Education: '+str(job.get_education_display))
         time=job.get_time_display()
         lines.append('Job Type: '+time)
         lines.append('Hybrid: '+str(job.hybrid))
@@ -134,7 +133,7 @@ def jobsLocationPdfFile(request):
 
     
     for i in range(len(lines)):
-        if lines[i].startswith('Job Title:'):
+        if lines[i].startswith('Job Title:') or lines[i].startswith('Location: '):
             textob.setFont("Helvetica-Bold", 10)
         else:
             textob.setFont("Helvetica", 10)
