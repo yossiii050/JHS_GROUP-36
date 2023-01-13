@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm,staffUserSignUpForm
+from jobs.forms import SortForm
 from tech.models import Ticket
 from django.contrib import messages
 from django.views.generic import View
@@ -18,6 +19,17 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
 from jobs.models import Upload
 from functools import wraps
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
+from django.db.models.functions import Lower
+
+
+import io
+from django.http import FileResponse
+
+
 
 def role_required(allowed_roles=[]):
     def decorator(view_func):
