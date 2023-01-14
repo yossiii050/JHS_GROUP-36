@@ -17,6 +17,7 @@ from django.shortcuts import render, redirect
 #from .forms import JobApplicationForm
 from django.contrib.auth.models import User
 from users.models import Candidate
+from django.contrib import messages
 
 def jobsPdfFile(request):
     buf=io.BytesIO()
@@ -200,6 +201,7 @@ def applyCv(request,upload_id):
     cand.save()
     job.save()
     return render(request,'jobs/success.html')
+
 """
 #def apply_for_job(request, job_id):
     if request.method == 'POST':

@@ -47,3 +47,4 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
   #  candidate_email = models.EmailField()
    # resume = models.FileField(upload_to='resumes/')
     #job = models.ForeignKey(Job, on_delete=models.CASCADE)
+
