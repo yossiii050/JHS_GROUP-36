@@ -29,7 +29,7 @@ urlpatterns = [
     path('register/',include('users.urls')),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
-    path('payments/',paymentpage),
+    path('payments/',paymentpage,name='vipbuy'),
     path('tech/',include('tech.urls')),
     path('', home,name="home page"),
     path('login/',loginPage,name="login"),
@@ -47,6 +47,6 @@ urlpatterns = [
     path('Profile/',movetoprofilebysuer,name="profile_move"),
     path('stati/',candsta),
 
-]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 handler404 = 'mysite.views.handler404'
