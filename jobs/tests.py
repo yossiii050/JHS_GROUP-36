@@ -24,25 +24,24 @@ from jobs.views import applyCv
 
 class ApplyCvTest(TestCase):
 
+"""
+import unittest
+from django.test import RequestFactory
+from .models import Upload
+from .views import Upload_list
+class UploadListTestCase(unittest.TestCase):
     def setUp(self):
-        # Create a user, a job and a candidate
-        self.factory = RequestFactory()
-        self.job = Upload.objects.create(title='Test Job', slug='test-job')
-        self.user = User.objects.create_user(
-            username='candidate1', email='candidate1@example.com', password='testpass'
-        )
-        self.candidate = Candidate.objects.create(
-            user=self.user,
-            email='candidate1@example.com',
-            username='candidate1',
-            candidate_id='12345',
-            date_of_birth='2000-01-01',
-            phone_number='123-456-7890',
-            first_name='Test',
-            last_name='Candidate',
-            is_candidate=True,
-            bios='Test candidate bio'
+        # Create an instance of the Upload model
+        self.upload = Upload.objects.create(
+            title='Test Title',
+            subTitle='Test Subtitle',
+            body='Test body',
         )
     def test_applyCv(self):
         request = self.factory.post(reverse('jobs:applyCv', kwargs={'upload_id': self.job.slug}), {'username': self.user.username})
         request.user = self.user
+
+    def test_upload_str(self):
+        self.assertEqual(self.upload.title, 'Test Title')
+        self.assertEqual(self.upload.subTitle, 'Test Subtitle')
+        self.assertEqual(self.upload.body, 'Test body')

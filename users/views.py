@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.forms import UserCreationForm #user create from django firms
 from .forms import EmployerSignUpForm,CandidateSignUpForm,CandidateForm,EmployerForm,staffUserSignUpForm
+from jobs.forms import SortForm
 from tech.models import Ticket
 from django.contrib import messages
 from django.views.generic import View
@@ -18,6 +19,16 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
 from jobs.models import Upload
 from functools import wraps
+from django.contrib.auth.forms import PasswordChangeForm
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
+
+import io
+from django.http import FileResponse
+
+
 
 def role_required(allowed_roles=[]):
     def decorator(view_func):
@@ -223,6 +234,18 @@ def edit_profile(request, username):
             return employer_edit_profile(request, user.employer.employer_id)
     raise Http404   
 
+def change_pass(request):
+    if request.method == 'POST':
+        password_change_form = PasswordChangeForm(request.user, request.POST)
+
+        if password_change_form.is_valid():
+            password_change_form.save()
+            return redirect('login') 
+    else:
+        password_change_form = PasswordChangeForm(request.user)
+    return render(request, 'pass_change.html', {'password_change_form': password_change_form})
+
+
 def candidate_edit_profile(request, candidate_id):
     candidate = get_object_or_404(Candidate, candidate_id=candidate_id)
     print(candidate)
@@ -315,4 +338,77 @@ def jobsList(request):
 
 from .forms import ProgressForm
 
+def CurrentStatus(request):
+    buf=io.BytesIO()
+    c=canvas.Canvas(buf,pagesize=letter,bottomup=0)
+
+    textob=c.beginText()
+    textob.setTextOrigin(inch,inch)
+    textob.setFont("Helvetica-Bold", 15)
+
+    image_path = 'C:\JHS_GROUP-36\static\jpg\LOGO.jpg'
+    image = ImageReader(image_path)
+    c.drawImage(image, x=200, y=-50, width=250, height=200)
+    
+    
+    nominated=Candidate.objects.all()
+    jobs=Upload.objects.all().order_by('date')
+    lines=[" "," "," "," "]
+    textob.setFont("Helvetica-Bold", 15)
+    lines.append("Current Profile Status Report")
+
+    for job in jobs:
+        lines.append("                                 ")
+        textob.setFont("Helvetica-Bold", 12)
+        lines.append('Job Title: '+job.title)
+        textob.setFont("Helvetica-Bold", 10)
+        lines.append('Avialable Amount: '+ str(job.availableAmount))
+        textob.setFont("Helvetica", 10)
+
+        if job.applycandiadteuser.all() :
+            lines.append("Candidate CV's on line: ")
+            print(job.applycandiadteuser.all())
+            for i in job.applycandiadteuser.all():
+                print(i.username)
+                lines.append(i.username)
+        
+        for nominee in nominated:
+            if nominee.applyjobs:
+                print (nominee.applyjobs)
+                for i in range (len(nominee.applyjobs)):
+                    print(i)
+                    if nominee.applyjobs[i]==job.title:
+                        status_list = json.loads(nominee.statusforapplyjobs)
+                        print(status_list)
+                        if status_list[i]==25:
+                            lines.append(nominee.username+" is 25% in The recruitment process ")
+                        if status_list[i]==50:
+                            lines.append(nominee.username+" is 50% in The recruitment process ")
+                        if status_list[i]==75:
+                            lines.append(nominee.username+" is 75% in The recruitment process ")
+                        if status_list[i]==100:
+                            lines.append(nominee.username+" is Hired! ")
+
+
+                # for apply in nominee.applyjobs:
+                #    if apply==job.title:
+
+
+            
+        lines.append("                                 ")
+        lines.append("================================")
+
+    
+    for i in range(len(lines)):
+        if lines[i].startswith('Job Title:'):
+            textob.setFont("Helvetica-Bold", 10)
+        else:
+            textob.setFont("Helvetica", 10)
+        textob.textLine(lines[i])
+
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileResponse(buf,as_attachment=True,filename="CurrentStatus.pdf")
 
