@@ -103,10 +103,16 @@
     width: 300px;
     height: 150px;
   }
+  .go-back-button:hover {
+    background-color: royalblue;
+    color: white;
+  }
 </style>
 
 <h1>Hello {{ employer.user.username }} :-)</h1>
-
+<div style="position:absolute; top:0; right:0;">
+  <a href="http://127.0.0.1:8000/" style="position: absolute; top: 5px; right: 10px; background-color: lightgray; padding: 10px 15px; border-radius: 5px; text-decoration: none; color: black; font-weight: bold;">Home</a>
+</div>
 <div class="profile-info">
     <h2>Basic Information</h2>
     <p>Username: {{ employer.user.username }}</p>
@@ -127,6 +133,10 @@
     {% if employer.user.username == user.username or user.is_staff == True  %}
 
     <div class="button-container">
+      <form action="{% url 'change_password' %}">
+        <br>
+      <button type="submit" class="btn btn-primary">Change Password</button>
+      </form> 
         <form action="{% url 'edit_profile' employer.user.username %}">
             <br>
             <button type="submit" class="btn btn-primary">Edit Profile</button>
@@ -252,11 +262,5 @@
     {% endfor %}
 {% endif %}  
 </div>
-{% if employer.user.username == user.username or user.is_staff == True  %}
-    <form action="{% url 'edit_profile' employer.user.username %}">
-        <button type="submit" class="btn btn-primary">Edit Profile</button>
-    </form> 
-    <form action="{% url 'delete_account' %}">
-        <input type="submit" value="Delete" />
-{% endif %}        
+
 </form>
