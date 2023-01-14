@@ -25,3 +25,4 @@ urlpatterns = [
     path('tech/', include('tech.urls')),
     path('payments/', include('payments.urls')),
 ]
+

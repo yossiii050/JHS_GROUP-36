@@ -1,6 +1,11 @@
 
 from .choices import * 
 from django.db import models
+
+import os
+if not os.path.exists('files'):
+    os.makedirs('files')
+
 import json
 
 class CVFormModel(models.Model):

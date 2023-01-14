@@ -32,7 +32,9 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     viewsCounter=models.IntegerField(default=0)
     availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
     notification=models.DecimalField(max_digits=3 ,decimal_places=0, default=Decimal('5'))
-    applycandiadteuser = models.ManyToManyField(Candidate, blank=True, null=True)    
+    applycandiadteuser = models.ManyToManyField(Candidate, blank=True, null=True)
+    notification_count = models.IntegerField(default=0)  
+
     def __str__(self):
         return self.title
 
@@ -48,3 +50,4 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
   #  candidate_email = models.EmailField()
    # resume = models.FileField(upload_to='resumes/')
     #job = models.ForeignKey(Job, on_delete=models.CASCADE)
+

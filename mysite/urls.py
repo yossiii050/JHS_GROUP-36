@@ -23,7 +23,7 @@ from payments.views import paymentpage
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('jobs/',include('jobs.urls'),name="jobs"),
     path('register/',include('users.urls')),
@@ -49,4 +49,6 @@ urlpatterns = [
 
 ]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler404 = 'mysite.views.handler404'
+urlpatterns += staticfiles_urlpatterns()

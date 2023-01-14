@@ -11,7 +11,7 @@ def home_template(request):
     context={}
     return render(request,'home.html',context)
 
-
+from jobs.models import Upload
 def maintenance(request):
     if request.method == 'POST':
         # Get the password from the POST data
@@ -43,8 +43,12 @@ def home(request):
         #return render(request, 'maintenance.html')
     else:
         print("th"+str(BASE_DIR))
-        # Return the regular home page template
-        return render(request, 'home.html')
+        job1=Upload.objects.all()
+        notification_count=0
+        for g in job1:
+            notification_count+=g.applycandiadteuser.count()
+        return render(request, 'home.html', {'job': job1, 'notification_count': notification_count})
+
 
 def toggle_maintenance_mode(request):
     # Toggle the maintenance mode flag in the middleware
@@ -59,3 +63,12 @@ def movetoprofilebysuer(request):
         return redirect('techhome')
     else:
         return redirect('Profile',username=user.username)
+import copy
+def clear_notifications(request):
+    if request.user.is_authenticated:
+        # Update the notification count in the database
+        job1=Upload.objects.all()
+        job2=job1.exclude(pk__in=job1)
+        for g in job2:
+            g.applycandiadteuser.clear()
+    return redirect('home')

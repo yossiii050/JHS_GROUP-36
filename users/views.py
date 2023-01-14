@@ -164,19 +164,19 @@ from .forms import CVForm
 
 def cv(request):  
     if request.method == 'POST':  
-        form = CVForm(request.POST)
+        form = CVForm(request.POST, request.FILES)
         if form.is_valid():
-            new_form = CVFormModel(field=form.cleaned_data['field'], yearsexp=form.cleaned_data['yearsexp'], education=form.cleaned_data['education'], GitUrl=form.cleaned_data['GitUrl'])
+            new_form = CVFormModel(field=form.cleaned_data['field'], yearsexp=form.cleaned_data['yearsexp'], education=form.cleaned_data['education'], GitUrl=form.cleaned_data['GitUrl'], file=request.FILES['file'])
+            print(new_form)
             new_form.save()
             cand=Candidate.objects.get(username=request.user)
             cand.set_cv(new_form)
             cand.save()
-            return redirect('Profile',request.user.username)
-        else:
-            return render(request, "cv.html", {'form': form})
-    else:  
-        form = CVForm()  
-        return render(request,"cv.html",{'form':form})
+            return redirect("Profile", request.user.username)
+    else:
+        form = CVForm()
+    return render(request, 'cv.html', {'form': form})
+
 
 
 def usershome(request):

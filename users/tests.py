@@ -2,13 +2,14 @@ from django.test import TestCase,Client
 from django.contrib.auth import get_user_model,authenticate
 from .models import Employer, Candidate,staffUser
 from .forms import EmployerSignUpForm, CandidateSignUpForm, CandidateForm, EmployerForm
-from users.models import Candidate,User
+from users.models import Candidate,User,CVFormModel, FIELD_CHOICES, YEARS_CHOICES, EDUCATION_CHOICES
 from django.urls import reverse
 from users.views import ReportUsers
 from django.http import HttpRequest
 from django.contrib.auth.models import Group,User
 from django.http import Http404
-
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.exceptions import ValidationError
 class ReportVIPUsersViewTests(TestCase):
     """"""  
     def test_view_only_accessible_to_staff(self):
@@ -43,7 +44,7 @@ class ReportVIPUsersViewTests(TestCase):
 class ReportViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        # Create 13 authors for pagination tests
+
         number_of_Candidate = 7
         number_of_User = 7
 
@@ -60,7 +61,7 @@ class ReportViewTest(TestCase):
  
 class EmployerModelTests(TestCase):
     def test_employer_creation(self):
-        # Create a new employer
+
         user = User.objects.create_user(
             username='employer1', email='employer1@example.com', password='testpass'
         )
@@ -74,7 +75,7 @@ class EmployerModelTests(TestCase):
             bios='Test employer bio'
         )
 
-        # Check that the employer was created correctly
+
         self.assertEqual(employer.user.username, 'employer1')
         self.assertEqual(employer.email, 'employer1@example.com')
         self.assertEqual(employer.username, 'employer1')
@@ -85,7 +86,7 @@ class EmployerModelTests(TestCase):
 
 class CandidateModelTests(TestCase):
     def test_candidate_creation(self):
-        # Create a new candidate
+
         user = User.objects.create_user(
             username='candidate1', email='candidate1@example.com', password='testpass'
         )
@@ -102,7 +103,7 @@ class CandidateModelTests(TestCase):
             bios='Test candidate bio'
         )
 
-        # Check that the candidate was created correctly
+
         self.assertEqual(candidate.user.username, 'candidate1')
         self.assertEqual(candidate.email, 'candidate1@example.com')
         self.assertEqual(candidate.username, 'candidate1')
@@ -116,7 +117,7 @@ class CandidateModelTests(TestCase):
 
 class EmployerSignUpFormTests(TestCase):
     def test_form_validation(self):
-        # Test form with valid data
+
         form_data = {
             'username': 'employer1',
             'email': 'employer1@example.com',
@@ -130,7 +131,7 @@ class EmployerSignUpFormTests(TestCase):
         form = EmployerSignUpForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-        # Test form with mismatched passwords
+
         form_data = {
             'username': 'employer1',
             'email': 'employer1@example.com',
@@ -146,7 +147,7 @@ class EmployerSignUpFormTests(TestCase):
         self.assertEqual(form.errors['password2'], ["Passwords don't match"])
 class CandidateSignUpFormTests(TestCase):
     def test_form_validation(self):
-        # Test form with valid data
+
         form_data = {
             'username': 'candidate1',
             'email': 'candidate1@example.com',
@@ -162,7 +163,7 @@ class CandidateSignUpFormTests(TestCase):
         form = CandidateSignUpForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-        # Test form with mismatched passwords
+
         form_data = {
             'username': 'candidate1',
             'email': 'candidate1@example.com',
@@ -181,7 +182,7 @@ class CandidateSignUpFormTests(TestCase):
 
 class CandidateFormTests(TestCase):
     def test_form_validation(self):
-        # Test form with valid data
+
         form_data = {
             'first_name': 'Test',
             'last_name': 'Candidate',
@@ -194,7 +195,7 @@ class CandidateFormTests(TestCase):
 
 class EmployerFormTests(TestCase):
     def test_form_validation(self):
-        # Test form with valid data
+
         form_data = {
             'CompanyName': 'Test Company',
             'employer_id': '12345',
@@ -205,7 +206,7 @@ class EmployerFormTests(TestCase):
 
 class EmployerRegPageTests(TestCase):
     def test_employer_registration(self):
-        # Test successful employer registration
+
         form_data = {
             'username': 'employer1',
             'email': 'employer1@example.com',
@@ -225,7 +226,7 @@ class EmployerRegPageTests(TestCase):
 
 class CandidateRegPageTests(TestCase):
     def test_candidate_registration(self):
-        # Test successful candidate registration
+
         form_data = {
             'username': 'candidate1',
             'email': 'candidate1@example.com',
@@ -247,11 +248,11 @@ class CandidateRegPageTests(TestCase):
 
 class LoginPageTests(TestCase):
     def setUp(self):
-        # Create a test user
+
         self.test_user = User.objects.create_user(username='testuser', password='testpass')
 
     def test_login(self):
-        # Test successful login
+
         form_data = {
             'username': 'testuser',
             'password': 'testpass'
@@ -261,7 +262,7 @@ class LoginPageTests(TestCase):
         self.assertTrue(response.url.endswith(reverse('home page')))
 
     def test_login_invalid_credentials(self):
-        # Test login with invalid credentials
+
         form_data = {
             'username': 'testuser',
             'password': 'invalidpass'
@@ -272,11 +273,11 @@ class LoginPageTests(TestCase):
 
 class LogoutUserTests(TestCase):
     def setUp(self):
-        # Create a test user
+
         self.test_user = User.objects.create_user(username='testuser', password='testpass')
 
     def test_logout(self):
-        # Test logout
+
         self.client.login(username='testuser', password='testpass')
         response = self.client.get(reverse('logout'))
         self.assertEqual(response.status_code, 302)
@@ -284,12 +285,12 @@ class LogoutUserTests(TestCase):
 
 class EditProfileTests(TestCase):
     def setUp(self):
-        # Create test users
+
         self.employer = User.objects.create_user(username='employer', password='testpass12')
         self.candidate = User.objects.create_user(username='candidate', password='testpass12')
 
     def test_employer_edit_profile(self):
-        # Test employer edit profile
+
         self.client.login(username='employer', password='testpass12')
         form_data = {
             'CompanyName': 'Test Company',
@@ -298,18 +299,18 @@ class EditProfileTests(TestCase):
         }
 
     def test_edit_profile_invalid_user(self):
-        # Test edit profile for invalid user
+
         self.client.login(username='candidate', password='testpass')
         response = self.client.get(reverse('edit_profile', kwargs={'username': 'invalid'}))
         self.assertRaises(Http404)    
 
 class DeleteAccountTests(TestCase):
     def setUp(self):
-        # Create a test user
+
         self.test_user = User.objects.create_user(username='testuser', password='testpass12')
 
     def test_delete_account(self):
-        # Test deleting account
+
         self.client.login(username='testuser', password='testpass12')
         response = self.client.post(reverse('delete_account'))
         self.assertEqual(response.status_code, 302)
@@ -356,3 +357,27 @@ class StaffUserModelTest(TestCase):
 
     def test_username_field(self):
         self.assertEqual(staffUser.USERNAME_FIELD, 'username')        
+
+
+class CVFormModelTestCase(TestCase):
+    def setUp(self):
+        self.cv_form = CVFormModel.objects.create(
+            field=FIELD_CHOICES[0][0],
+            yearsexp=YEARS_CHOICES[0][0],
+            education=EDUCATION_CHOICES[0][0],
+            GitUrl='https://github.com/testuser',
+            file=SimpleUploadedFile("file.pdf", b"file_content")
+        )
+
+    def test_cv_form_str(self):
+        self.assertEqual(str(self.cv_form), 'https://github.com/testuser')
+    
+    def test_cv_form_file_upload(self):
+        with open(self.cv_form.file.path, 'rb') as f:
+            content = f.read()
+        self.assertEqual(content, b'file_content')
+
+    def test_cv_form_field_validation(self):
+        with self.assertRaises(ValidationError):
+            self.cv_form.field = 'not a field'
+            self.cv_form.full_clean()
