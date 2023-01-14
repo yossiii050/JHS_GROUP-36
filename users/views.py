@@ -144,7 +144,6 @@ def loginPage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user is not None:
             if user.is_active ==False:
                 messages.info(request, 'Your profile Not activated!')
@@ -165,19 +164,19 @@ from .forms import CVForm
 
 def cv(request):  
     if request.method == 'POST':  
-        form = CVForm(request.POST)
+        form = CVForm(request.POST, request.FILES)
         if form.is_valid():
-            new_form = CVFormModel(field=form.cleaned_data['field'], yearsexp=form.cleaned_data['yearsexp'], education=form.cleaned_data['education'], GitUrl=form.cleaned_data['GitUrl'])
+            new_form = CVFormModel(field=form.cleaned_data['field'], yearsexp=form.cleaned_data['yearsexp'], education=form.cleaned_data['education'], GitUrl=form.cleaned_data['GitUrl'], file=request.FILES['file'])
+            print(new_form)
             new_form.save()
             cand=Candidate.objects.get(username=request.user)
             cand.set_cv(new_form)
             cand.save()
-            return redirect('Profile',request.user.username)
-        else:
-            return render(request, "cv.html", {'form': form})
-    else:  
-        form = CVForm()  
-        return render(request,"cv.html",{'form':form})
+            return redirect("Profile", request.user.username)
+    else:
+        form = CVForm()
+    return render(request, 'cv.html', {'form': form})
+
 
 
 def usershome(request):
@@ -206,7 +205,6 @@ def user_profile(request, username):
             employer = user.employer
             tick=Ticket.objects.all()
             job=Upload.objects.all()
-            print("--------->"+str(job))
             context = {'employer': employer,'tick':tick,'job':job}
             return render(request, 'employer_profile.html', context)
     except:
@@ -223,14 +221,11 @@ def user_profile(request, username):
 
 def edit_profile(request, username):
     user = get_object_or_404(User,username=username)
-    print(user)
     try:
         if user.candidate.is_candidate==True:
             return candidate_edit_profile(request, user.candidate.candidate_id)
     except:    
         if user.employer.is_employer==True:
-            print("bababa")
-            print( user.employer.employer_id)
             return employer_edit_profile(request, user.employer.employer_id)
     raise Http404   
 
@@ -248,13 +243,8 @@ def change_pass(request):
 
 def candidate_edit_profile(request, candidate_id):
     candidate = get_object_or_404(Candidate, candidate_id=candidate_id)
-    print(candidate)
-
-    print("candidate is "+str(candidate))
     if request.method == 'POST':
         form1 = CandidateForm(request.POST, instance=candidate)
-        print(form1.is_valid())
-
         if form1.is_valid():
             form1.save()
             return redirect('Profile', username=candidate.username) 
@@ -263,13 +253,9 @@ def candidate_edit_profile(request, candidate_id):
     return render(request, 'candidate_edit_profile.html', {'form1': form1, 'candidate': candidate})
 
 def employer_edit_profile(request, employer_id):
-    print("i get here")
     employer = get_object_or_404(Employer, employer_id=employer_id)
-    print("here2")
     if request.method == 'POST':
         form1 = EmployerForm(request.POST, instance=employer)
-        print(form1.is_valid())
-
         if form1.is_valid() :#and form2.is_valid():
             form1.save()            
             return redirect('Profile', username=employer.username) 

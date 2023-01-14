@@ -93,9 +93,93 @@
       font-size: 0.9em;
       color: #333;
     }
+    .notification {
+      background-color: #555;
+      color: white;
+      text-decoration: none;
+      padding: 15px 26px;
+      position: relative;
+      display: inline-block;
+      border-radius: 2px;
+    }
+    
+    .notification:hover {
+      background: red;
+    }
+    
+    .notification .badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      padding: 5px 10px;
+      border-radius: 50%;
+      background: red;
+      color: white;
+    }
+    #notification-list {
+      position:absolute;
+      top:80px;
+      background-color: lightgray; /* White background */
+      padding: 10px; /* Padding around list items */
+      border-radius: 4px; /* Rounded corners */
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Light box shadow */
+      font-size: 1rem; /* Smaller font size */
+      color: #333333; /* Dark gray text color */
+      position: absolute; /* Position absolute for the close button */
+      width: 300px; /* Width of the list */
+      z-index: 1; /* Bring the list to the front */
+    }
+  
+    #notification-list ul {
+      list-style: none; /* Remove bullet points */
+      margin: 0; /* Remove margin */
+      padding: 0; /* Remove padding */
+    }
+  
+    #notification-list li {
+      padding: 10px; /* Padding around list items */
+      border-bottom: 1px solid #f5f5f5; /* Light gray bottom border */
+    }
+  
+    #notification-list li:last-child {
+      border-bottom: none; /* Remove bottom border for last item */
+    }
+    .bg-image {
+      background-image: url('static\jpg\LOGO.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+  }
+    .container {
+      margin: 50px auto;
+      width: 60%;
+      text-align: center;
+      flex-wrap: wrap;
+  }
+  
+  h2 {
+      margin-bottom: 30px;
+  }
   </style>
 </head>
-
+<br>
+  <div class="job">
+    {% if request.user.is_authenticated and request.user.employer.is_employer %}
+    <div id="notification-list" style="display: none;">
+      <ul>
+        {% for d in job %}
+         {% for j in d.applycandiadteuser.all %}
+          <li>{{ j.username }} has applied to your job "{{ d.title }}"</li>    
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
+      <a href="#" id="inbox-button" class="notification">
+        <span>Inbox</span>
+        <span id="notification-count" class="badge" >{{ notification_count }}</span>
+      </a>
+    {% endif %}
+  </div>
 <body>
     <div class="container">
       <div class="header">
@@ -111,10 +195,14 @@
           {% if request.user.employer.is_employer %}
           <a href="{% url 'uplodelist' %}" class="login" id="login-button">Post</a>
           {% endif %}
+          {% if request.user.candidate.is_candidate or request.user.is_staff %}
+          <a href="{% url 'uplodelist' %}" class="login" id="login-button">Jobs</a>
+          {% endif %}
           <a href="{% url 'ticket' %}" class="login" id="logout-button">Contact</a>
           {% endif %}
 
       </div>
+      
       <form class="search-form" action="/search" method="get">
         <input type="text" name="q" placeholder="Search jobs">
         <input type="submit" value="Search">
@@ -132,8 +220,39 @@
         </div>
         <!-- Add more jobs here -->
       </div>
+      {% if request.user.employer.is_employer %}
+      <div class="container">
+        <h2>Become a VIP Employer</h2>
+        <p>As a VIP employer, you will have access to exclusive job opportunities and features on our platform.</p>
+        <form method="post" action="{% url 'vipbuy' %}">
+          {% csrf_token %}
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      {% endif %}
     </div>
-  </body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.notification').click(function() {
+          $('#notification-list').toggle();
+        });
+      });
+    </script>
+    <script>
+      $(document).ready(function(){
+        $("#inbox-button").click(function(){
+            $.ajax({
+                url:'{% url 'clear_notifications' %}',
+                type: 'GET',
+                success: function (data) {
+                    $("#notification-count").html("0");
+                }
+            });
+        });
+    });
+    </script>
   </html>
 
 

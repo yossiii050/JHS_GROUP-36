@@ -23,13 +23,13 @@ from payments.views import paymentpage
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('jobs/',include('jobs.urls'),name="jobs"),
     path('register/',include('users.urls')),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
-    path('payments/',paymentpage),
+    path('payments/',paymentpage,name='vipbuy'),
     path('tech/',include('tech.urls')),
     path('', home,name="home page"),
     path('login/',loginPage,name="login"),
@@ -47,6 +47,8 @@ urlpatterns = [
     path('Profile/',movetoprofilebysuer,name="profile_move"),
     path('stati/',candsta),
 
-]#+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler404 = 'mysite.views.handler404'
+urlpatterns += staticfiles_urlpatterns()

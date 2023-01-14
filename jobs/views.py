@@ -275,7 +275,10 @@ def update_user(request, username):
         # Update the statusforapplyjobs field for the user with the given username
         candidate = Candidate.objects.get(username=username)
         statusforapplyjobs = json.loads(candidate.statusforapplyjobs)
+        print(statusforapplyjobs)
+
         jobi=candidate.applyjobs
+        print(jobi)
         index = jobi.index(job_title)
         statusforapplyjobs[index]+=25
         status_list =candidate.statusforapplyjobs[index]
