@@ -111,9 +111,10 @@ def update_status(request):
 
 def allreports(request):
     alluserform=User.objects.all()
+    tickets=Ticket.objects.all()
     vipuser = get_user_model()
     vip_group = Group.objects.get(name='VIP')
     VIPform = vipuser.objects.filter(groups=vip_group)
     Approveform=User.objects.filter(is_active=False)
-    context={'alluserform':alluserform,'VIPform':VIPform,'Approveform':Approveform}
+    context={'alluserform':alluserform,'VIPform':VIPform,'Approveform':Approveform,'tickets':tickets}
     return render(request,'Allreports.html',context)
