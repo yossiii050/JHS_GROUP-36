@@ -71,6 +71,10 @@
   <div class="Ticket">
     <form method="post" action="{% url 'ticket' %}">
         {% csrf_token %}
+        {% if request.user.employer.is_employer %}
+          <label for="title">Suggestions:</label><br>
+        {%endif%}
+        <input type="text" id="title" name="title"><br> 
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title"><br>
         <label for="body">Body:</label><br>
