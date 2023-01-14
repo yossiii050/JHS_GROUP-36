@@ -43,8 +43,3 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
         return reverse("upload_detail", kwargs={"slug": self.slug})
 
 
-#class JobApplication(models.Model):
- #   candidate_name = models.CharField(max_length=100)
-  #  candidate_email = models.EmailField()
-   # resume = models.FileField(upload_to='resumes/')
-    #job = models.ForeignKey(Job, on_delete=models.CASCADE)

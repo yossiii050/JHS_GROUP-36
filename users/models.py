@@ -54,8 +54,6 @@ class Candidate(models.Model):
     is_candidate = models.BooleanField(default=True)
     bios=models.TextField(blank=True,default="write you bio here...")
     cvcandidate = models.OneToOneField(CVFormModel,on_delete=models.CASCADE,blank=True,null=True)
-    #appllyjobs=models.CharField(max_length=)
-    #applyjobs = models.TextField(default='[]')
     applyjobs = JSONField(blank=True, default=dict)
     statusforapplyjobs=models.TextField()
 

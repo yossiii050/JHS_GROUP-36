@@ -123,7 +123,8 @@ def jobsLocationPdfFile(request):
         lines.append('Salary Range: '+salaryRange)
         yearsexp=job.get_yearsexp_display()
         lines.append('Years of expirience: '+yearsexp)
-        lines.append('Education: '+str(job.get_education_display))
+        category = job.get_education_display()
+        lines.append('Education: '+cate)
         time=job.get_time_display()
         lines.append('Job Type: '+time)
         lines.append('Hybrid: '+str(job.hybrid))
@@ -154,7 +155,7 @@ def jobscsvFile(request):
     jobs=Upload.objects.all().order_by('location')
     writer.writerow(['Job Title','subTitle','body','Category','Calary Range','Years Of Expirience','Education','Job Type','Hybrid ? ','Priority','Location','Available Amount'])
     for job in jobs:
-        writer.writerow([job.title, job.subTitle, job.body, job.category, job.salaryRange, job.yearsexp, job.education, job.time, job.hybrid, job.priority, job.location, job.availableAmount])
+        writer.writerow([job.title, job.subTitle, job.body, job.get_category_display(), job.get_salaryRange_display(), job.get_yearsexp_display(), job.get_education_display(), job.get_time_display(), job.hybrid, job.get_priority_display(), job.get_location_display(), job.availableAmount])
     return response
 
 
