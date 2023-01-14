@@ -150,6 +150,16 @@
       background-repeat: no-repeat;
       background-position: center;
   }
+    .container {
+      margin: 50px auto;
+      width: 60%;
+      text-align: center;
+      flex-wrap: wrap;
+  }
+  
+  h2 {
+      margin-bottom: 30px;
+  }
   </style>
 </head>
 <br>
@@ -185,10 +195,14 @@
           {% if request.user.employer.is_employer %}
           <a href="{% url 'uplodelist' %}" class="login" id="login-button">Post</a>
           {% endif %}
+          {% if request.user.candidate.is_candidate or request.user.is_staff %}
+          <a href="{% url 'uplodelist' %}" class="login" id="login-button">Jobs</a>
+          {% endif %}
           <a href="{% url 'ticket' %}" class="login" id="logout-button">Contact</a>
           {% endif %}
 
       </div>
+      
       <form class="search-form" action="/search" method="get">
         <input type="text" name="q" placeholder="Search jobs">
         <input type="submit" value="Search">
@@ -206,6 +220,17 @@
         </div>
         <!-- Add more jobs here -->
       </div>
+      {% if request.user.employer.is_employer %}
+      <div class="container">
+        <h2>Become a VIP Employer</h2>
+        <p>As a VIP employer, you will have access to exclusive job opportunities and features on our platform.</p>
+        <form method="post" action="{% url 'vipbuy' %}">
+          {% csrf_token %}
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      {% endif %}
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

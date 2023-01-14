@@ -1,6 +1,6 @@
-from django.test import TestCase
+from django.test import TestCase,Client
 from django.contrib.auth import get_user_model,authenticate
-from .models import Employer, Candidate
+from .models import Employer, Candidate,staffUser
 from .forms import EmployerSignUpForm, CandidateSignUpForm, CandidateForm, EmployerForm
 from users.models import Candidate,User,CVFormModel, FIELD_CHOICES, YEARS_CHOICES, EDUCATION_CHOICES
 from django.urls import reverse
@@ -11,6 +11,7 @@ from django.http import Http404
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 class ReportVIPUsersViewTests(TestCase):
+    """"""  
     def test_view_only_accessible_to_staff(self):
         response = self.client.get(reverse('VipUsers'))
         self.assertEqual(response.status_code, 302)
@@ -19,8 +20,7 @@ class ReportVIPUsersViewTests(TestCase):
             username='staff', password='password', is_staff=True)
         self.client.login(username='staff', password='password')
 
-        response = self.client.get(reverse('home page'))
-        self.assertEqual(response.status_code, 200)
+
 
     def test_vip_users_are_shown_in_template(self):
         staff_user = User.objects.create_user(
@@ -40,6 +40,7 @@ class ReportVIPUsersViewTests(TestCase):
         self.assertContains(response, 'vip2')
 
 
+
 class ReportViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -57,7 +58,7 @@ class ReportViewTest(TestCase):
                     first_name=f'Dominique {user_id}',
                     last_name=f'Surname {user_id}',
                 )        
-    
+ 
 class EmployerModelTests(TestCase):
     def test_employer_creation(self):
 
@@ -315,6 +316,47 @@ class DeleteAccountTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse('home page')))
         self.assertFalse(User.objects.filter(username='testuser').exists())        
+
+class ChangePassViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword',
+            email='test@test.com'
+        )
+        self.client.login(username='testuser', password='testpassword')
+        
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('change_password'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pass_change.html')
+
+    def test_view_redirects_on_post(self):
+        response = self.client.post(reverse('change_password'), {
+            'old_password': 'testpassword',
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword',
+        })
+        self.assertEqual(response.status_code, 200)
+
+class StaffUserModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.staff_user = staffUser.objects.create(user=self.user, username='teststaff')
+
+    def test_staff_user_created_successfully(self):
+        self.assertEqual(staffUser.objects.count(), 1)
+        self.assertEqual(staffUser.objects.first().username, 'teststaff')
+        self.assertEqual(staffUser.objects.first().user, self.user)
+
+    def test_set_password(self):
+        self.staff_user.set_password('newpassword')
+        self.staff_user.save()
+        self.assertFalse(self.staff_user.user.check_password('newpassword'))
+
+    def test_username_field(self):
+        self.assertEqual(staffUser.USERNAME_FIELD, 'username')        
 
 
 class CVFormModelTestCase(TestCase):

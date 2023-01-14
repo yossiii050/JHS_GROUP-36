@@ -61,7 +61,6 @@ class Candidate(models.Model):
     cvcandidate = models.OneToOneField(CVFormModel,on_delete=models.CASCADE,blank=True,null=True)
     applyjobs = JSONField(blank=True, default=dict)
     statusforapplyjobs=models.TextField()
-
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
     USERNAME_FIELD='username'
