@@ -157,6 +157,18 @@
         border-radius: 3px;
         padding: 6px 12px;   
     }
+    .interview-button {
+      background-color: blue;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+  }
+  
+  .interview-button:hover {
+      background-color: darkblue;
+  }
 </style>
 
 <h1>Hello {{ candidate.user.username }} :-)</h1>
@@ -195,11 +207,10 @@
 <div class="profile-info">
   <h2>CV Form</h2>
 {% if candidate.cvcandidate %}
-    <p>Field of work: {{ candidatecv.get_field_display }}</p>
-    <p>Years of Experience: {{ candidatecv.get_yearsexp_display }}</p>
-    <p>Education: {{ candidatecv.get_education_display }}</p>
-    <p>GitHub URL: {{ candidatecv.GitUrl }}</p>
-    <p>File saved: {{ candidatecv.file }}</p>  
+  <p>Field of work: {{ candidatecv.get_field_display }}</p>
+  <p>Years of Experience: {{ candidatecv.get_yearsexp_display }}</p>
+  <p>Education: {{ candidatecv.get_education_display }}</p>
+  <p>GitHub URL: {{ candidatecv.GitUrl }}</p>  
 {% else %}
   <p>No CV</p>
   {% if candidate.user.username == user.username or user.is_staff == True  %}
@@ -276,7 +287,10 @@
     {% elif item == 50 %}
         <h2 style="color: orange;">The employer received the resume</h2>
     {% elif item == 75 %}
-        <h2 style="color: blue;">You Called for a job interview</h2>
+    <div class="interview-instructions">
+      <h2 style="color: blue;">You Called for a job interview</h2>
+      <a href="https://hightechpros.com/job-openings/interview-tips/" class="interview-button">Interview Instructions</a>
+    </div>
     {% elif item == 100 %}
         <h2 style="color: green;">Good luck! You been hired</h2>
     {% else %}

@@ -2,13 +2,14 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model,authenticate
 from .models import Employer, Candidate
 from .forms import EmployerSignUpForm, CandidateSignUpForm, CandidateForm, EmployerForm
-from users.models import Candidate,User
+from users.models import Candidate,User,CVFormModel, FIELD_CHOICES, YEARS_CHOICES, EDUCATION_CHOICES
 from django.urls import reverse
 from users.views import ReportUsers
 from django.http import HttpRequest
 from django.contrib.auth.models import Group,User
 from django.http import Http404
-
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.exceptions import ValidationError
 class ReportVIPUsersViewTests(TestCase):
     def test_view_only_accessible_to_staff(self):
         response = self.client.get(reverse('VipUsers'))
@@ -314,3 +315,38 @@ class DeleteAccountTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.endswith(reverse('home page')))
         self.assertFalse(User.objects.filter(username='testuser').exists())        
+
+
+class CVFormModelTestCase(TestCase):
+    def setUp(self):
+        self.cv_form = CVFormModel.objects.create(
+            field=FIELD_CHOICES[0][0],
+            yearsexp=YEARS_CHOICES[0][0],
+            education=EDUCATION_CHOICES[0][0],
+            GitUrl='https://github.com/testuser',
+            file=SimpleUploadedFile("file.pdf", b"file_content")
+        )
+
+    def test_cv_form_fields(self):
+        self.assertEqual(self.cv_form.field, FIELD_CHOICES[0][0])
+        self.assertEqual(self.cv_form.yearsexp, YEARS_CHOICES[0][0])
+        self.assertEqual(self.cv_form.education, EDUCATION_CHOICES[0][0])
+        self.assertEqual(self.cv_form.GitUrl, 'https://github.com/testuser')
+        self.assertEqual(self.cv_form.file.name, 'files/file.pdf')
+
+    def test_cv_form_str(self):
+        self.assertEqual(str(self.cv_form), 'https://github.com/testuser')
+    
+    def test_cv_form_file_upload(self):
+        with open(self.cv_form.file.path, 'rb') as f:
+            content = f.read()
+        self.assertEqual(content, b'file_content')
+
+    def test_cv_form_file_upload_default(self):
+        cv_form_default = CVFormModel.objects.create()
+        self.assertEqual(cv_form_default.file.name, 'files/default.pdf')
+
+    def test_cv_form_field_validation(self):
+        with self.assertRaises(ValidationError):
+            self.cv_form.field = 'not a field'
+            self.cv_form.full_clean()

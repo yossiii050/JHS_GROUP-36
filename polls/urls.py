@@ -8,6 +8,6 @@ urlpatterns = [
     path('toggle-maintenance-mode/', views.toggle_maintenance_mode, name='toggle_maintenance_mode'),
     path('maintenance/', views.maintenance, name='maintenance'),
     path('jobs/',Upload_list,name='uplodelist'),
-    
+    path('clear_notifications/', views.clear_notifications, name='clear_notifications'),
     #path('', views.home_template, name='home page site'),
 ]

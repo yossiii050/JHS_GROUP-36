@@ -19,6 +19,6 @@ urlpatterns = [
     path('hired/<str:username>',views.hired_user,name='hired_user'),
 
 
-    ,
+    
 ]
 
