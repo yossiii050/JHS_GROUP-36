@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from polls.views import home_page_view,home_template,home,movetoprofilebysuer
 from users.views import loginPage,logoutUser,approveEmp,registered_users,ReportUsers,update_user_status,ReportVIPUsers
+from jobs.views import candsta
 from mysite.mysite.views import maintenance
 from payments.views import paymentpage
 from django.conf import settings
@@ -44,7 +45,7 @@ urlpatterns = [
     path('update_user_status/',update_user_status,name="update_user_status"),
     path('api-auth/', include('rest_framework.urls')),
     path('Profile/',movetoprofilebysuer,name="profile_move"),
-
+    path('stati/',candsta),
 
 ]
 

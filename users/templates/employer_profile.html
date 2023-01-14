@@ -115,6 +115,9 @@
     <p>Is Active: {{ employer.user.is_active }}</p>
     <p>Company Id: {{ employer.employer_id }}</p>
     
+    <a href="{% url 'CurrentStatus' %}"><button>Current Profile Status Report - PDF file</button></a>
+
+
 </div>
 
 <div class="profile-bio">
@@ -136,10 +139,17 @@
         {% endif %}
     </div>
 
+
+
 <div class="profile-bio">
+
     <h2>Jobs:</h2>
+    <a href="{% url 'upload' %}">
+      <button>Upload job</button>
+      </a>
     {% for j in job %}
-        <div class="label-value">
+      {% if employer.username == j.owner.username  %}
+            <div class="label-value">
             <span class="label">Title:</span>
             <div class="label-box">{{ j.title }}</div>
             </div>
@@ -169,7 +179,7 @@
             </div>
             <div class="label-value">
             <span class="label">Priority:</span>
-            <div class="label-box">{{ j.priority }}</div>
+            <div class="label-box">{{ j.get_priority_display }}</div>
             </div>
             <div class="label-value">
             <span class="label">Location:</span>
@@ -179,8 +189,17 @@
             <span class="label">Available Amount:</span>
             <div class="label-box">{{ j.availableAmount }}</div>
             </div>
-            <p>------------------------------------------------------------------------------------------------------</p>
-            {% endfor %}
+            
+            <a href="{% url 'update' j %}">
+              <button>Edit job</button>
+              </a>
+          <a href="{% url 'deleteJob' j  %}">
+              <button>Delete Job</button>
+              </a>
+              <p>------------------------------------------------------------------------------------------------------</p>
+
+      {% endif %}
+    {% endfor %}
     </div>    
 
 {% if employer.user.username == user.username or user.is_staff == True  %}
