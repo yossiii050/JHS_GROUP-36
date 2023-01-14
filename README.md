@@ -12,12 +12,6 @@ Job Search platform , Connects employers in the high-tech field with potential c
 
 The project was prepared as part of the "Fundamentals of Software Engineering"
 
-
-## Features
-
-- =========complite=========
-
-
 ## Demo
 [![ezgif-com-gif-maker.gif](https://i.postimg.cc/yx8YDGCd/ezgif-com-gif-maker.gif)](https://postimg.cc/zb41M0BZ)
 
