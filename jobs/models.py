@@ -15,7 +15,6 @@ from users.models import Employer,Candidate
 
 class Upload(models.Model): #The dataBase knows to create a table for this model
     title=models.CharField(max_length=60,null=True)
-    #author=models.ForeignKey(User,on_delete=models.CASCADE)
     subTitle=models.CharField(max_length=100)
     slug=models.SlugField(unique=True)
     body=models.TextField(max_length=200)
@@ -32,7 +31,7 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     viewsCounter=models.IntegerField(default=0)
     availableAmount = models.DecimalField(max_digits=2, decimal_places=0, default=Decimal('5'))
     notification=models.DecimalField(max_digits=3 ,decimal_places=0, default=Decimal('5'))
-    applycandiadteuser = models.ManyToManyField(Candidate, blank=True, null=True)
+    applycandiadteuser = models.ManyToManyField(Candidate, blank=True)
     notification_count = models.IntegerField(default=0)  
 
     def __str__(self):
@@ -44,10 +43,4 @@ class Upload(models.Model): #The dataBase knows to create a table for this model
     def get_absolute_url(self):
         return reverse("upload_detail", kwargs={"slug": self.slug})
 
-
-#class JobApplication(models.Model):
- #   candidate_name = models.CharField(max_length=100)
-  #  candidate_email = models.EmailField()
-   # resume = models.FileField(upload_to='resumes/')
-    #job = models.ForeignKey(Job, on_delete=models.CASCADE)
 

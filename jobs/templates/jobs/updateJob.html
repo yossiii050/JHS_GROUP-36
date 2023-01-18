@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
+        <style>
+        h1 {
+            color: green;
+            font-size: 50px;
+            }
+        </style>
+
     <head>
         <center>
-        <meta charset="utf-8"
-        <title>UpdateJob</title>
     </head>
     <body>
-        <h1>This is UpdateJob page</h1>
-        <p>Welcome to JHS</p>
-        <h2>{{job.subTitle}}</h2>
+        <h1>{{job.subTitle}}</h1>
         <form action="" method=POST>
             {% csrf_token %}
             {{ form.as_p }}
@@ -19,7 +22,7 @@
         </form>
        
         
-        <br><br><br>
+        <br>
         <a href="{% url 'list' %}">
             <button>Back to JobList</button>
             </a>

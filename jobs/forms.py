@@ -12,7 +12,6 @@ from django import forms
 class UploadForm(ModelForm):
     class Meta:
         model=Upload
-        #fields="__all__"
         fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid','priority','location','availableAmount','notification','owner')
         exclude =['owner','notification_count']
         
@@ -30,7 +29,3 @@ class SortForm(forms.Form):
     )
 
 
-#class JobApplicationForm(forms.Form):
-   # name = forms.CharField(max_length=100)
-    #email = forms.EmailField()
-    #resume = forms.FileField()

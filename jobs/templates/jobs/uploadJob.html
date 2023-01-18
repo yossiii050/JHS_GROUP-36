@@ -1,5 +1,12 @@
 <html>
     <head> <center>
+        <style>
+            h1 {
+               color: green;
+               font-size: 50px;
+             }
+           </style>
+   
         <meta charset="utf-8">
         <title>UploadJob</title>
     </head>
@@ -7,12 +14,9 @@
         <div><b><textarea:justify>
 
        
-                <h1>This is UploadJob page</h1>
-                <br/><br/>
-                <p>Welcome to JHS</p>
-            
-                    <h1>Add Uploads To Database</h1>
-                    <br/><br/>
+                <h1>Upload Your New Job</h1>
+             
+                   
                     {% if submitted %}
                         your Upload was submitted successfuly!!
                     {% else }
@@ -22,18 +26,18 @@
                             {% csrf_token %}
                             {{ form.as_p }}
 
-                            <br/><br/>
+                            <br/>
                             <input type="submit" value="Submit" class="btn btn-secondary">
                         </form>
        
           
-                <br/><br/>
-                <br/><br/>
+               
+               
             <a href="{% url 'list' %}">
                     <button>Back to JobList</button>
                     </a>
                  </textarea:justify>
-       </b> </div>
+        </div>
     </body></center>
 </html>
 

@@ -20,12 +20,6 @@ from django.contrib.auth.models import User
 from users.models import Candidate,Employer
 from django.shortcuts import HttpResponseRedirect
 
-"""def detail(request, post_id):
-    job = Upload.objects.get(id=post_id)
-    job.views += 1
-    job.save()
-    return render(request, 'blog/detail.html', context={'job': job})
-"""
 def jobsPriorityPdfFile(request):
     buf=io.BytesIO()
     c=canvas.Canvas(buf,pagesize=letter,bottomup=0)
@@ -123,7 +117,8 @@ def jobsLocationPdfFile(request):
         lines.append('Salary Range: '+salaryRange)
         yearsexp=job.get_yearsexp_display()
         lines.append('Years of expirience: '+yearsexp)
-        lines.append('Education: '+str(job.get_education_display))
+        education = job.get_education_display()
+        lines.append('Education: '+education)
         time=job.get_time_display()
         lines.append('Job Type: '+time)
         lines.append('Hybrid: '+str(job.hybrid))
@@ -154,7 +149,7 @@ def jobscsvFile(request):
     jobs=Upload.objects.all().order_by('location')
     writer.writerow(['Job Title','subTitle','body','Category','Calary Range','Years Of Expirience','Education','Job Type','Hybrid ? ','Priority','Location','Available Amount'])
     for job in jobs:
-        writer.writerow([job.title, job.subTitle, job.body, job.category, job.salaryRange, job.yearsexp, job.education, job.time, job.hybrid, job.priority, job.location, job.availableAmount])
+        writer.writerow([job.title, job.subTitle, job.body, job.get_category_display(), job.get_salaryRange_display(), job.get_yearsexp_display(), job.get_education_display(), job.get_time_display(), job.hybrid, job.get_priority_display(), job.get_location_display(), job.availableAmount])
     return response
 
 
@@ -236,27 +231,24 @@ def uploadJob(request):
         if 'submitted' in request.GET:
             submitted=True
     return render(request,'jobs/uploadJob.html',{'form':form,'submitted':submitted})
-    #return HttpResponse('uploadJob')
 
 
-def updateJob(request,upload_id,):
+def updateJob(request,upload_id):
+    print(upload_id)
     job=Upload.objects.get(slug=upload_id)
     form=UploadForm(request.POST or None,instance=job)
+    print(job.title)
     if form.is_valid():
         form.instance.slug = form.cleaned_data['title']
         form.save()
+        print(request)
         return render(request,'jobs/success.html')
     return render(request,'jobs/updateJob.html',{'job':job,'form':form})
-    #return HttpResponse('updateJob')
 
 def job_details(request,slug):
     job=Upload.objects.get(slug=slug)
-    print(job.applycandiadteuser.all())
     job.viewsCounter+=1
     job.save()
-
-    #job.update_views()
-    #job=Upload.objects.filter(slug=slug.values())
     return render (request,'jobs/jobsDetails.html',{'job':job})
 
 def success(request):
@@ -290,7 +282,6 @@ def update_user(request, username):
 def abort_user(request, username):
     if request.method == 'POST':
         job_title=request.POST.get('jobtitle')
-        #job = get_object_or_404(Upload, title=job_title)
         job=Upload.objects.get(title=job_title)
         candidate = Candidate.objects.get(username=username)
         job.applycandiadteuser.remove(candidate)
@@ -309,7 +300,6 @@ def abort_user(request, username):
 def hired_user(request, username):
     if request.method == 'POST':
         job_title=request.POST.get('jobtitle')
-        #job = get_object_or_404(Upload, title=job_title)
         job=Upload.objects.get(title=job_title)
         candidate = Candidate.objects.get(username=username)
         job.applycandiadteuser.remove(candidate)
@@ -336,11 +326,8 @@ def applyCv(request,upload_id):
         status_list = json.loads(cand.statusforapplyjobs)
     else:
         status_list = []
-    #status_list = json.loads(cand.statusforapplyjobs)
     status_list.append(25)
     cand.statusforapplyjobs = json.dumps(status_list)
-    print(cand.statusforapplyjobs)
-    print(cand.applyjobs)
     cand.save()
     job.save()
     return render(request,'jobs/success.html')
@@ -348,22 +335,3 @@ def applyCv(request,upload_id):
 def candsta(request):
     return render(request, 'statusbar.html')
 
-"""
-#def apply_for_job(request, job_id):
-    if request.method == 'POST':
-        form = JobApplicationForm(request.POST, request.FILES)
-        if form.is_valid():
-            # create a new JobApplication object
-            application = JobApplication(
-                candidate_name=form.cleaned_data['name'],
-                candidate_email=form.cleaned_data['email'],
-                resume=form.cleaned_data['resume'],
-                job_id=job_id
-            )
-            application.save()  # save the object to the database
-            return redirect('jobs:success')
-    else:
-        form = JobApplicationForm()
-    return render(request, 'jobs/apply.html', {'form': form})
-
-"""

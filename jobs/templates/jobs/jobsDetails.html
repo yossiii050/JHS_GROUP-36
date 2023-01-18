@@ -95,7 +95,7 @@
 
         {% if request.user.is_authenticated %}
           {% if request.user.employer.is_employer and request.user.employer.username == job.owner.username %}
-                  <a href="{% url 'update' job %}">
+                  <a href="{% url 'update' job.title %}">
                     <button>Edit job</button>
                     </a>
                
@@ -138,31 +138,29 @@
                         <td>{{d.first_name}}</td>
                         <td>{{d.last_name}}</td>
                         <td>{{d.phone_number}}</td>
-                        <td>
-                          <a href="{% url 'Profile' d.username  %}">
-                              <button>Profile</button>
-                          </a>
+                        <td><a href="{% url 'Profile' d.username  %}">
+                          <button>Profile</button>
                           <form action="{% url 'update_user' d.username %}" method="post">
-                              {% csrf_token %}
-                              <input type="hidden" name="status" value="accepted">
-                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                              <button class="interview-button" id="accept-button" type="submit">Accept</button>
-                              <button class="interview-button" id="interview-button" type="submit">Interview</button>
-                          </form>
-                          <form action="{% url 'abort_user' d.username %}" method="post">
-                              {% csrf_token %}
-                              <input type="hidden" name="status" value="accepted">
-                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                              <button class="interview-button" id="reject-button" type="submit">Reject</button>
-                          </form>
-                          <form action="{% url 'hired_user' d.username %}" method="post">
-                              {% csrf_token %}
-                              <input type="hidden" name="status" value="accepted">
-                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                              <button class="interview-button" id="hire-button" type="submit">Hired</button>
-                          </form>
-                        </tr>
-                    </tbody>                    
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="accepted">
+                            <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                            <button type="submit">Accept</button>
+                            <button type="submit">Interview</button>
+                        </form>
+                        <form action="{% url 'abort_user' d.username %}" method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="status" value="accepted">
+                          <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                          <button type="submit">Reject</button>
+                      </form>
+                      <form action="{% url 'hired_user' d.username %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="accepted">
+                        <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                        <button type="submit">Hired</button>
+                    </form>
+                      </tr>
+                  </tbody>                    
                     
                     {% endfor %}
                 </table>
@@ -186,52 +184,9 @@
           x.style.display = "none";
         }
       });
-
-      // Add event listener to buttons
-      window.onload = function() {
-        const acceptButton = document.getElementById("accept-button");
-        const interviewButton = document.getElementById("interview-button");
-        const rejectButton = document.getElementById("reject-button");
-        const hireButton = document.getElementById("hire-button");
-      
-        if (localStorage.getItem(acceptButton.id)) {
-          acceptButton.disabled = true;
-          acceptButton.style.backgroundColor = "gray";
-        }
-        if (localStorage.getItem(interviewButton.id)) {
-          interviewButton.disabled = true;
-          interviewButton.style.backgroundColor = "gray";
-        }
-        if (localStorage.getItem(rejectButton.id)) {
-          rejectButton.disabled = true;
-          rejectButton.style.backgroundColor = "gray";
-        }
-        if (localStorage.getItem(hireButton.id)) {
-          hireButton.disabled = true;
-          hireButton.style.backgroundColor = "gray";
-        }
-      
-        acceptButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-        interviewButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-        rejectButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-        hireButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-      };
-      
-      </script>
+      function disableButton() {
+        document.getElementById("button").disabled = true;
+        document.getElementById("button").classList.add("disabled");
+    }
+    </script>
 </html>

@@ -356,7 +356,7 @@ def CurrentStatus(request):
             print(job.applycandiadteuser.all())
             for i in job.applycandiadteuser.all():
                 print(i.username)
-                lines.append(i.username)
+                lines.append("                                    "+i.username)
         
         for nominee in nominated:
             if nominee.applyjobs:
