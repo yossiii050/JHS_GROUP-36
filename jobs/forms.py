@@ -12,9 +12,8 @@ from django import forms
 class UploadForm(ModelForm):
     class Meta:
         model=Upload
-        #fields="__all__"
         fields=('title','subTitle','body','category','salaryRange','yearsexp','education','time','hybrid','priority','location','availableAmount','notification','owner')
-        exclude =['owner']
+        exclude =['owner','notification_count']
         
 class SortForm(forms.Form):
     SORT_FIELD_CHOICES = (("title", "Title"), ("date", "Date"),("salaryRange","Salary Range"),("yearsexp","Years of expirience"),("time","Job Type"),("hybrid","Hybrid"),("location","Location"),("viewsCounter","Views"))  # Add more choices here to support additional sort fields
@@ -30,7 +29,3 @@ class SortForm(forms.Form):
     )
 
 
-#class JobApplicationForm(forms.Form):
-   # name = forms.CharField(max_length=100)
-    #email = forms.EmailField()
-    #resume = forms.FileField()

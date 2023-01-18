@@ -1,11 +1,27 @@
 <html>
+  <style>
+    .go-back-button:hover {
+      background-color: royalblue;
+      color: white;
+    }
+  </style>
     <center>
-
+      <div style="position:absolute; top:0; right:0;">
+        <a href="http://127.0.0.1:8000/" style="position: absolute; top: 5px; right: 10px; background-color: lightgray; padding: 10px 15px; border-radius: 5px; text-decoration: none; color: black; font-weight: bold;">Home</a>
+      </div>
+      
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">    </head>
-    <body>
-        <h1>This is Upload list page</h1>
+        <style>
+         h1 {
+            color: green;
+            font-size: 50px;
+          }
+        </style>
+        
+      <body><br><br><br>
+        <h1>Welcome to JHS Job Offers</h1>
         <a href="{% url 'jobscsvFile' %}"><button>all jobs- Excel File</button></a>
         <a href="{% url 'jobsLocationPdfFile' %}"><button>jobs by location Pdf File</button></a>
         <a href="{% url 'jobsPriorityPdfFile' %}"><button>jobs by Priority Pdf File</button></a>
