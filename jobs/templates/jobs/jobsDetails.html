@@ -6,10 +6,6 @@
         <link rel="stylsheet" href="/static/admin/css/style2.css">
     </head>
     <style>
-      h1 {
-            color: green;
-            font-size: 50px;
-            }
         table.blueTable {
             border: 0px solid #1C6EA4;
             background-color: #EEEEEE;
@@ -77,27 +73,29 @@
         <div class="jobs-details">
             <div class="job">
               
-                <h1>{{job.subTitle}}</h1>
-                <small><b>By:</b>{{job.owner.username}}</small>
-                <p><b>job description:</b>{{job.body}}</p>
-                <p><b>category:</b> {{job.get_category_display}}</p>
+                <h2>{{job.subTitle}}</h2>
+                <small>By:
+                    {{job.owner.username}}
+                </small>
+                <p><h3>job description: </h3>{{job.body}}</p>
+                <p>category: {{job.get_category_display}}</p>
 
-                <p><b>Salary range:</b> {{job.get_salaryRange_display}}</p>
+                <p>Salary range: {{job.get_salaryRange_display}}</p>
 
-                <p><b>date of publish:</b> {{job.date}}</p>
+                <p>date of publish: {{job.date}}</p>
 
-                <p><b>Years of expirience:</b> {{job.get_yearsexp_display}}</p>
-                <p><b>Education:</b> {{job.education}}</p>
-                <p><b>Time</b>: {{job.get_time_display}}</p>
-                <p><b>Location:</b> {{job.get_location_display}}</p>
-                <p><b>Avaliable Amount:</b> {{job.availableAmount }}</p>
+                <p>Years of expirience: {{job.get_yearsexp_display}}</p>
+                <p>Education: {{job.education}}</p>
+                <p>Time: {{job.get_time_display}}</p>
+                <p>Location: {{job.get_location_display}}</p>
+                <p>Avaliable Amount: {{job.availableAmount }}</p>
 
             </div>
         </div>
 
         {% if request.user.is_authenticated %}
           {% if request.user.employer.is_employer and request.user.employer.username == job.owner.username %}
-                  <a href="{% url 'update' job %}">
+                  <a href="{% url 'update' job.title %}">
                     <button>Edit job</button>
                     </a>
                
@@ -140,31 +138,29 @@
                         <td>{{d.first_name}}</td>
                         <td>{{d.last_name}}</td>
                         <td>{{d.phone_number}}</td>
-                        <td>
-                          <a href="{% url 'Profile' d.username  %}">
-                              <button>Profile</button>
-                          </a>
+                        <td><a href="{% url 'Profile' d.username  %}">
+                          <button>Profile</button>
                           <form action="{% url 'update_user' d.username %}" method="post">
-                              {% csrf_token %}
-                              <input type="hidden" name="status" value="accepted">
-                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                              <button class="interview-button" id="accept-button" type="submit">Accept</button>
-                              <button class="interview-button" id="interview-button" type="submit">Interview</button>
-                          </form>
-                          <form action="{% url 'abort_user' d.username %}" method="post">
-                              {% csrf_token %}
-                              <input type="hidden" name="status" value="accepted">
-                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                              <button class="interview-button" id="reject-button" type="submit">Reject</button>
-                          </form>
-                          <form action="{% url 'hired_user' d.username %}" method="post">
-                              {% csrf_token %}
-                              <input type="hidden" name="status" value="accepted">
-                              <input type="hidden" name="jobtitle" value="{{ job.title }}">
-                              <button class="interview-button" id="hire-button" type="submit">Hired</button>
-                          </form>
-                        </tr>
-                    </tbody>                    
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="accepted">
+                            <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                            <button type="submit">Accept</button>
+                            <button type="submit">Interview</button>
+                        </form>
+                        <form action="{% url 'abort_user' d.username %}" method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="status" value="accepted">
+                          <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                          <button type="submit">Reject</button>
+                      </form>
+                      <form action="{% url 'hired_user' d.username %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="accepted">
+                        <input type="hidden" name="jobtitle" value="{{ job.title }}">
+                        <button type="submit">Hired</button>
+                    </form>
+                      </tr>
+                  </tbody>                    
                     
                     {% endfor %}
                 </table>
@@ -188,52 +184,9 @@
           x.style.display = "none";
         }
       });
-
-      // Add event listener to buttons
-      window.onload = function() {
-        const acceptButton = document.getElementById("accept-button");
-        const interviewButton = document.getElementById("interview-button");
-        const rejectButton = document.getElementById("reject-button");
-        const hireButton = document.getElementById("hire-button");
-      
-        if (localStorage.getItem(acceptButton.id)) {
-          acceptButton.disabled = true;
-          acceptButton.style.backgroundColor = "gray";
-        }
-        if (localStorage.getItem(interviewButton.id)) {
-          interviewButton.disabled = true;
-          interviewButton.style.backgroundColor = "gray";
-        }
-        if (localStorage.getItem(rejectButton.id)) {
-          rejectButton.disabled = true;
-          rejectButton.style.backgroundColor = "gray";
-        }
-        if (localStorage.getItem(hireButton.id)) {
-          hireButton.disabled = true;
-          hireButton.style.backgroundColor = "gray";
-        }
-      
-        acceptButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-        interviewButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-        rejectButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-        hireButton.addEventListener("click", function() {
-          localStorage.setItem(this.id, true);
-          this.disabled = true;
-          this.style.backgroundColor = "gray";
-        });
-      };
-      
-      </script>
+      function disableButton() {
+        document.getElementById("button").disabled = true;
+        document.getElementById("button").classList.add("disabled");
+    }
+    </script>
 </html>

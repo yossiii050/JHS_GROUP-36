@@ -228,88 +228,76 @@
 </div>
 
 {% if candidate.user.username == user.username or user.is_staff == True  %}
-<div class="profile-info">
-<h2>All the jobs I submitted:</h2>  <form action="{% url 'list' %}">
-  <button type="submit" class="btn btn-primary">Look for jobs</button>
-</form> 
-{% for x in candidate.applyjobs %}
-  {% for j in jobs %}
-    {% if x == j.slug %}
-    
+  <div class="profile-info">
+  <h2>All the jobs I submitted:</h2>  <form action="{% url 'list' %}">
+    <button type="submit" class="btn btn-primary">Look for jobs</button>
+  </form> 
+  {% for x in candidate.applyjobs %}
+    {% for j in jobs %}
+      {% for item in candidate.get_progress %}    
 
-      <div class="label-value">
-        <span class="label">Title:</span>
-        <div class="label-box">{{ j.title }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Subtitle:</span>
-        <div class="label-box">{{ j.subTitle }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Body:</span>
-        <div class="label3-box">{{ j.body }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Date:</span>
-        <div class="label-box">{{ j.date }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Category:</span>
-        <div class="label-box">{{ j.get_category_display }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Years of Experience:</span>
-        <div class="label-box">{{ j.get_yearsexp_display }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Hybrid:</span>
-        <div class="label-box">{{ j.hybrid }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Priority:</span>
-        <div class="label-box">{{ j.priority }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Location:</span>
-        <div class="label-box">{{ j.get_location_display }}</div>
-        </div>
-        <div class="label-value">
-        <span class="label">Available Amount:</span>
-        <div class="label-box">{{ j.availableAmount }}</div>
-        </div>
-        <h2>Hiring process:</h2>
+        {% if x == j.slug %}
 
-        <div id="progress">
-          <div id="progress-bar"></div>
-          <ul id="progress-num">
-            <li class="step active">1</li>
-            <li class="step active">2</li>
-            <li class="step active">3</li>
-            <li class="step active">4</li>
-          </ul>
-        </div>
-        {% for item in candidate.get_progress %}    
+          <div class="label-value">
+            <span class="label">Title:</span>
+            <div class="label-box">{{ j.title }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Subtitle:</span>
+            <div class="label-box">{{ j.subTitle }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Body:</span>
+            <div class="label3-box">{{ j.body }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Date:</span>
+            <div class="label-box">{{ j.date }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Category:</span>
+            <div class="label-box">{{ j.get_category_display }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Years of Experience:</span>
+            <div class="label-box">{{ j.get_yearsexp_display }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Hybrid:</span>
+            <div class="label-box">{{ j.hybrid }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Priority:</span>
+            <div class="label-box">{{ j.priority }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Location:</span>
+            <div class="label-box">{{ j.get_location_display }}</div>
+            </div>
+            <div class="label-value">
+            <span class="label">Available Amount:</span>
+            <div class="label-box">{{ j.availableAmount }}</div>
+            </div>
+            <h2>Hiring process:</h2>
 
-        <progress value='{{ item }}' max="100" color='red' style="width: 100%; height: 35px; background: orangered;"></progress>
-        {% if item == 25 %}
-          <h2 style="color: brown;">Resumes accepted</h2>
-      {% elif item == 50 %}
-          <h2 style="color: orange;">The employer received the resume</h2>
-      {% elif item == 75 %}
-          <h2 style="color: blue;">You Called for a job interview</h2>
-      {% elif item == 100 %}
-          <h2 style="color: green;">Good luck! You been hired</h2>
-      {% else %}
-          <h2 style="color: red;">We apologize, but the recruitment process has stopped</h2>
-      {% endif %}
-        <p>------------------------------------------------------------------------------------------------------</p>
-        {% endfor %}
+            <progress value='{{ item }}' max="100" color='red' style="width: 100%; height: 35px; background: orangered;"></progress>
+          {% if item == 25 %}
+              <h2 style="color: brown;">Resumes accepted</h2>
+          {% elif item == 50 %}
+              <h2 style="color: orange;">The employer received the resume</h2>
+          {% elif item == 75 %}
+              <h2 style="color: blue;">You Called for a job interview</h2>
+          {% elif item == 100 %}
+              <h2 style="color: green;">Good luck! You been hired</h2>
+          {% else %}
+              <h2 style="color: red;">We apologize, but the recruitment process has stopped</h2>
+          {% endif %}
+            <p>------------------------------------------------------------------------------------------------------</p>
         {% endif %}
+      {% endfor %}
     {% endfor %}
   {% endfor %}
-
-
-  {% endif %}
+{% endif %}
 </div>
 {% if candidate.user.username == user.username or user.is_staff == True  %}
 <div class="profile-info">
