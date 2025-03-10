@@ -33,7 +33,7 @@ MAINTENANCE_MODE = None
 MAINTENANCE_MODE_TEMPLATE = "maintenance.html"
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['jhs-group-36.onrender.com']
 
 
 # Application definition
